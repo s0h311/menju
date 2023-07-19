@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --dark: #242424;
+  --dark2: #1e293b;
+  --light: #cffafe;
+
+  background-color: var(--dark);
+  color: var(--light);
+}
+
+input {
+  background-color: var(--dark2);
+}

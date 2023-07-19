@@ -1,0 +1,6 @@
+node_modules
+*.lock
+.nvmrc
+.yarnrc*
+*.d.ts
+.yarn
