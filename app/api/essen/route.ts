@@ -19,7 +19,6 @@ export async function POST(request: NextRequest) {
 }
 
 export async function GET() {
-  console.log('api hit')
   const res = await prisma.essen.findMany()
   return NextResponse.json(res)
 }

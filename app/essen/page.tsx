@@ -1,6 +1,7 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { trpc } from '@/trpc/trpc'
+import { useState } from 'react'
 
 export interface EssenData {
   id?: number
@@ -13,7 +14,8 @@ export default function Essen() {
     name: '',
     preis: 0,
   })
-  const [essenList, setEssenList] = useState<EssenData[]>([])
+
+  //const [essenList, setEssenList] = useState<EssenData[]>([])
 
   const saveEssen = async () => {
     await fetch(`/api/essen?name=${essenData.name}&preis=${essenData.preis}`, {
@@ -23,18 +25,22 @@ export default function Essen() {
     setEssenData({ name: '', preis: 0 })
   }
 
-  const getEssen = async () => {
-    const data = await fetch('/api/essen', {
-      method: 'GET',
-    })
-    console.log(data)
-    const json = await data.json()
-    setEssenList(json)
-  }
+  // WITH TRPC
+  const essenList = trpc.userById.useQuery(1).data || []
 
-  useEffect(() => {
-    getEssen().catch(console.error)
-  }, [])
+  // CODE BELOW WITH FETCH
+
+  // const getEssen = async () => {
+  //   const data = await fetch('/api/essen', {
+  //     method: 'GET',
+  //   })
+  //   const json = await data.json()
+  //   setEssenList(json)
+  // }
+
+  // useEffect(() => {
+  //   getEssen().catch(console.error)
+  // }, [])
 
   return (
     <div className='grid place-items-center gap-5'>
