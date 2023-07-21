@@ -7,8 +7,49 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Essen {
-  id  Int  @id @default(autoincrement())
-  name  String
-  preis Int
+// === TABLES === //
+
+model Restaurant {  // Is going to be completed with Kitchen BE
+  id         Int            @id @default(autoincrement())
+  name       String
+  categories DishCategory[]
+}
+
+model DishCategory {
+  id           Int        @id @default(autoincrement())
+  name         String
+  dishes       Dish[]
+  picture      String // URL of the picture
+  restaurantId Int
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+}
+
+model Dish {
+  id            Int          @id @default(autoincrement())
+  name          String
+  price         Float
+  picture       String // URL of the picture
+  categoryId    Int
+  category      DishCategory @relation(fields: [categoryId], references: [id])
+  ingredients   String[]
+  labels        String[]
+  allergens     Allergens[]
+  nutritions    Json?
+  origin        String?
+  type          DishType?
+  saleStartDate DateTime?
+  saleEndDate   DateTime?
+  salePrice     Decimal?
+  saleDays      Int[] // 1..7, 1 = monday, 2 = tuesday...
+}
+
+enum DishType {
+  VEGAN
+  VEGETARIAN
+  PESCATARIAN
+  OMNIVORE
+}
+
+enum Allergens {
+  NUT
 }
