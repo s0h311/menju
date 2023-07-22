@@ -22,7 +22,6 @@ export const appRouter = t.router({
         dishes: dishes.filter((dish) => dish.categoryId == category.id),
       }
     })
-    console.log(dishesByCategory)
     return dishesByCategory
   }),
 })
