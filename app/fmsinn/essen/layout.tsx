@@ -1,4 +1,4 @@
-import { TrpcProvider } from '../../trpc/trpc-provider'
+import { TrpcProvider } from '@/trpc/trpc-provider'
 
 export default function EssenLayout({ children }: { children: React.ReactNode }) {
   return (
