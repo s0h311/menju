@@ -33,9 +33,7 @@ export default function Menu() {
                 key: 4,
                 label: "Cola"
             }]
-        },
-        {key: 2, label: 'Abendessen', items: [{key: 3, label: "Tomaten"}]},
-        {key: 2, label: 'Abendessen', items: [{key: 3, label: "Tomaten"}]},
+        }
     ];
 
     const [chipData, setChipData] = useState<readonly FilterChipModel[]>(createChipData());

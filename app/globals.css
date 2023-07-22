@@ -3,20 +3,13 @@
 @tailwind utilities;
 
 :root {
-  --dark: #242424;
-  --dark2: #1e293b;
-  --light: #cffafe;
-  --background: #fdf3eb;
-  --button: #b89069;
-  --font: #010101;
-  --white: #ffffff;
+  --primary: #000;
+  --secondary: #fff;
+  --brand-cream: #fdf4eb;
+  --brand-fawn: #b9936d;
 
-  background-color: var(--background);
-  color: var(--font);
-}
-
-input {
-  background-color: var(--dark2);
+  background-color: var(--brand-cream);
+  color: var(--primary);
 }
 
 @layer utilities {

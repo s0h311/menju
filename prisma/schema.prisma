@@ -7,8 +7,61 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Essen {
-  id  Int  @id @default(autoincrement())
-  name  String
-  preis Int
+// === TABLES === //
+
+model Restaurant {
+  id         Int            @id @default(autoincrement())
+  name       String
+  categories DishCategory[]
+}
+
+model DishCategory {
+  id           Int        @id @default(autoincrement())
+  name         Json
+  dishes       Dish[]
+  picture      String // URL of the picture
+  restaurantId Int
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+}
+
+model Dish {
+  id            Int          @id @default(autoincrement())
+  name          Json
+  price         Float
+  picture       String // URL of the picture
+  categoryId    Int
+  category      DishCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  ingredients   Json
+  labels        Json?
+  allergies     Allergy[]
+  nutritions    Json?
+  origin        String?
+  type          DishType?
+  saleStartDate DateTime?
+  saleEndDate   DateTime?
+  salePrice     Decimal?
+  saleDays      Int[] // 1..7, 1 = monday, 2 = tuesday...
+
+  @@index([categoryId], type: BTree)
+}
+
+enum DishType {
+  VEGAN
+  VEGETARIAN
+  PESCATARIAN
+  OMNIVORE
+}
+
+model Allergy {
+  id        Int      @id @default(autoincrement())
+  name      Json     @unique
+  allergens String[]
+  dishes    Dish[]
+}
+
+model Nutrition {
+  id      Int    @id @default(autoincrement())
+  dish    String @unique // Unique dishes, not related to entity Dish
+  energy  Int // Unit: kcal
+  protein Int // Unit: grams
 }
