@@ -6,11 +6,28 @@
   --dark: #242424;
   --dark2: #1e293b;
   --light: #cffafe;
+  --background: #fdf3eb;
+  --button: #b89069;
+  --font: #010101;
+  --white: #ffffff;
 
-  background-color: var(--dark);
-  color: var(--light);
+  background-color: var(--background);
+  color: var(--font);
 }
 
 input {
   background-color: var(--dark2);
+}
+
+@layer utilities {
+  @variants responsive {
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  }
 }
