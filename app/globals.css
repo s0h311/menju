@@ -3,14 +3,11 @@
 @tailwind utilities;
 
 :root {
-  --dark: #242424;
-  --dark2: #1e293b;
-  --light: #cffafe;
+  --primary: #000;
+  --secondary: #fff;
+  --brand-cream: #fdf4eb;
+  --brand-fawn: #b9936d;
 
-  background-color: var(--dark);
-  color: var(--light);
-}
-
-input {
-  background-color: var(--dark2);
+  background-color: var(--brand-cream);
+  color: var(--primary);
 }

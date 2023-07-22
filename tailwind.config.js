@@ -8,9 +8,10 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        dark: 'var(--dark)',
-        dark2: 'var(--dark2)',
-        light: 'var(--light)',
+        primary: 'var(--primary)',
+        secondary: 'var(--secondary)',
+        brandCream: 'var(--brand-cream)',
+        brandFawn: 'var(--brand-fawn)',
       },
     },
   },

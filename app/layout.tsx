@@ -4,7 +4,7 @@ import { Kanit } from 'next/font/google'
 import { TrpcProvider } from '../trpc/trpc-provider'
 
 const kanit = Kanit({
-  weight: '300',
+  weight: '400',
   style: 'normal',
   subsets: ['latin'],
 })
