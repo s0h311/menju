@@ -3,13 +3,14 @@
 @tailwind utilities;
 
 :root {
-  --primary: #000;
-  --secondary: #fff;
-  --brand-cream: #fdf4eb;
-  --brand-fawn: #b9936d;
+  --primary: #efd976;
+  --secondary: #f3ebc9;
+  --accent: #5464a6;
+  --bg-color: #fcfaf2;
+  --text-color: #211d07;
 
-  background-color: var(--brand-cream);
-  color: var(--primary);
+  background-color: var(--bg-color);
+  color: var(--text-color);
 }
 
 @layer utilities {
