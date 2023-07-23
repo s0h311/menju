@@ -17,11 +17,9 @@ export default function FoodCategory({ label, items }: FoodCategoryProps) {
       <Divider orientation='horizontal' flexItem className='mb-2' />
 
       <Stack direction='row' spacing={2} className='mt-4 overflow-x-auto no-scrollbar'>
-        {items.map((data) => {
-          return (
-            <FoodItem key={data.key} item={data} /> // Key hinzufügen, um Warnung zu vermeiden
-          )
-        })}
+        {items.map((data) => (
+          <FoodItem key={data.key} item={data} />
+        ))}
       </Stack>
     </Box>
   )
