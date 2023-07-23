@@ -4,7 +4,7 @@ import { trpc } from '@/trpc/trpc'
 import Image from 'next/image'
 
 export default function Home() {
-  const dishesByCategory = trpc.dishesByCategory.useQuery({ restaurantId: 1, language: 'it' })
+  const dishesByCategory = trpc.dishesByCategory.useQuery({ restaurantId: 1, language: 'de' })
 
   return (
     <div className='grid gap-5 border p-5 border-red-400'>
