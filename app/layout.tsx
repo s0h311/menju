@@ -1,7 +1,7 @@
 import './globals.css'
 import type { Metadata } from 'next'
 import { Kanit } from 'next/font/google'
-import { TrpcProvider } from '../trpc/trpc-provider'
+import { TrpcProvider } from '@/trpc/trpc-provider'
 
 const kanit = Kanit({
   weight: '400',
@@ -10,11 +10,11 @@ const kanit = Kanit({
 })
 
 export const metadata: Metadata = {
-  title: 'FMSinn',
-  description: 'FMSinn',
+  title: 'FMSInn',
+  description: 'The easiest way to get your food',
 }
 
-interface RootLayoutProps {
+type RootLayoutProps = {
   children: React.ReactNode
 }
 
