@@ -10,8 +10,9 @@ module.exports = {
       colors: {
         primary: 'var(--primary)',
         secondary: 'var(--secondary)',
-        brandCream: 'var(--brand-cream)',
-        brandFawn: 'var(--brand-fawn)',
+        accent: 'var(--accent)',
+        bgColor: 'var(--bg-color)',
+        textColor: 'var(--text-color)',
       },
     },
   },
