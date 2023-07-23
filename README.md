@@ -7,3 +7,5 @@
 5. Dann das Datenbank Schema in `schema.prisma` pushen: `npx prisma db push`
 6. Packages installieren: `yarn install`
 7. Next starten: `yarn dev`
+
+TEST CODEOWNERS
