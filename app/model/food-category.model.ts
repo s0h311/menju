@@ -1,7 +1,10 @@
-import {FoodItemModel} from "@/app/model/food-item.model";
+export type FoodCategoryModel = {
+  key: number
+  label: string
+  items: FoodItemModel[]
+}
 
-export interface FoodCategoryModel {
-    key: number;
-    label: string;
-    items: FoodItemModel[];
+export type FoodItemModel = {
+  key: number
+  label: string
 }

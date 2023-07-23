@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   description: 'The easiest way to get your food',
 }
 
-interface RootLayoutProps {
+type RootLayoutProps = {
   children: React.ReactNode
 }
 

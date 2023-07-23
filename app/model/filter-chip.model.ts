@@ -1,6 +1,5 @@
-export interface FilterChipModel
-{
-    key: number;
-    label: string;
-    clicked: boolean;
+export type FilterChipModel = {
+  key: number
+  label: string
+  clicked: boolean
 }
