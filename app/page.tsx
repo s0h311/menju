@@ -3,10 +3,14 @@
 import { trpc } from '@/trpc/trpc'
 import Image from 'next/image'
 import { Cart } from './types/order.types'
+import { useCartStore } from '@/store/store'
+import Link from 'next/link'
 
 export default function Home() {
   const dishesByCategory = trpc.dishesByCategory.useQuery({ restaurantId: 1, language: 'IT' })
   const mutation = trpc.createOrder.useMutation()
+  const setCart = useCartStore((state) => state.setCart)
+  const cart = useCartStore((state) => state.cart)
 
   const addDemoOrder = () => {
     let demoCart: Cart = {
@@ -32,11 +36,14 @@ export default function Home() {
     }
 
     mutation.mutate(demoCart)
+
+    setCart(demoCart)
   }
 
   return (
     <div className='grid gap-5 border p-5 border-red-400'>
       <button onClick={addDemoOrder}>ADD NEW ORDER</button>
+      <Link href='/fmsinn/menu'>GO TO MENU</Link>
       {dishesByCategory.data?.map((category) => (
         <div className='grid gap-2 border p-2 border-blue-400' key={category.category.id}>
           <p>{category.category.name}</p>
