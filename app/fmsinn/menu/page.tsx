@@ -1,12 +1,12 @@
 'use client'
 
-import * as React from 'react'
-import { FilterChipModel } from '@/app/model/filter-chip.model'
+import React from 'react'
+import { FilterChipModel } from '@/app/types/filter-chip.types'
 import FilterBar from '@/app/components/filter-bar'
 import { useState } from 'react'
 import { Box, Stack } from '@mui/material'
 import FoodCategory from '@/app/components/food-category'
-import { FoodCategoryModel } from '@/app/model/food-category.model'
+import { FoodCategoryModel } from '@/app/types/food-category.types'
 
 export default function Menu() {
   const createChipData = (): readonly FilterChipModel[] => [

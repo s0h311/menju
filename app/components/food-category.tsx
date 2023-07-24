@@ -1,7 +1,7 @@
 import { Box, Divider, Stack, Typography } from '@mui/material'
 import React from 'react'
 import FoodItem from '@/app/components/food-item'
-import { FoodItemModel } from '@/app/model/food-category.model'
+import { FoodItemModel } from '@/app/types/food-category.types'
 
 type FoodCategoryProps = {
   label: string
