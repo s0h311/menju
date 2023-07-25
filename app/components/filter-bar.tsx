@@ -1,6 +1,6 @@
 import { Chip, Stack } from '@mui/material'
 import React from 'react'
-import { FilterChipModel } from '@/app/model/filter-chip.model'
+import { FilterChipModel } from '@/app/types/filter-chip.types'
 
 type FilterBarProps = {
   chipData: readonly FilterChipModel[]

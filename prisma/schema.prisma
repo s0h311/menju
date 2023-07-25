@@ -13,6 +13,7 @@ model Restaurant {
   id         Int            @id @default(autoincrement())
   name       String
   categories DishCategory[]
+  orders     Order[]
 }
 
 model DishCategory {
@@ -21,7 +22,7 @@ model DishCategory {
   dishes       Dish[]
   picture      String // URL of the picture
   restaurantId Int
-  restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
 }
 
 model Dish {
@@ -64,4 +65,24 @@ model Nutrition {
   dish    String @unique // Unique dishes, not related to entity Dish
   energy  Int // Unit: kcal
   protein Int // Unit: grams
+}
+
+model Order {
+  id            Int           @id @default(autoincrement())
+  table         String
+  positions     Json
+  paymentMethod PaymentMethod
+  isPayed       Boolean?
+  netTotal      Float
+  vat           Float?
+  note          String?
+  restaurantId  Int
+  retaurant     Restaurant    @relation(fields: [restaurantId], references: [id])
+  orderDate     DateTime?     @default(now()) @db.Timestamp() // UTC
+}
+
+enum PaymentMethod {
+  CARD
+  CASH
+  COUPON
 }

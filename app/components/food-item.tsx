@@ -1,6 +1,6 @@
 import { Card, CardContent, Typography } from '@mui/material'
 import React from 'react'
-import { FoodItemModel } from '@/app/model/food-category.model'
+import { FoodItemModel } from '@/app/types/food-category.types'
 
 type FoodItemProps = {
   item: FoodItemModel
