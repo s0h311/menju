@@ -1,6 +1,5 @@
 import { create } from 'zustand'
 import { Cart } from '@/app/types/order.types'
-import { devtools, persist } from 'zustand/middleware'
 
 type CartState = {
   cart: Cart
