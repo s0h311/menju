@@ -22,7 +22,7 @@ model DishCategory {
   dishes       Dish[]
   picture      String // URL of the picture
   restaurantId Int
-  restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
 }
 
 model Dish {
@@ -31,7 +31,7 @@ model Dish {
   price         Float
   picture       String // URL of the picture
   categoryId    Int
-  category      DishCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  category      DishCategory @relation(fields: [categoryId], references: [id])
   ingredients   Json
   labels        Json?
   allergies     Allergy[]
