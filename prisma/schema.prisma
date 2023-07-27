@@ -38,9 +38,10 @@ model Dish {
   nutritions    Json?
   origin        String?
   type          DishType?
+  description   Json?
   saleStartDate DateTime?
   saleEndDate   DateTime?
-  salePrice     Decimal?
+  salePrice     Float?
   saleDays      Int[] // 1..7, 1 = monday, 2 = tuesday...
 
   @@index([categoryId], type: BTree)
