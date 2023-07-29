@@ -4,18 +4,22 @@ import { FilterChipModel } from '@/app/types/filter-chip.types'
 
 type FilterBarProps = {
   chipData: readonly FilterChipModel[]
-  setChipData: React.Dispatch<React.SetStateAction<readonly FilterChipModel[]>>
 }
 
-export default function FilterBar({ chipData, setChipData }: FilterBarProps) {
+export default function FilterBar({ chipData }: FilterBarProps) {
+  const activeFilters: FilterChipModel[] = []
   const handleClick = (clickedChip: FilterChipModel) => {
-    setChipData((prevChipData) =>
-      prevChipData.map((chip) => (chip.key === clickedChip.key ? { ...chip, clicked: !chip.clicked } : chip))
-    )
+    activeFilters.includes(clickedChip)
+      ? activeFilters.splice(activeFilters.indexOf(clickedChip), 1)
+      : activeFilters.push(clickedChip)
   }
 
   return (
-    <Stack spacing={1} direction='row' className='overflow-x-auto mt-4 no-scrollbar'>
+    <Stack
+      spacing={1}
+      direction='row'
+      className='overflow-x-auto mt-4 no-scrollbar'
+    >
       {chipData.map((data) => (
         <Chip
           key={data.key}

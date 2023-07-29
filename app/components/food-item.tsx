@@ -1,21 +1,39 @@
 import { Card, CardContent, Typography } from '@mui/material'
 import React from 'react'
-import { FoodItemModel } from '@/app/types/food-category.types'
+import { Dish } from '@/app/types/dish.type'
 
 type FoodItemProps = {
-  item: FoodItemModel
+  dish: Dish
 }
 
-export default function FoodItem({ item }: FoodItemProps) {
+export default function FoodItem({ dish }: FoodItemProps) {
   return (
-    <Card className='overflow-y-auto no-scrollbar' sx={{ minWidth: 300 }}>
+    <Card sx={{ minWidth: 300 }}>
       <CardContent>
-        <Typography gutterBottom variant='h5' component='div'>
-          {item.label}
+        <Typography
+          gutterBottom
+          variant='h5'
+          component='div'
+        >
+          {dish.name}
         </Typography>
-        <Typography variant='body2' color='text.secondary'>
-          Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents
-          except Antarctica
+        <div className='flex flex-wrap -mx-2'>
+          {dish.ingredients.map((ingredient, index) => (
+            <Typography
+              key={index}
+              variant='subtitle2'
+              className='w-1/1 px-4 mb-4'
+            >
+              {ingredient}
+            </Typography>
+          ))}
+        </div>
+        <Typography
+          variant='button'
+          color='text.secondary'
+          className='self-end'
+        >
+          {dish.price}
         </Typography>
       </CardContent>
     </Card>
