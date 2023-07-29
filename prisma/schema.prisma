@@ -34,13 +34,14 @@ model Dish {
   category      DishCategory @relation(fields: [categoryId], references: [id])
   ingredients   Json
   labels        Json?
-  allergies     Allergy[]
+  allergies     Json?
   nutritions    Json?
   origin        String?
   type          DishType?
+  description   Json?
   saleStartDate DateTime?
   saleEndDate   DateTime?
-  salePrice     Decimal?
+  salePrice     Float?
   saleDays      Int[] // 1..7, 1 = monday, 2 = tuesday...
 
   @@index([categoryId], type: BTree)
@@ -57,7 +58,6 @@ model Allergy {
   id        Int      @id @default(autoincrement())
   name      Json     @unique
   allergens String[]
-  dishes    Dish[]
 }
 
 model Nutrition {

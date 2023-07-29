@@ -1,8 +1,14 @@
 import { initTRPC } from '@trpc/server'
-import { z } from 'zod'
-import superjson, { SuperJSON } from 'superjson'
+import superjson from 'superjson'
 import { PrismaClient } from '@prisma/client'
-import { zCart, zDishesByCategory } from '@/app/types/order.types'
+import { Language, zCart, zLanguageAndRestaurantId } from '@/app/types/order.type'
+import {
+  DishesByCategory,
+  MultiLanguageStringProperty,
+  MultiLanguageArrayProperty,
+  Nutrition,
+} from '@/app/types/dish.type'
+import { JSONValue } from 'superjson/dist/types'
 
 const t = initTRPC.create({
   transformer: superjson,
@@ -10,8 +16,24 @@ const t = initTRPC.create({
 
 const prisma = new PrismaClient()
 
+const getMultiLanguageStringProperty = (property: JSONValue, language: Language): string => {
+  if (property && typeof property === 'object') {
+    const data = property as MultiLanguageStringProperty
+    return data[language]
+  }
+  return ''
+}
+
+const getMultiLanguageArrayProperty = (property: JSONValue, language: Language): string[] => {
+  if (property && typeof property === 'object') {
+    const data = property as MultiLanguageArrayProperty
+    return data[language]
+  }
+  return []
+}
+
 export const appRouter = t.router({
-  dishesByCategory: t.procedure.input(zDishesByCategory).query(async (req) => {
+  dishesByCategory: t.procedure.input(zLanguageAndRestaurantId).query(async (req) => {
     const { input } = req
     const { restaurantId, language } = input
 
@@ -19,21 +41,22 @@ export const appRouter = t.router({
     const categoryIds = structuredClone(categories).map((category) => category.id)
     const dishes = await prisma.dish.findMany({ where: { categoryId: { in: categoryIds } } })
     // Can be optimized by removing dishes that are filtered below
-    const dishesByCategory = categories.map((category) => {
+    const dishesByCategory: DishesByCategory[] = categories.map((category) => {
       return {
         category: {
           ...category,
-          //@ts-ignore
-          name: category.name[language],
+          name: getMultiLanguageStringProperty(category.name, language),
         },
         dishes: dishes
           .filter((dish) => dish.categoryId == category.id)
           .map((dish) => ({
             ...dish,
-            //@ts-ignore
-            name: dish.name[language],
-            //@ts-ignore
-            ingredients: dish.ingredients[language],
+            name: getMultiLanguageStringProperty(dish.name, language),
+            ingredients: getMultiLanguageArrayProperty(dish.ingredients, language),
+            labels: getMultiLanguageArrayProperty(dish.labels, language),
+            allergies: getMultiLanguageArrayProperty(dish.allergies, language),
+            nutritions: dish.nutritions as Nutrition,
+            description: getMultiLanguageStringProperty(dish.description, language),
           })),
       }
     })
