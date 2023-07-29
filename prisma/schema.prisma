@@ -34,7 +34,7 @@ model Dish {
   category      DishCategory @relation(fields: [categoryId], references: [id])
   ingredients   Json
   labels        Json?
-  allergies     Allergy[]
+  allergies     Json?
   nutritions    Json?
   origin        String?
   type          DishType?
@@ -58,7 +58,6 @@ model Allergy {
   id        Int      @id @default(autoincrement())
   name      Json     @unique
   allergens String[]
-  dishes    Dish[]
 }
 
 model Nutrition {

@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { Cart } from '@/app/types/order.types'
+import { Cart } from '@/app/types/order.type'
 
 type CartState = {
   cart: Cart
