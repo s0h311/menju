@@ -1,17 +1,20 @@
 import { Chip, Stack } from '@mui/material'
-import React from 'react'
+import React, { useState } from 'react'
 import { FilterChipModel } from '@/app/types/filter-chip.types'
 
 type FilterBarProps = {
-  chipData: readonly FilterChipModel[]
+  chipData: FilterChipModel[]
 }
 
 export default function FilterBar({ chipData }: FilterBarProps) {
-  const activeFilters: FilterChipModel[] = []
-  const handleClick = (clickedChip: FilterChipModel) => {
-    activeFilters.includes(clickedChip)
-      ? activeFilters.splice(activeFilters.indexOf(clickedChip), 1)
-      : activeFilters.push(clickedChip)
+  const [activeFilters, setActiveFilters] = useState<FilterChipModel[]>([])
+
+  const handleClick = (clickedChip: FilterChipModel): void => {
+    if (activeFilters.includes(clickedChip)) {
+      setActiveFilters(activeFilters.filter((filter) => filter !== clickedChip))
+    } else {
+      setActiveFilters([...activeFilters, clickedChip])
+    }
   }
 
   return (
@@ -20,13 +23,13 @@ export default function FilterBar({ chipData }: FilterBarProps) {
       direction='row'
       className='overflow-x-auto mt-4 no-scrollbar'
     >
-      {chipData.map((data) => (
+      {chipData.map((filter: FilterChipModel) => (
         <Chip
-          key={data.key}
-          label={data.label}
-          color={data.clicked ? 'success' : 'error'}
-          onClick={() => handleClick(data)}
-          className={`transition-opacity ${data.clicked ? 'opacity-100' : 'opacity-90'}`}
+          key={filter.key}
+          label={filter.label}
+          onClick={() => handleClick(filter)}
+          color={activeFilters.includes(filter) ? 'success' : 'error'}
+          className={`transition-opacity ${activeFilters.includes(filter) ? 'opacity-100' : 'opacity-90'}`}
         />
       ))}
     </Stack>

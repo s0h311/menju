@@ -1,4 +1,4 @@
 export type FilterChipModel = {
-  key: number
+  key: string | number
   label: string
 }
