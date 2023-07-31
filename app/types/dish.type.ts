@@ -25,17 +25,22 @@ const zMultiLanguageArrayProperty = z.object({
   it: z.array(z.string()),
 })
 
+const zIngredient = z.object({
+  required: zMultiLanguageArrayProperty,
+  optional: zMultiLanguageArrayProperty,
+})
+
 export const zDish = z.object({
   id: z.number(),
   name: z.string(),
   price: z.number(),
-  picture: z.string(), // URL of the picture
+  picture: z.string().nullish(), // URL of the picture
   categoryId: z.number(),
-  ingredients: z.array(z.string()),
+  requiredIngredients: z.array(z.string()),
+  optionalIngredients: z.array(z.string()),
   labels: z.array(z.string()),
   allergies: z.array(z.string()),
   nutritions: zNutrition.optional(),
-  origin: z.string().nullish(),
   type: z.enum(['VEGAN', 'VEGETARIAN', 'PESCATARIAN', 'OMNIVORE']).nullish(),
   description: z.string().nullish(),
   saleStartDate: z.date().nullish(),
@@ -63,3 +68,4 @@ export type DishCategory = z.infer<typeof zDishCategory>
 export type DishesByCategory = z.infer<typeof zDishesByCategory>
 export type MultiLanguageStringProperty = z.infer<typeof zMultiLanguageStringProperty>
 export type MultiLanguageArrayProperty = z.infer<typeof zMultiLanguageArrayProperty>
+export type Ingredient = z.infer<typeof zIngredient>

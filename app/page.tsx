@@ -7,7 +7,7 @@ import { useCartStore } from '@/store/store'
 import Link from 'next/link'
 
 export default function Home() {
-  const dishesByCategory = trpc.dishesByCategory.useQuery({ restaurantId: 1, language: 'IT' })
+  const dishesByCategory = trpc.dishesByCategory.useQuery({ restaurantId: 1, language: 'it' })
   const mutation = trpc.createOrder.useMutation()
   const setCart = useCartStore((state) => state.setCart)
   const cart = useCartStore((state) => state.cart)
@@ -43,14 +43,25 @@ export default function Home() {
   return (
     <div className='grid gap-5 border p-5 border-red-400'>
       <button onClick={addDemoOrder}>ADD NEW ORDER</button>
-      <Link href='/fmsinn/menu'>GO TO MENU</Link>
+      <Link href='/fmsinn/menu/1'>GO TO MENU</Link>
       {dishesByCategory.data?.map((category) => (
-        <div className='grid gap-2 border p-2 border-blue-400' key={category.category.id}>
+        <div
+          className='grid gap-2 border p-2 border-blue-400'
+          key={category.category.id}
+        >
           <p>{category.category.name}</p>
           {category.dishes.map((dish) => (
-            <div className='grid gap-2 p-2 border border-green-400' key={dish.id}>
+            <div
+              className='grid gap-2 p-2 border border-green-400'
+              key={dish.id}
+            >
               <p>{dish.name}</p>
-              <Image src={dish.picture} width={500} height={300} alt='' />
+              <Image
+                src={dish.picture}
+                width={500}
+                height={300}
+                alt=''
+              />
               <p>{dish.price}</p>
             </div>
           ))}
