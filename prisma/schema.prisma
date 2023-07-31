@@ -29,14 +29,13 @@ model Dish {
   id            Int          @id @default(autoincrement())
   name          Json
   price         Float
-  picture       String // URL of the picture
+  picture       String? // URL of the picture
   categoryId    Int
   category      DishCategory @relation(fields: [categoryId], references: [id])
   ingredients   Json
   labels        Json?
   allergies     Json?
   nutritions    Json?
-  origin        String?
   type          DishType?
   description   Json?
   saleStartDate DateTime?
