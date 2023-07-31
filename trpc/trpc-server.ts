@@ -6,6 +6,7 @@ import {
   MultiLanguageStringProperty,
   MultiLanguageArrayProperty,
   Nutrition,
+  Ingredient,
 } from '@/app/types/dish.type'
 import { JSONValue } from 'superjson/dist/types'
 import { Language, zCart, zLanguageAndRestaurantId } from '@/app/types/order.type'
@@ -32,6 +33,14 @@ const getMultiLanguageArrayProperty = (property: JSONValue, language: Language):
   return []
 }
 
+const getIngredients = (property: JSONValue, language: Language, type: 'required' | 'optional'): string[] => {
+  if (property && typeof property === 'object') {
+    const data = property as Ingredient
+    return data[type][language]
+  }
+  return []
+}
+
 export const appRouter = t.router({
   dishesByCategory: t.procedure.input(zLanguageAndRestaurantId).query(async (req) => {
     const { input } = req
@@ -52,7 +61,8 @@ export const appRouter = t.router({
           .map((dish) => ({
             ...dish,
             name: getMultiLanguageStringProperty(dish.name, language),
-            ingredients: getMultiLanguageArrayProperty(dish.ingredients, language),
+            requiredIngredients: getIngredients(dish.ingredients, language, 'required'),
+            optionalIngredients: getIngredients(dish.ingredients, language, 'optional'),
             labels: getMultiLanguageArrayProperty(dish.labels, language),
             allergies: getMultiLanguageArrayProperty(dish.allergies, language),
             nutritions: dish.nutritions as Nutrition,
