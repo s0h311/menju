@@ -13,7 +13,7 @@ export const zCart = z.object({
     })
     .array(),
   paymentMethod: z.enum(['CARD', 'CASH', 'COUPON']),
-  isPayed: z.boolean(),
+  isPayed: z.boolean().optional(),
   netTotal: z.number(),
   vat: z.number().optional(),
   note: z.string().max(100).optional(),
