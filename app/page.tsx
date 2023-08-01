@@ -2,7 +2,7 @@
 
 import { trpc } from '@/trpc/trpc'
 import Image from 'next/image'
-import { Cart } from './types/order.types'
+import { Cart } from './types/order.type'
 import { useCartStore } from '@/store/store'
 import Link from 'next/link'
 
@@ -56,12 +56,16 @@ export default function Home() {
               key={dish.id}
             >
               <p>{dish.name}</p>
-              <Image
-                src={dish.picture}
-                width={500}
-                height={300}
-                alt=''
-              />
+              {dish.picture ? (
+                <Image
+                  src={dish.picture}
+                  width={500}
+                  height={300}
+                  alt=''
+                />
+              ) : (
+                ''
+              )}
               <p>{dish.price}</p>
             </div>
           ))}
