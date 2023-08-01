@@ -1,9 +1,10 @@
 import { create } from 'zustand'
-import { Cart } from '@/app/types/order.type'
+import { Cart, OrderPosition } from '@/app/types/order.type'
 
 type CartState = {
   cart: Cart
   setCart: (cart: Cart) => void
+  addPosition: (position: OrderPosition) => void
 }
 
 export const useCartStore = create<CartState>((set) => ({
@@ -14,8 +15,15 @@ export const useCartStore = create<CartState>((set) => ({
     isPayed: false,
     netTotal: 0,
     restaurantId: 0,
-    vat: undefined,
-    note: undefined,
+    vat: null,
+    note: null,
   },
   setCart: (cart: Cart) => set(() => ({ cart: cart })),
+  addPosition: (position: OrderPosition) =>
+    set((state) => ({
+      cart: {
+        ...state.cart,
+        positions: [...state.cart.positions, position],
+      },
+    })),
 }))

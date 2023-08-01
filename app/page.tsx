@@ -5,10 +5,16 @@ import Image from 'next/image'
 import { Cart } from './types/order.type'
 import { useCartStore } from '@/store/store'
 import Link from 'next/link'
+import DishDialog from './components/dishDialog'
+import { Dish } from './types/dish.type'
+import { useState } from 'react'
 
 export default function Home() {
   const dishesByCategory = trpc.dishesByCategory.useQuery({ restaurantId: 1, language: 'it' })
   const mutation = trpc.createOrder.useMutation()
+
+  const [activeDish, setActiveDish] = useState<Dish | null>(null)
+
   const setCart = useCartStore((state) => state.setCart)
   const cart = useCartStore((state) => state.cart)
 
@@ -52,7 +58,8 @@ export default function Home() {
           <p>{category.category.name}</p>
           {category.dishes.map((dish) => (
             <div
-              className='grid gap-2 p-2 border border-green-400'
+              className='grid gap-2 p-2 border border-green-400 cursor-pointer'
+              onClick={() => setActiveDish(dish)}
               key={dish.id}
             >
               <p>{dish.name}</p>
@@ -71,6 +78,14 @@ export default function Home() {
           ))}
         </div>
       ))}
+      {activeDish ? (
+        <DishDialog
+          dish={activeDish}
+          setOpenDialog={setActiveDish}
+        />
+      ) : (
+        ''
+      )}
     </div>
   )
 }

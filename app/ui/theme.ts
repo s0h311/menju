@@ -22,6 +22,14 @@ declare module '@mui/material/Button' {
   }
 }
 
+declare module '@mui/material/Checkbox' {
+  interface CheckboxPropsColorOverrides {
+    accent: true
+    bgColor: true
+    textColor: true
+  }
+}
+
 export const theme = createTheme({
   palette: {
     primary: {
