@@ -18,7 +18,7 @@ export default function FoodItem({ dish }: FoodItemProps) {
           {dish.name}
         </Typography>
         <div className='flex flex-wrap -mx-2'>
-          {[...dish.optionalIngredients, ...dish.requiredIngredients].map((ingredient, index) => (
+          {[...dish.optionalIngredients].map((ingredient, index) => (
             <Typography
               key={index}
               variant='subtitle2'

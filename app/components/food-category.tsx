@@ -1,20 +1,21 @@
 import { Box, Divider, Stack, Typography } from '@mui/material'
 import React from 'react'
 import FoodItem from '@/app/components/food-item'
-import { DishCategory, DishesByCategory } from '@/app/types/dish.type'
+import { Dish, DishCategory } from '@/app/types/dish.type'
 
 type FoodCategoryProps = {
-  dishesByCategory: DishesByCategory
+  category: DishCategory
+  dishes: Dish[]
 }
 
-export default function FoodCategory({ dishesByCategory }: FoodCategoryProps) {
+export default function FoodCategory({ dishes, category }: FoodCategoryProps) {
   return (
     <Box className='mt-4'>
       <Typography
         variant='h5'
         gutterBottom
       >
-        {dishesByCategory.category.name}
+        {category.name}
       </Typography>
       <Divider
         orientation='horizontal'
@@ -27,7 +28,7 @@ export default function FoodCategory({ dishesByCategory }: FoodCategoryProps) {
         spacing={2}
         className='overflow-x-auto no-scrollbar p-1'
       >
-        {dishesByCategory.dishes.map((dish) => (
+        {dishes.map((dish) => (
           <FoodItem
             key={dish.id}
             dish={dish}

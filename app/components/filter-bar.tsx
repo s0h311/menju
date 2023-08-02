@@ -25,7 +25,7 @@ export default function FilterBar({ chipData }: FilterBarProps) {
     >
       {chipData.map((filter: FilterChipModel) => (
         <Chip
-          key={filter.key}
+          key={filter.label}
           label={filter.label}
           onClick={() => handleClick(filter)}
           color={activeFilters.includes(filter) ? 'success' : 'error'}
