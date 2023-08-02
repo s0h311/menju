@@ -34,18 +34,18 @@ export const zDish = z.object({
   id: z.number(),
   name: z.string(),
   price: z.number(),
-  picture: z.string().nullish(), // URL of the picture
+  picture: z.string().nullable(), // URL of the picture
   categoryId: z.number(),
   requiredIngredients: z.array(z.string()),
   optionalIngredients: z.array(z.string()),
   labels: z.array(z.string()),
   allergies: z.array(z.string()),
-  nutritions: zNutrition.optional(),
-  type: z.enum(['VEGAN', 'VEGETARIAN', 'PESCATARIAN', 'OMNIVORE']).nullish(),
-  description: z.string().nullish(),
-  saleStartDate: z.date().nullish(),
-  saleEndDate: z.date().nullish(),
-  salePrice: z.number().nullish(),
+  nutritions: zNutrition.nullable(),
+  type: z.enum(['VEGAN', 'VEGETARIAN', 'PESCATARIAN', 'OMNIVORE']).nullable(),
+  description: z.string().nullable(),
+  saleStartDate: z.date().nullable(),
+  saleEndDate: z.date().nullable(),
+  salePrice: z.number().nullable(),
   saleDays: z.array(z.number()),
 })
 
