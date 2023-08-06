@@ -8,47 +8,15 @@ import Link from 'next/link'
 import DishDialog from './components/dishDialog'
 import { Dish } from './types/dish.type'
 import { useState } from 'react'
+import CartDialog from './components/cartDialog'
 
 export default function Home() {
   const dishesByCategory = trpc.dishesByCategory.useQuery({ restaurantId: 1, language: 'it' })
-  const mutation = trpc.createOrder.useMutation()
 
   const [activeDish, setActiveDish] = useState<Dish | null>(null)
 
-  const setCart = useCartStore((state) => state.setCart)
-  const cart = useCartStore((state) => state.cart)
-
-  const addDemoOrder = () => {
-    let demoCart: Cart = {
-      restaurantId: 1,
-      table: 'A3',
-      positions: [
-        {
-          dishId: 3,
-          quantity: 2,
-          leftOutIngredients: [],
-        },
-        {
-          dishId: 3,
-          quantity: 1,
-          leftOutIngredients: [],
-        },
-      ],
-      paymentMethod: 'CARD',
-      isPayed: true,
-      netTotal: 35,
-      vat: 7,
-      note: '',
-    }
-
-    mutation.mutate(demoCart)
-
-    setCart(demoCart)
-  }
-
   return (
     <div className='grid gap-5 border p-5 border-red-400'>
-      <button onClick={addDemoOrder}>ADD NEW ORDER</button>
       <Link href='/fmsinn/menu/1'>GO TO MENU</Link>
       {dishesByCategory.data?.map((category) => (
         <div
@@ -86,6 +54,9 @@ export default function Home() {
       ) : (
         ''
       )}
+      <div className='sticky bottom-0 right-0 justify-self-end'>
+        <CartDialog />
+      </div>
     </div>
   )
 }

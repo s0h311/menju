@@ -21,7 +21,7 @@ export default function DishDialog({ dish, setOpenDialog }: DishDialogProps) {
   }
 
   const [order, setOrder] = useState<OrderPosition>({
-    dishId: dish.id,
+    dish,
     quantity: 1,
     leftOutIngredients: [],
   })
