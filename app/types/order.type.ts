@@ -13,10 +13,11 @@ export const zCart = z.object({
   table: z.string(),
   positions: z.array(zOrderPosition),
   paymentMethod: z.enum(['CARD', 'CASH', 'COUPON']),
+
   isPayed: z.boolean().optional(),
   netTotal: z.number(),
-  vat: z.number().optional(),
-  note: z.string().max(100).optional(),
+  vat: z.number().nullable(),
+  note: z.string().max(100).nullable(),
   restaurantId: zRestaurantId,
 })
 
