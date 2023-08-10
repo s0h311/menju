@@ -1,21 +1,14 @@
 import { Chip, Stack } from '@mui/material'
 import React, { useState } from 'react'
 import { FilterChipModel } from '@/app/types/filter-chip.types'
+import { useMenuStore } from '@/store/menu-store'
 
 type FilterBarProps = {
   chipData: FilterChipModel[]
 }
 
 export default function FilterBar({ chipData }: FilterBarProps) {
-  const [activeFilters, setActiveFilters] = useState<FilterChipModel[]>([])
-
-  const handleClick = (clickedChip: FilterChipModel): void => {
-    if (activeFilters.includes(clickedChip)) {
-      setActiveFilters(activeFilters.filter((filter) => filter !== clickedChip))
-    } else {
-      setActiveFilters([...activeFilters, clickedChip])
-    }
-  }
+  const menuStore = useMenuStore((state) => state)
 
   return (
     <Stack
@@ -27,9 +20,10 @@ export default function FilterBar({ chipData }: FilterBarProps) {
         <Chip
           key={filter.label}
           label={filter.label}
-          onClick={() => handleClick(filter)}
-          color={activeFilters.includes(filter) ? 'success' : 'error'}
-          className={`transition-opacity ${activeFilters.includes(filter) ? 'opacity-100' : 'opacity-90'}`}
+          onClick={() => {
+            menuStore.updateFilter(filter)
+            menuStore.filter()
+          }}
         />
       ))}
     </Stack>
