@@ -22,8 +22,24 @@ declare module '@mui/material/Button' {
   }
 }
 
+declare module '@mui/lab/LoadingButton' {
+  interface LoadingButtonPropsColorOverrides {
+    accent: true
+    bgColor: true
+    textColor: true
+  }
+}
+
 declare module '@mui/material/Checkbox' {
   interface CheckboxPropsColorOverrides {
+    accent: true
+    bgColor: true
+    textColor: true
+  }
+}
+
+declare module '@mui/material/TextField' {
+  interface TextFieldPropsColorOverrides {
     accent: true
     bgColor: true
     textColor: true
