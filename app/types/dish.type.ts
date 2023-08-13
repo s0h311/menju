@@ -1,4 +1,4 @@
-import { array, string, z } from 'zod'
+import { z } from 'zod'
 
 export const zAllergy = z.object({
   id: z.number(),

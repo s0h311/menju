@@ -49,7 +49,7 @@ export default function Home() {
   return (
     <div className='grid gap-5 border p-5 border-red-400'>
       <button onClick={addDemoOrder}>ADD NEW ORDER</button>
-      <Link href='/fmsinn/menu/1'>GO TO MENU</Link>
+      <Link href='/fmsinn/1'>GO TO MENU</Link>
       {dishesByCategory.data?.map((category) => (
         <div
           className='grid gap-2 border p-2 border-blue-400'

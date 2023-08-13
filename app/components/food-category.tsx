@@ -1,20 +1,23 @@
 import { Box, Divider, Stack, Typography } from '@mui/material'
 import React from 'react'
 import FoodItem from '@/app/components/food-item'
-import { DishCategory, DishesByCategory } from '@/app/types/dish.type'
+import { DishCategory } from '@/app/types/dish.type'
+import { useMenuStore } from '@/store/menu-store'
+import useStore from '@/store/nextjs-hook'
 
 type FoodCategoryProps = {
-  dishesByCategory: DishesByCategory
+  category: DishCategory
 }
+export default function FoodCategory({ category }: FoodCategoryProps) {
+  const menuStore = useStore(useMenuStore, (state) => state)
 
-export default function FoodCategory({ dishesByCategory }: FoodCategoryProps) {
   return (
     <Box className='mt-4'>
       <Typography
         variant='h5'
         gutterBottom
       >
-        {dishesByCategory.category.name}
+        {category.name.charAt(0).toUpperCase() + category.name.slice(1)}
       </Typography>
       <Divider
         orientation='horizontal'
@@ -27,12 +30,16 @@ export default function FoodCategory({ dishesByCategory }: FoodCategoryProps) {
         spacing={2}
         className='overflow-x-auto no-scrollbar p-1'
       >
-        {dishesByCategory.dishes.map((dish) => (
-          <FoodItem
-            key={dish.id}
-            dish={dish}
-          />
-        ))}
+        {menuStore?.visibleDishes
+          .filter((cat) => category.id === cat.category.id)
+          .map((dish) =>
+            dish.dishes.map((dish) => (
+              <FoodItem
+                key={dish.id}
+                dish={dish}
+              />
+            ))
+          )}
       </Stack>
     </Box>
   )

@@ -1,6 +1,6 @@
 import Dialog from '@/app/ui/dialog'
 import { Checkbox, ThemeProvider } from '@mui/material'
-import { Dish, Ingredient, MultiLanguageStringProperty } from '@/app/types/dish.type'
+import { Dish } from '@/app/types/dish.type'
 import Image from 'next/image'
 import { useState } from 'react'
 import { OrderPosition } from '../types/order.type'
