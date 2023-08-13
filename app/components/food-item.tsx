@@ -1,7 +1,6 @@
 import { Card, CardContent, Typography } from '@mui/material'
 import React from 'react'
 import { Dish } from '@/app/types/dish.type'
-import { useMenuStore } from '@/store/menu-store'
 
 type FoodItemProps = {
   dish: Dish

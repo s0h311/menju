@@ -1,8 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { Cart, OrderPosition } from '@/app/types/order.type'
-import { Dish, DishCategory, DishesByCategory } from '@/app/types/dish.type'
-import { FilterChipModel } from '@/app/types/filter-chip.types'
 
 type CartState = {
   cart: Cart

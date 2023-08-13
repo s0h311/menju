@@ -1,5 +1,5 @@
 import { Chip, Stack } from '@mui/material'
-import React, { useState } from 'react'
+import React from 'react'
 import { FilterChipModel } from '@/app/types/filter-chip.types'
 import { useMenuStore } from '@/store/menu-store'
 
