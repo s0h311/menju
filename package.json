@@ -12,13 +12,16 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "db-push": "npx prisma db push"
+    "db:push": "dotenv -e .env.development -- npx prisma db push",
+    "db:push:prod": "dotenv -e .env.production -- npx prisma db push",
+    "db:seed": "dotenv -e .env.development npx -- prisma db push --force-reset && npx prisma db seed"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@hookform/resolvers": "^3.2.0",
     "@mui/icons-material": "^5.14.3",
+    "@mui/lab": "^5.0.0-alpha.139",
     "@mui/material": "^5.14.3",
     "@prisma/client": "^5.1.0",
     "@supabase/auth-helpers-nextjs": "^0.7.4",
@@ -51,6 +54,10 @@
     "eslint-plugin-unused-imports": "^3.0.0",
     "prettier": "3.0.0",
     "prisma": "^5.1.0",
+    "ts-node": "^10.9.1",
     "typescript": "^5.1.6"
+  },
+  "prisma": {
+    "seed": "dotenv -e .env.development -- ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   }
 }

@@ -22,7 +22,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <TrpcProvider>
       <html lang='en'>
-        <body className={kanit.className}>{children}</body>
+        <body className={`${kanit.className} grid place-items-center w-screen h-screen`}>{children}</body>
       </html>
     </TrpcProvider>
   )

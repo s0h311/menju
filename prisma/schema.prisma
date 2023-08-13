@@ -1,10 +1,12 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["multiSchema"]
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  schemas  = ["public"]
 }
 
 // === TABLES === //
@@ -14,6 +16,9 @@ model Restaurant {
   name       String
   categories DishCategory[]
   orders     Order[]
+
+  @@map("restaurant")
+  @@schema("public")
 }
 
 model DishCategory {
@@ -21,8 +26,11 @@ model DishCategory {
   name         Json
   dishes       Dish[]
   picture      String // URL of the picture
-  restaurantId Int
+  restaurantId Int        @map("restaurant_id")
   restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+
+  @@map("dish_category")
+  @@schema("public")
 }
 
 model Dish {
@@ -30,7 +38,7 @@ model Dish {
   name          Json
   price         Float
   picture       String? // URL of the picture
-  categoryId    Int
+  categoryId    Int          @map("category_id")
   category      DishCategory @relation(fields: [categoryId], references: [id])
   ingredients   Json
   labels        Json?
@@ -38,12 +46,14 @@ model Dish {
   nutritions    Json?
   type          DishType?
   description   Json?
-  saleStartDate DateTime?
-  saleEndDate   DateTime?
-  salePrice     Float?
-  saleDays      Int[] // 1..7, 1 = monday, 2 = tuesday...
+  saleStartDate DateTime?    @map("sale_start_date")
+  saleEndDate   DateTime?    @map("sale_end_date")
+  salePrice     Float?       @map("sale_price")
+  saleDays      Int[]        @map("sale_days") // 1..7, 1 = monday, 2 = tuesday...
 
   @@index([categoryId], type: BTree)
+  @@map("dish")
+  @@schema("public")
 }
 
 enum DishType {
@@ -51,12 +61,18 @@ enum DishType {
   VEGETARIAN
   PESCATARIAN
   OMNIVORE
+
+  @@map("dish_type")
+  @@schema("public")
 }
 
 model Allergy {
   id        Int      @id @default(autoincrement())
   name      Json     @unique
   allergens String[]
+
+  @@map("allergy")
+  @@schema("public")
 }
 
 model Nutrition {
@@ -64,24 +80,33 @@ model Nutrition {
   dish    String @unique // Unique dishes, not related to entity Dish
   energy  Int // Unit: kcal
   protein Int // Unit: grams
+
+  @@map("nutrition")
+  @@schema("public")
 }
 
 model Order {
   id            Int           @id @default(autoincrement())
   table         String
   positions     Json
-  paymentMethod PaymentMethod
-  isPayed       Boolean?
-  netTotal      Float
+  paymentMethod PaymentMethod @map("payment_method")
+  isPayed       Boolean?      @map("is_payed")
+  netTotal      Float         @map("net_total")
   vat           Float?
   note          String?
-  restaurantId  Int
+  restaurantId  Int           @map("restaurant_id")
   retaurant     Restaurant    @relation(fields: [restaurantId], references: [id])
-  orderDate     DateTime?     @default(now()) @db.Timestamp() // UTC
+  orderDate     DateTime?     @default(now()) @map("order_date") @db.Timestamp() // UTC
+
+  @@map("order")
+  @@schema("public")
 }
 
 enum PaymentMethod {
   CARD
   CASH
   COUPON
+
+  @@map("payment_method")
+  @@schema("public")
 }
