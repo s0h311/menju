@@ -8,7 +8,6 @@ type FoodItemProps = {
 
 export default function FoodItem({ dish }: FoodItemProps) {
   {
-    const menuStore = useMenuStore((state) => state)
     return (
       <Card sx={{ minWidth: 300 }}>
         <CardContent>

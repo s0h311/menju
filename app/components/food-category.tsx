@@ -3,12 +3,13 @@ import React from 'react'
 import FoodItem from '@/app/components/food-item'
 import { DishCategory } from '@/app/types/dish.type'
 import { useMenuStore } from '@/store/menu-store'
+import useStore from '@/store/nextjs-hook'
 
 type FoodCategoryProps = {
   category: DishCategory
 }
 export default function FoodCategory({ category }: FoodCategoryProps) {
-  const menuStore = useMenuStore((state) => state)
+  const menuStore = useStore(useMenuStore, (state) => state)
 
   return (
     <Box className='mt-4'>
@@ -29,12 +30,16 @@ export default function FoodCategory({ category }: FoodCategoryProps) {
         spacing={2}
         className='overflow-x-auto no-scrollbar p-1'
       >
-        {menuStore.visibleDishes.get(category)?.map((dish) => (
-          <FoodItem
-            key={dish.id}
-            dish={dish}
-          />
-        ))}
+        {menuStore?.visibleDishes
+          .filter((cat) => category.id === cat.category.id)
+          .map((dish) =>
+            dish.dishes.map((dish) => (
+              <FoodItem
+                key={dish.id}
+                dish={dish}
+              />
+            ))
+          )}
       </Stack>
     </Box>
   )

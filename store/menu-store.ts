@@ -1,18 +1,20 @@
-import { Dish, DishCategory } from '@/app/types/dish.type'
+import { DishesByCategory } from '@/app/types/dish.type'
 import { FilterChipModel } from '@/app/types/filter-chip.types'
 import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
 
 export type MenuState = {
-  allDishes: Map<DishCategory, Dish[]>
-  visibleDishes: Map<DishCategory, Dish[]>
+  allDishes: DishesByCategory[]
+  visibleDishes: DishesByCategory[]
   activeFilter: FilterChipModel[]
   updateFilter: (filter: FilterChipModel) => void
   filter: () => void
-  setAllDishes: (dishes: Map<DishCategory, Dish[]>) => void
-  setVisibleDishes: (dishes: Map<DishCategory, Dish[]>) => void
+  setAllDishes: (dishes: DishesByCategory[]) => void
+  setVisibleDishes: (dishes: DishesByCategory[]) => void
 }
 
 const updateFilter = (filter: FilterChipModel, activeFilter: FilterChipModel[]): FilterChipModel[] => {
+  console.log(activeFilter)
   const existingFilter = activeFilter.find((f) => f.label === filter.label)
   if (existingFilter) {
     return activeFilter.filter((f) => f.label !== filter.label)
@@ -21,41 +23,52 @@ const updateFilter = (filter: FilterChipModel, activeFilter: FilterChipModel[]):
   }
 }
 
-const applyFilter = (dishes: Dish[], activeFilter: FilterChipModel[]): Dish[] => {
-  return dishes.filter((dish: Dish) =>
-    activeFilter.every(
-      (filter: FilterChipModel) => dish.labels.includes(filter.label) || dish.allergies.includes(filter.label)
+const applyFilter = (dishes: DishesByCategory[], activeFilter: FilterChipModel[]): DishesByCategory[] => {
+  return dishes.map((category) => {
+    const filteredDishes = category.dishes.filter(
+      (dish) => isAttributeInFilters(dish.labels, activeFilter) || isAttributeInFilters(dish.allergies, activeFilter)
     )
-  )
+    return { ...category, dishes: filteredDishes }
+  })
 }
 
-export const useMenuStore = create<MenuState>((set) => ({
-  allDishes: new Map<DishCategory, Dish[]>(),
-  visibleDishes: new Map<DishCategory, Dish[]>(),
-  activeFilter: [],
-  updateFilter: (filter: FilterChipModel) =>
-    set((state) => ({
-      ...state,
-      activeFilter: updateFilter(filter, state.activeFilter),
-    })),
-  filter: () =>
-    set((state) => {
-      const newVisibleDishes = new Map() // Neue Map für die sichtbaren Gerichte
-      state.allDishes.forEach((dishes, category) => {
-        const updatedDishes = applyFilter(dishes, state.activeFilter)
-        newVisibleDishes.set(category, updatedDishes)
-      })
-      return { ...state, visibleDishes: newVisibleDishes } // Zustand mit aktualisierten sichtbaren Gerichten zurückgeben
-    }),
+const isAttributeInFilters = (attribute: String[], filters: FilterChipModel[]): boolean => {
+  let attributeFound = true
+  filters.forEach((filter: FilterChipModel) => {
+    if (!attribute.includes(filter.label)) {
+      attributeFound = false
+    }
+  })
+  return attributeFound
+}
 
-  setAllDishes: (dishes: Map<DishCategory, Dish[]>) =>
-    set((state) => ({
-      ...state,
-      allDishes: dishes,
-    })),
-  setVisibleDishes: (dishes: Map<DishCategory, Dish[]>) =>
-    set((state) => ({
-      ...state,
-      visibleDishes: dishes,
-    })),
-}))
+export const useMenuStore = create(
+  persist<MenuState>(
+    (set, get) => ({
+      allDishes: [],
+      visibleDishes: [],
+      activeFilter: [],
+      updateFilter: (filter: FilterChipModel) =>
+        set((state) => ({
+          activeFilter: updateFilter(filter, get().activeFilter),
+        })),
+      filter: () =>
+        set((state) => ({
+          visibleDishes: applyFilter(get().allDishes, get().activeFilter),
+        })),
+
+      setAllDishes: (dishes: DishesByCategory[]) => {
+        set((state) => ({
+          allDishes: dishes,
+        }))
+      },
+      setVisibleDishes: (dishes: DishesByCategory[]) =>
+        set((state) => ({
+          visibleDishes: dishes,
+        })),
+    }),
+    {
+      name: 'menu',
+    }
+  )
+)

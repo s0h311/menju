@@ -8,26 +8,22 @@ import FilterBar from '@/app/components/filter-bar'
 import FoodCategory from '@/app/components/food-category'
 import React, { useEffect } from 'react'
 import { useMenuStore } from '@/store/menu-store'
+import useStore from '@/store/nextjs-hook'
 
 export default function Menu({ params }: { params: { restaurant: string } }) {
   const restaurantId: number = parseInt(params.restaurant)
-  const { setAllDishes } = useMenuStore()
-  const { setVisibleDishes } = useMenuStore()
-  const { visibleDishes } = useMenuStore()
+  const menuStore = useStore(useMenuStore, (state) => state)
   const dishesByCategory = trpc.dishesByCategory.useQuery({
     restaurantId,
     language: 'de',
   })
+
   useEffect(() => {
-    if (dishesByCategory.data) {
-      const dishes = new Map<DishCategory, Dish[]>()
-      dishesByCategory.data.forEach((allDishes) => {
-        dishes.set(allDishes.category, allDishes.dishes)
-      })
-      setAllDishes(dishes)
-      setVisibleDishes(dishes)
+    if (dishesByCategory.data && menuStore?.visibleDishes.length === 0) {
+      menuStore.setAllDishes(dishesByCategory.data)
+      menuStore.setVisibleDishes(dishesByCategory.data)
     }
-  }, [dishesByCategory.data, setAllDishes, setVisibleDishes])
+  }, [dishesByCategory.data, menuStore])
 
   const filterChips: FilterChipModel[] = getFilterChips(dishesByCategory.data)
 
@@ -46,10 +42,10 @@ export default function Menu({ params }: { params: { restaurant: string } }) {
   return (
     <Stack className='mb-4'>
       <Box className='sticky top-0 z-10'>{<FilterBar chipData={filterChips} />}</Box>
-      {Array.from(visibleDishes.keys()).map((category) => (
+      {menuStore?.visibleDishes.map((category) => (
         <FoodCategory
-          key={category.id}
-          category={category}
+          key={category.category.id}
+          category={category.category}
         />
       ))}
     </Stack>
