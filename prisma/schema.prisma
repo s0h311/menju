@@ -90,7 +90,7 @@ model Order {
   table         String
   positions     Json
   paymentMethod PaymentMethod @map("payment_method")
-  isPayed       Boolean?      @map("is_payed")
+  isPayed       Boolean       @map("is_payed")
   netTotal      Float         @map("net_total")
   vat           Float?
   note          String?
@@ -106,6 +106,7 @@ enum PaymentMethod {
   CARD
   CASH
   COUPON
+  UNDECIDED
 
   @@map("payment_method")
   @@schema("public")

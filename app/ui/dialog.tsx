@@ -44,8 +44,7 @@ export default function Dialog({
         >
           <Title
             id='dialog-title'
-            sx={{ pt: 3 }}
-            className='flex justify-center'
+            sx={{ pt: 0 }}
           >
             {title}
           </Title>

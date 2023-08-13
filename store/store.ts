@@ -4,17 +4,34 @@ import { Cart, OrderPosition } from '@/app/types/order.type'
 
 type CartState = {
   cart: Cart
+}
+
+type CartActions = {
   setCart: (cart: Cart) => void
   addPosition: (position: OrderPosition) => void
+  reset: () => void
+}
+
+const initialState: CartState = {
+  cart: {
+    table: '',
+    positions: [],
+    netTotal: 0,
+    vat: null,
+    note: null,
+    restaurantId: 0,
+    paymentMethod: 'UNDECIDED',
+    isPayed: false,
+  },
 }
 
 export const useCartStore = create(
-  persist<CartState>(
+  persist<CartState & CartActions>(
     (set, get) => ({
       cart: {
         table: '',
         positions: [],
-        paymentMethod: 'CARD',
+        paymentMethod: 'UNDECIDED',
         isPayed: false,
         netTotal: 0,
         restaurantId: 0,
@@ -22,6 +39,9 @@ export const useCartStore = create(
         note: null,
       },
       setCart: (cart: Cart) => set(() => ({ cart: cart })),
+      reset: () => {
+        set(initialState)
+      },
       addPosition: (position: OrderPosition) =>
         set((state) => ({
           cart: {
