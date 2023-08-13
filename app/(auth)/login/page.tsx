@@ -22,7 +22,6 @@ export default function Login() {
     register,
     handleSubmit,
     formState: { errors, isSubmitSuccessful },
-    reset,
     setError,
   } = useForm<LoginCredentials>({
     defaultValues: {
@@ -125,16 +124,19 @@ export default function Login() {
             </LoadingButton>
           </Box>
         </ThemeProvider>
-        {user ? (
-          <button
-            className='absolute bottom-28'
-            onClick={() => signout()}
-          >
-            SIGNOUT
-          </button>
-        ) : (
-          ''
-        )}
+        {
+          //TODO Example
+          user ? (
+            <button
+              className='absolute bottom-28'
+              onClick={() => signout()}
+            >
+              SIGNOUT
+            </button>
+          ) : (
+            ''
+          )
+        }
       </div>
     </div>
   )
