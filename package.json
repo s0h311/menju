@@ -8,8 +8,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "next lint && next dev",
+    "build": "next lint && next build",
     "start": "next start",
     "lint": "next lint",
     "db:push": "dotenv -e .env.development -- npx prisma db push",
@@ -48,6 +48,8 @@
   },
   "packageManager": "yarn@3.6.1",
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^6.3.0",
+    "@typescript-eslint/parser": "^6.3.0",
     "eslint": "^8.47.0",
     "eslint-config-next": "^13.4.12",
     "eslint-config-prettier": "^8.9.0",
