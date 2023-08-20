@@ -1,7 +1,7 @@
-import { Card, CardContent, CardMedia, Divider, Stack, Tooltip } from '@mui/material'
+import { Card, CardContent, CardMedia, Divider, Stack } from '@mui/material'
 import React, { useState } from 'react'
 import { Dish } from '@/app/types/dish.type'
-import DishDialog from '@/app/components/dishDialog'
+import DishDialog from '@/app/components/guest/dish-dialog'
 
 type FoodItemProps = {
   dish: Dish
