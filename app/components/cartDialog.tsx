@@ -13,8 +13,13 @@ export default function CartDialog() {
   const orderMutation = trpc.createOrder.useMutation()
   const { cart, reset, setCart } = useCartStore((store) => store)
   const sendOrder = () => {
-    orderMutation.mutate(cartOrder)
-    reset()
+    if (cart.positions.length > 0) {
+      orderMutation.mutate(cartOrder)
+      reset()
+      window.alert('Bestellung eingegangen')
+    } else {
+      window.alert('fuege was zum Warenkorb hinzu')
+    }
   }
   const [open, setOpen] = useState<boolean>(false)
 
@@ -64,7 +69,7 @@ export default function CartDialog() {
             <div className='pt-2 text-right'>
               <p className=''>{cart.netTotal}€</p>
               <div>
-                <FormControl sx={{ m: 0, minWidth: 1 / 2 }}>
+                <FormControl sx={{ py: 1, minWidth: 1 / 2 }}>
                   <InputLabel id='demo-simple-select-autowidth-label'>Zahlungsmethode</InputLabel>
                   <Select
                     labelId='demo-simple-select-autowidth-label'
