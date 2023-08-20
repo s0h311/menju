@@ -1,6 +1,6 @@
 import { Box, Divider, Stack, Typography } from '@mui/material'
 import React from 'react'
-import FoodItem from '@/app/components/food-item'
+import FoodItem from './food-item'
 import { DishCategory } from '@/app/types/dish.type'
 import { useMenuStore } from '@/store/menu-store'
 import useStore from '@/store/nextjs-hook'
