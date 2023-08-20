@@ -3,7 +3,7 @@
 import { trpc } from '@/trpc/trpc'
 import Image from 'next/image'
 import Link from 'next/link'
-import DishDialog from './components/dishDialog'
+import DishDialog from './components/guest/dishDialog'
 import { Dish } from './types/dish.type'
 import { useState, useEffect } from 'react'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
