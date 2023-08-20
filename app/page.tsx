@@ -2,22 +2,45 @@
 
 import { trpc } from '@/trpc/trpc'
 import Image from 'next/image'
-import { Cart } from './types/order.type'
-import { useCartStore } from '@/store/store'
 import Link from 'next/link'
-import DishDialog from './components/dishDialog'
+import DishDialog from './components/guest/dishDialog'
 import { Dish } from './types/dish.type'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { User } from '@supabase/gotrue-js/src/lib/types'
 import CartDialog from './components/cartDialog'
 
 export default function Home() {
+  const supabase = createClientComponentClient()
   const dishesByCategory = trpc.dishesByCategory.useQuery({ restaurantId: 1, language: 'it' })
 
   const [activeDish, setActiveDish] = useState<Dish | null>(null)
+  const [user, setUser] = useState<User | null>(null) //TODO example retrieve user
+
+  //TODO example signout
+  const signout = async () => {
+    await supabase.auth.signOut()
+    window.location.reload()
+  }
+
+  //TODO example get user
+  useEffect(() => {
+    const getUser = async () => {
+      const data = await supabase.auth.getUser()
+      setUser(data.data.user)
+    }
+
+    getUser()
+  }, [supabase])
 
   return (
     <div className='grid gap-5 border p-5 border-red-400'>
-      <Link href='/fmsinn/menu/1'>GO TO MENU</Link>
+      <Link href='/login'>GO TO LOGIN PAGE</Link>
+      {
+        //TODO Example
+        user ? <button onClick={() => signout()}>SIGNOUT</button> : ''
+      }
+      <Link href='/fmsinn/1'>GO TO MENU</Link>
       {dishesByCategory.data?.map((category) => (
         <div
           className='grid gap-2 border p-2 border-blue-400'

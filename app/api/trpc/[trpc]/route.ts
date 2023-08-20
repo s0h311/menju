@@ -1,19 +1,13 @@
 import { FetchCreateContextFnOptions, fetchRequestHandler } from '@trpc/server/adapters/fetch'
 import { appRouter } from '@/trpc/trpc-server'
 
-// this is the server RPC API handler
-
-const handler = (request: Request) => {
-  return fetchRequestHandler({
+const handler = (request: Request) =>
+  fetchRequestHandler({
     endpoint: '/api/trpc',
     req: request,
     router: appRouter,
-    createContext: function (opts: FetchCreateContextFnOptions): object | Promise<object> {
-      // empty context
-      return {}
-    },
+    createContext: (opts: FetchCreateContextFnOptions): object | Promise<object> => ({}),
   })
-}
 
 export const GET = handler
 export const POST = handler

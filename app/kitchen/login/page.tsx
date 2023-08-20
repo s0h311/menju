@@ -1,6 +1,5 @@
 'use client'
 
-import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import image from '@/public/images/login-food.jpg'
 import { Box, TextField, ThemeProvider } from '@mui/material'
@@ -10,13 +9,13 @@ import { zLoginCredentials, LoginCredentials } from '@/app/types/credentials.typ
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
-import { User } from '@supabase/gotrue-js/src/lib/types'
 import useDeviceType from '@/app/hooks/useDeviceType'
+import { useRouter } from 'next/navigation'
 
 export default function Login() {
-  const { isMobile } = useDeviceType()
   const supabase = createClientComponentClient()
-  const [user, setUser] = useState<User | null>(null) //TODO example retrieve user
+  const { isMobile } = useDeviceType()
+  const router = useRouter()
 
   const {
     register,
@@ -49,34 +48,19 @@ export default function Login() {
     }
 
     if (data.user) {
-      window.location.reload()
-      //TODO navigate to Kitchen Dashboard (K DASH)
+      router.push('/')
     }
   }
-
-  //TODO example signout
-  const signout = async () => {
-    await supabase.auth.signOut()
-    window.location.reload()
-  }
-
-  //TODO example get user
-  useEffect(() => {
-    const getUser = async () => {
-      const data = await supabase.auth.getUser()
-      setUser(data.data.user)
-    }
-
-    getUser()
-  }, [supabase.auth])
 
   return (
-    <div className='grid md:grid-cols-2 place-items-center'>
+    <div className='grid grid-cols-2 place-items-center h-full'>
       {!isMobile ? (
         <Image
-          className='rounded-[40px]'
+          className='rounded-[40px] h-full w-auto'
           src={image}
           alt=''
+          quality={75}
+          placeholder='blur'
         />
       ) : (
         ''
@@ -124,19 +108,6 @@ export default function Login() {
             </LoadingButton>
           </Box>
         </ThemeProvider>
-        {
-          //TODO Example
-          user ? (
-            <button
-              className='absolute bottom-28'
-              onClick={() => signout()}
-            >
-              SIGNOUT
-            </button>
-          ) : (
-            ''
-          )
-        }
       </div>
     </div>
   )

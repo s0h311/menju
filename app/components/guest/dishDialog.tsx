@@ -1,9 +1,9 @@
 import Dialog from '@/app/ui/dialog'
 import { Checkbox, ThemeProvider } from '@mui/material'
-import { Dish, Ingredient, MultiLanguageStringProperty } from '@/app/types/dish.type'
+import { Dish } from '@/app/types/dish.type'
 import Image from 'next/image'
 import { useState } from 'react'
-import { OrderPosition } from '../types/order.type'
+import { OrderPosition } from '../../types/order.type'
 import { useCartStore } from '@/store/store'
 import { theme } from '@/app/ui/theme'
 
@@ -13,7 +13,7 @@ type DishDialogProps = {
 }
 
 export default function DishDialog({ dish, setOpenDialog }: DishDialogProps) {
-  const addPosition = useCartStore((state) => state.addPosition)
+  const { addPosition } = useCartStore((state) => state)
 
   const addToBasket = () => {
     addPosition(order)
@@ -48,17 +48,15 @@ export default function DishDialog({ dish, setOpenDialog }: DishDialogProps) {
         closeText='Heute nicht'
         proceedText='Ich wills'
       >
-        {dish.picture ? (
+        {dish.picture && (
           <Image
             className='rounded-t-2xl mb-2'
             src={dish.picture}
-            width={400}
-            height={300}
-            loading='lazy'
+            width={500}
+            height={400}
+            quality={80}
             alt={`${dish.name} Bild`}
           />
-        ) : (
-          ''
         )}
 
         <div className='grid gap-3 px-5'>
