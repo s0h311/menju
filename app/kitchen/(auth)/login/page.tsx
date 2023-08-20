@@ -53,21 +53,21 @@ export default function Login() {
   }
 
   return (
-    <div className='grid grid-cols-2 place-items-center h-full'>
-      {!isMobile ? (
+    <div className='grid md:grid-cols-2 place-items-center h-full'>
+      {!isMobile && (
         <Image
-          className='rounded-[40px] h-full w-auto'
+          className='rounded-[40px] max-h-full w-auto'
           src={image}
           alt=''
           quality={75}
           placeholder='blur'
         />
-      ) : (
-        ''
       )}
 
       <div className='grid place-items-center gap-10 md:gap-0 h-full w-full relative'>
-        <h1 className='text-3xl tracking-wider md:absolute md:top-[5%] lg:top-[15%] mx-auto'>Willkommen zurück</h1>
+        <h1 className='text-2xl lg:text-3xl tracking-wider md:absolute md:top-[30%] lg:top-[20%] mx-auto'>
+          Willkommen zurück
+        </h1>
 
         <ThemeProvider theme={theme}>
           <Box
