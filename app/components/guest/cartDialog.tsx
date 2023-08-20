@@ -1,33 +1,41 @@
-import React, { useState } from 'react'
-import Dialog from '../ui/dialog'
-import { useCartStore } from '@/store/store'
+import React, { useEffect, useState } from 'react'
+import Dialog from '../../ui/dialog'
+import { useCartStore } from '@/store/cart-store'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
-import { Cart } from '../types/order.type'
+import { Cart } from '../../types/order.type'
 import InputLabel from '@mui/material/InputLabel'
 import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl'
 import Select, { SelectChangeEvent } from '@mui/material/Select'
 import { trpc } from '@/trpc/trpc'
+import { useStore } from 'zustand'
 
 export default function CartDialog() {
+  const cartStore = useStore(useCartStore, (state) => state)
+
   const orderMutation = trpc.createOrder.useMutation()
-  const { cart, reset, setCart } = useCartStore((store) => store)
+
+  const { cart, reset, setCart } = cartStore
+
   const sendOrder = () => {
-    if (cart.positions.length > 0) {
-      orderMutation.mutate(cartOrder)
-      reset()
-      window.alert('Bestellung eingegangen')
-    } else {
-      window.alert('fuege was zum Warenkorb hinzu')
-    }
+    orderMutation.mutate(cartOrder, {
+      onSuccess: () => {
+        reset()
+        setOpen(false)
+      },
+    })
   }
+
   const [open, setOpen] = useState<boolean>(false)
 
-  const [cartOrder, setCartOrder] = useState<Cart>({ ...cart })
+  const [cartOrder, setCartOrder] = useState<Cart>({} as Cart)
+
+  useEffect(() => setCartOrder(cart), [cart])
 
   const handleChange = (event: SelectChangeEvent) => {
     const paymentMethod = event.target.value as 'CARD' | 'CASH' | 'COUPON' | 'UNDECIDED'
     setCartOrder((cartOrder) => ({ ...cartOrder, paymentMethod }))
+    console.log(cartOrder)
     setCart(cartOrder)
   }
 
@@ -44,13 +52,14 @@ export default function CartDialog() {
           open={open}
           closeText={'abbrechen'}
           onClose={() => setOpen(false)}
-          onProceed={() => sendOrder()}
+          onProceed={sendOrder}
           proceedText='bestellen'
+          proceedDisabled={!cart.positions.length}
         >
           <div className='px-5 gap-3'>
             <div className='flex justify-between'>
               <p>Gericht</p>
-              <p className='w-1/3'>Qty</p>
+              <p className='w-1/4'>Qty</p>
               <p>Preis</p>
             </div>
             <div>
@@ -60,16 +69,17 @@ export default function CartDialog() {
                   className='flex justify-between'
                 >
                   <p>{cartDish.dish.name}</p>
+                  <p>X</p>
                   <p className='w-1/3'>{cartDish.quantity}</p>
                   <p>{cartDish.dish.price}</p>
                 </div>
               ))}
             </div>
             <hr></hr>
-            <div className='pt-2 text-right'>
-              <p className=''>{cart.netTotal}€</p>
+            <div className='pt-3 text-right'>
+              <p className='pb-2'>{cart.netTotal}€</p>
               <div>
-                <FormControl sx={{ py: 1, minWidth: 1 / 2 }}>
+                <FormControl sx={{ pb: 1, minWidth: 1 / 2 }}>
                   <InputLabel id='demo-simple-select-autowidth-label'>Zahlungsmethode</InputLabel>
                   <Select
                     labelId='demo-simple-select-autowidth-label'

@@ -18,6 +18,7 @@ type DialogProps = {
   children: React.ReactNode
   onClose: () => void
   onProceed?: () => void
+  proceedDisabled?: boolean
 }
 
 export default function Dialog({
@@ -29,6 +30,7 @@ export default function Dialog({
   closeText,
   proceedText,
   dialogDescription,
+  proceedDisabled,
 }: DialogProps) {
   return (
     <>
@@ -68,6 +70,7 @@ export default function Dialog({
               variant='outlined'
               color='accent'
               onClick={onProceed}
+              disabled={proceedDisabled}
             >
               {proceedText}
             </Button>

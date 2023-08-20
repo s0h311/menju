@@ -7,8 +7,6 @@ export const zAllergy = z.object({
 })
 
 export const zNutrition = z.object({
-  id: z.number(),
-  dish: z.string(), // Unique dishes, not related to entity Dish
   energy: z.number(),
   protein: z.number(),
 })

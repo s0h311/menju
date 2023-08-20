@@ -14,7 +14,6 @@ export const zCart = z.object({
   table: z.string(),
   positions: z.array(zOrderPosition),
   paymentMethod: z.enum(['CARD', 'CASH', 'COUPON', 'UNDECIDED']),
-
   isPayed: z.boolean(),
   netTotal: z.number(),
   vat: z.number().nullable(),

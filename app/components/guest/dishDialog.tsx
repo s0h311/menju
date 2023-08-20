@@ -4,7 +4,7 @@ import { Dish } from '@/app/types/dish.type'
 import Image from 'next/image'
 import { useState } from 'react'
 import { OrderPosition } from '../../types/order.type'
-import { useCartStore } from '@/store/store'
+import { useCartStore } from '@/store/cart-store'
 import { theme } from '@/app/ui/theme'
 
 type DishDialogProps = {

@@ -68,7 +68,7 @@ export const appRouter = t.router({
           optionalIngredients: getIngredients(dish.ingredients, language, 'optional'),
           labels: getMultiLanguageArrayProperty(dish.labels, language),
           allergies: getMultiLanguageArrayProperty(dish.allergies, language),
-          nutritions: dish.nutritions as Nutrition,
+          nutritions: { ...(dish.nutritions as Nutrition) },
           description: getMultiLanguageStringProperty(dish.description, language),
         })),
     }))
@@ -77,7 +77,16 @@ export const appRouter = t.router({
 
   createOrder: t.procedure.input(zCart).mutation(async (req) => {
     const { input } = req
-    const order = await prisma.order.create({ data: { ...input } })
+
+    const order = await prisma.order.create({
+      data: {
+        ...input,
+        positions: input.positions.map((position) => ({
+          ...position,
+          dish: position.dish.id,
+        })),
+      },
+    })
     return order
   }),
 

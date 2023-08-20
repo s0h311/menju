@@ -8,7 +8,7 @@ import { Dish } from './types/dish.type'
 import { useState, useEffect } from 'react'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { User } from '@supabase/gotrue-js/src/lib/types'
-import CartDialog from './components/cartDialog'
+import CartDialog from './components/guest/cartDialog'
 
 export default function Home() {
   const supabase = createClientComponentClient()

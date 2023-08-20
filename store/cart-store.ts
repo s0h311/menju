@@ -19,7 +19,7 @@ const initialState: CartState = {
     netTotal: 0,
     vat: null,
     note: null,
-    restaurantId: 0,
+    restaurantId: 1,
     paymentMethod: 'UNDECIDED',
     isPayed: false,
   },
@@ -29,12 +29,12 @@ export const useCartStore = create(
   persist<CartState & CartActions>(
     (set, get) => ({
       cart: {
-        table: '',
+        table: '1',
         positions: [],
         paymentMethod: 'UNDECIDED',
         isPayed: false,
         netTotal: 0,
-        restaurantId: 0,
+        restaurantId: 1,
         vat: null,
         note: null,
       },
@@ -47,6 +47,7 @@ export const useCartStore = create(
           cart: {
             ...get().cart,
             positions: [...get().cart.positions, position],
+            netTotal: get().cart.netTotal + position.dish.price * position.quantity,
           },
         })),
     }),
