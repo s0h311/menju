@@ -2,53 +2,43 @@
 
 import { trpc } from '@/trpc/trpc'
 import Image from 'next/image'
-import { Cart } from './types/order.type'
-import { useCartStore } from '@/store/store'
 import Link from 'next/link'
 import DishDialog from './components/dishDialog'
 import { Dish } from './types/dish.type'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { User } from '@supabase/gotrue-js/src/lib/types'
 
 export default function Home() {
+  const supabase = createClientComponentClient()
   const dishesByCategory = trpc.dishesByCategory.useQuery({ restaurantId: 1, language: 'it' })
-  const mutation = trpc.createOrder.useMutation()
 
   const [activeDish, setActiveDish] = useState<Dish | null>(null)
+  const [user, setUser] = useState<User | null>(null) //TODO example retrieve user
 
-  const setCart = useCartStore((state) => state.setCart)
-  const cart = useCartStore((state) => state.cart)
+  //TODO example signout
+  const signout = async () => {
+    await supabase.auth.signOut()
+    window.location.reload()
+  }
 
-  const addDemoOrder = () => {
-    let demoCart: Cart = {
-      restaurantId: 1,
-      table: 'A3',
-      positions: [
-        {
-          dishId: 3,
-          quantity: 2,
-          leftOutIngredients: [],
-        },
-        {
-          dishId: 3,
-          quantity: 1,
-          leftOutIngredients: [],
-        },
-      ],
-      paymentMethod: 'CARD',
-      isPayed: true,
-      netTotal: 35,
-      vat: 7,
-      note: '',
+  //TODO example get user
+  useEffect(() => {
+    const getUser = async () => {
+      const data = await supabase.auth.getUser()
+      setUser(data.data.user)
     }
 
-    mutation.mutate(demoCart)
-
-    setCart(demoCart)
-  }
+    getUser()
+  }, [supabase])
 
   return (
     <div className='grid gap-5 border p-5 border-red-400'>
-      <button onClick={addDemoOrder}>ADD NEW ORDER</button>
+      <Link href='/login'>GO TO LOGIN PAGE</Link>
+      {
+        //TODO Example
+        user ? <button onClick={() => signout()}>SIGNOUT</button> : ''
+      }
       <Link href='/fmsinn/1'>GO TO MENU</Link>
       {dishesByCategory.data?.map((category) => (
         <div
