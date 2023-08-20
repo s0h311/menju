@@ -14,6 +14,12 @@ module.exports = {
         bgColor: 'var(--bg-color)',
         textColor: 'var(--text-color)',
       },
+      width: {
+        screen: '100dvw',
+      },
+      height: {
+        screen: '100dvh',
+      },
     },
   },
   plugins: [],

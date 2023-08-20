@@ -4,8 +4,8 @@ import { Dish, DishesByCategory } from '@/app/types/dish.type'
 import { trpc } from '@/trpc/trpc'
 import { FilterChipModel } from '@/app/types/filter-chip.types'
 import { Box, Stack } from '@mui/material'
-import FilterBar from '@/app/components/filter-bar'
-import FoodCategory from '@/app/components/food-category'
+import FilterBar from '@/app/components/guest/filter-bar'
+import FoodCategory from '@/app/components/guest/food-category'
 import React, { useEffect } from 'react'
 import { useMenuStore } from '@/store/menu-store'
 import useStore from '@/store/nextjs-hook'
@@ -31,9 +31,9 @@ export default function Menu({ params }: { params: { restaurant: string } }) {
     const filterChipNames: Set<string> = new Set<string>()
     const filterChips: FilterChipModel[] = []
     dishesByCategory?.map((dishes: DishesByCategory): void => {
-      dishes.dishes.map((dish: Dish): void => {
-        ;[...dish.allergies, ...dish.labels].forEach((filterName: string) => filterChipNames.add(filterName))
-      })
+      dishes.dishes.map((dish: Dish): void =>
+        [...dish.allergies, ...dish.labels].forEach((filterName: string) => filterChipNames.add(filterName))
+      )
     })
     filterChipNames.forEach((name: string) => filterChips.push({ label: name }))
     return filterChips

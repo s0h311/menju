@@ -1,6 +1,5 @@
 'use client'
 
-import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import image from '@/public/images/login-food.jpg'
 import { Box, TextField, ThemeProvider } from '@mui/material'
@@ -10,13 +9,13 @@ import { zLoginCredentials, LoginCredentials } from '@/app/types/credentials.typ
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
-import { User } from '@supabase/gotrue-js/src/lib/types'
 import useDeviceType from '@/app/hooks/useDeviceType'
+import { useRouter } from 'next/navigation'
 
 export default function Login() {
-  const { isMobile } = useDeviceType()
   const supabase = createClientComponentClient()
-  const [user, setUser] = useState<User | null>(null) //TODO example retrieve user
+  const { isMobile } = useDeviceType()
+  const router = useRouter()
 
   const {
     register,
@@ -49,41 +48,26 @@ export default function Login() {
     }
 
     if (data.user) {
-      window.location.reload()
-      //TODO navigate to Kitchen Dashboard (K DASH)
+      router.push('/')
     }
   }
-
-  //TODO example signout
-  const signout = async () => {
-    await supabase.auth.signOut()
-    window.location.reload()
-  }
-
-  //TODO example get user
-  useEffect(() => {
-    const getUser = async () => {
-      const data = await supabase.auth.getUser()
-      setUser(data.data.user)
-    }
-
-    getUser()
-  }, [supabase.auth])
 
   return (
-    <div className='grid md:grid-cols-2 place-items-center'>
-      {!isMobile ? (
+    <div className='grid md:grid-cols-2 place-items-center h-full'>
+      {!isMobile && (
         <Image
-          className='rounded-[40px]'
+          className='rounded-[40px] max-h-full w-auto'
           src={image}
           alt=''
+          quality={75}
+          placeholder='blur'
         />
-      ) : (
-        ''
       )}
 
       <div className='grid place-items-center gap-10 md:gap-0 h-full w-full relative'>
-        <h1 className='text-3xl tracking-wider md:absolute md:top-[5%] lg:top-[15%] mx-auto'>Willkommen zurück</h1>
+        <h1 className='text-2xl lg:text-3xl tracking-wider md:absolute md:top-[30%] lg:top-[20%] mx-auto'>
+          Willkommen zurück
+        </h1>
 
         <ThemeProvider theme={theme}>
           <Box
@@ -124,19 +108,6 @@ export default function Login() {
             </LoadingButton>
           </Box>
         </ThemeProvider>
-        {
-          //TODO Example
-          user ? (
-            <button
-              className='absolute bottom-28'
-              onClick={() => signout()}
-            >
-              SIGNOUT
-            </button>
-          ) : (
-            ''
-          )
-        }
       </div>
     </div>
   )

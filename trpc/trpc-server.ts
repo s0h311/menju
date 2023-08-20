@@ -10,12 +10,15 @@ import {
 } from '@/app/types/dish.type'
 import { JSONValue } from 'superjson/dist/types'
 import { Language, zCart, zLanguageAndRestaurantId } from '@/app/types/order.type'
+import { zRegisterCredentials } from '@/app/types/credentials.type'
+import { UserResponse, createClient } from '@supabase/supabase-js'
 
 const t = initTRPC.create({
   transformer: superjson,
 })
 
 const prisma = new PrismaClient()
+const supabaseAdmin = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL || '', process.env.SUPABASE_SERVICE_ROLE || '')
 
 const getMultiLanguageStringProperty = (property: JSONValue, language: Language): string => {
   if (property && typeof property === 'object') {
@@ -43,33 +46,32 @@ const getIngredients = (property: JSONValue, language: Language, type: 'required
 
 export const appRouter = t.router({
   dishesByCategory: t.procedure.input(zLanguageAndRestaurantId).query(async (req) => {
-    const { input } = req
-    const { restaurantId, language } = input
+    const {
+      input: { restaurantId, language },
+    } = req
 
     const categories = await prisma.dishCategory.findMany({ where: { restaurantId } })
     const categoryIds = structuredClone(categories).map((category) => category.id)
     const dishes = await prisma.dish.findMany({ where: { categoryId: { in: categoryIds } } })
     // Can be optimized by removing dishes that are filtered below
-    const dishesByCategory: DishesByCategory[] = categories.map((category) => {
-      return {
-        category: {
-          ...category,
-          name: getMultiLanguageStringProperty(category.name, language),
-        },
-        dishes: dishes
-          .filter((dish) => dish.categoryId == category.id)
-          .map((dish) => ({
-            ...dish,
-            name: getMultiLanguageStringProperty(dish.name, language),
-            requiredIngredients: getIngredients(dish.ingredients, language, 'required'),
-            optionalIngredients: getIngredients(dish.ingredients, language, 'optional'),
-            labels: getMultiLanguageArrayProperty(dish.labels, language),
-            allergies: getMultiLanguageArrayProperty(dish.allergies, language),
-            nutritions: dish.nutritions as Nutrition,
-            description: getMultiLanguageStringProperty(dish.description, language),
-          })),
-      }
-    })
+    const dishesByCategory: DishesByCategory[] = categories.map((category) => ({
+      category: {
+        ...category,
+        name: getMultiLanguageStringProperty(category.name, language),
+      },
+      dishes: dishes
+        .filter((dish) => dish.categoryId == category.id)
+        .map((dish) => ({
+          ...dish,
+          name: getMultiLanguageStringProperty(dish.name, language),
+          requiredIngredients: getIngredients(dish.ingredients, language, 'required'),
+          optionalIngredients: getIngredients(dish.ingredients, language, 'optional'),
+          labels: getMultiLanguageArrayProperty(dish.labels, language),
+          allergies: getMultiLanguageArrayProperty(dish.allergies, language),
+          nutritions: dish.nutritions as Nutrition,
+          description: getMultiLanguageStringProperty(dish.description, language),
+        })),
+    }))
     return dishesByCategory
   }),
 
@@ -77,6 +79,22 @@ export const appRouter = t.router({
     const { input } = req
     const order = await prisma.order.create({ data: { ...input } })
     return order
+  }),
+
+  addRestaurant: t.procedure.input(zRegisterCredentials).mutation(async (req): Promise<UserResponse> => {
+    const { input: credentials } = req
+
+    const restaurant = await prisma.restaurant.create({ data: { name: credentials.name } })
+
+    return supabaseAdmin.auth.admin.createUser({
+      email: credentials.email,
+      password: credentials.password,
+      email_confirm: true,
+      user_metadata: {
+        name: credentials.name,
+        restaurantId: restaurant.id,
+      },
+    })
   }),
 })
 
