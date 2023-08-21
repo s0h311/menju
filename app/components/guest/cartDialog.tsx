@@ -35,7 +35,6 @@ export default function CartDialog() {
   const handleChange = (event: SelectChangeEvent) => {
     const paymentMethod = event.target.value as 'CARD' | 'CASH' | 'COUPON' | 'UNDECIDED'
     setCartOrder((cartOrder) => ({ ...cartOrder, paymentMethod }))
-    console.log(cartOrder)
     setCart(cartOrder)
   }
 
