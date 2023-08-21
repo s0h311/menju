@@ -12,6 +12,6 @@ export const useRestaurantStore = create(
       restaurantId: 0,
       setRestaurantId: (restaurantId: number) => set(() => ({ restaurantId })),
     }),
-    { name: 'global' }
+    { name: 'restaurant' }
   )
 )
