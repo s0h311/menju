@@ -79,10 +79,9 @@ export default function CartDialog() {
               <p className='pb-2'>{cart.netTotal}€</p>
               <div>
                 <FormControl sx={{ pb: 1, minWidth: 1 / 2 }}>
-                  <InputLabel id='demo-simple-select-autowidth-label'>Zahlungsmethode</InputLabel>
+                  <InputLabel id='select-paymentMethode-label'>Zahlungsmethode</InputLabel>
                   <Select
-                    labelId='demo-simple-select-autowidth-label'
-                    id='demo-simple-select-autowidth'
+                    labelId='select-paymentMethode-label'
                     value={cartOrder.paymentMethod}
                     onChange={handleChange}
                     autoWidth
