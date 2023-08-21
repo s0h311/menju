@@ -6,6 +6,7 @@ import { useState } from 'react'
 import { OrderPosition } from '../../types/order.type'
 import { useCartStore } from '@/store/cart-store'
 import { theme } from '@/app/ui/theme'
+import useStore from '@/store/nextjs-hook'
 
 type DishDialogProps = {
   dish: Dish
@@ -13,18 +14,18 @@ type DishDialogProps = {
 }
 
 export default function DishDialog({ dish, setOpenDialog }: DishDialogProps) {
-  const { addPosition } = useCartStore((state) => state)
-
-  const addToBasket = () => {
-    addPosition(order)
-    setOpenDialog(null)
-  }
+  const cartStore = useStore(useCartStore, (state) => state)
 
   const [order, setOrder] = useState<OrderPosition>({
     dish,
     quantity: 1,
     leftOutIngredients: [],
   })
+
+  const addToBasket = () => {
+    cartStore?.addPosition(order)
+    setOpenDialog(null)
+  }
 
   const onIngredientCheckboxChange = (ingredient: string) => {
     let leftOutIngredients = [...order.leftOutIngredients, ingredient]

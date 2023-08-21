@@ -11,6 +11,8 @@ export type MenuState = {
   filter: () => void
   setAllDishes: (dishes: DishesByCategory[]) => void
   setVisibleDishes: (dishes: DishesByCategory[]) => void
+  restaurantId: number
+  setRestaurantId: (restaurantId: number) => void
 }
 
 const updateFilter = (filter: FilterChipModel, activeFilter: FilterChipModel[]): FilterChipModel[] => {
@@ -22,16 +24,15 @@ const updateFilter = (filter: FilterChipModel, activeFilter: FilterChipModel[]):
   }
 }
 
-const applyFilter = (dishes: DishesByCategory[], activeFilter: FilterChipModel[]): DishesByCategory[] => {
-  return dishes.map((category) => {
+const applyFilter = (dishes: DishesByCategory[], activeFilter: FilterChipModel[]): DishesByCategory[] =>
+  dishes.map((category) => {
     const filteredDishes = category.dishes.filter(
       (dish) => isAttributeInFilters(dish.labels, activeFilter) || isAttributeInFilters(dish.allergies, activeFilter)
     )
     return { ...category, dishes: filteredDishes }
   })
-}
 
-const isAttributeInFilters = (attribute: String[], filters: FilterChipModel[]): boolean => {
+const isAttributeInFilters = (attribute: string[], filters: FilterChipModel[]): boolean => {
   let attributeFound = true
   filters.forEach((filter: FilterChipModel) => {
     if (!attribute.includes(filter.label)) {
@@ -47,24 +48,26 @@ export const useMenuStore = create(
       allDishes: [],
       visibleDishes: [],
       activeFilter: [],
+      restaurantId: 0,
       updateFilter: (filter: FilterChipModel) =>
-        set((state) => ({
+        set(() => ({
           activeFilter: updateFilter(filter, get().activeFilter),
         })),
       filter: () =>
-        set((state) => ({
+        set(() => ({
           visibleDishes: applyFilter(get().allDishes, get().activeFilter),
         })),
 
       setAllDishes: (dishes: DishesByCategory[]) => {
-        set((state) => ({
+        set(() => ({
           allDishes: dishes,
         }))
       },
       setVisibleDishes: (dishes: DishesByCategory[]) =>
-        set((state) => ({
+        set(() => ({
           visibleDishes: dishes,
         })),
+      setRestaurantId: (restaurantId: number) => set(() => ({ restaurantId })),
     }),
     {
       name: 'menu',
