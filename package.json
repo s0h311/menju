@@ -9,7 +9,7 @@
   "private": true,
   "scripts": {
     "dev": "next lint && next dev",
-    "build": "next lint && next build",
+    "build": "next lint && prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
     "db:push": "dotenv -e .env.development -- npx prisma db push",

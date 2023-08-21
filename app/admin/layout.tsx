@@ -3,7 +3,7 @@ import Dashboard from '../components/shared/dashboard'
 import { SidebarMenu } from '../types/dashboard.type'
 
 export const metadata: Metadata = {
-  title: 'Admin Dashboard | FMSinn',
+  title: 'Admin Dashboard | Menju',
 }
 
 type AdminDashboardLayoutProps = {

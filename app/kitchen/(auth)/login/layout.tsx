@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Einloggen | FMSinn',
+  title: 'Einloggen | Menju',
 }
 
 type LoginLayoutProps = {
