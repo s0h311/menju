@@ -11,11 +11,16 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import useDeviceType from '@/app/hooks/useDeviceType'
 import { useRouter } from 'next/navigation'
+import { useStore } from 'zustand'
+import { useRestaurantStore } from '@/store/restaurantStore'
 
 export default function Login() {
   const supabase = createClientComponentClient()
-  const { isMobile } = useDeviceType()
   const router = useRouter()
+
+  const restaurantStore = useStore(useRestaurantStore, (state) => state)
+
+  const { isMobile } = useDeviceType()
 
   const {
     register,
@@ -48,6 +53,7 @@ export default function Login() {
     }
 
     if (data.user) {
+      restaurantStore?.setRestaurantId(data.user.user_metadata['restaurantId'])
       router.push('/')
     }
   }
