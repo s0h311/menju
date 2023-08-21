@@ -14,7 +14,6 @@ export type MenuState = {
 }
 
 const updateFilter = (filter: FilterChipModel, activeFilter: FilterChipModel[]): FilterChipModel[] => {
-  console.log(activeFilter)
   const existingFilter = activeFilter.find((f) => f.label === filter.label)
   if (existingFilter) {
     return activeFilter.filter((f) => f.label !== filter.label)
