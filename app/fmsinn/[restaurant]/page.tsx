@@ -3,7 +3,7 @@
 import { Dish, DishesByCategory } from '@/app/types/dish.type'
 import { trpc } from '@/trpc/trpc'
 import { FilterChipModel } from '@/app/types/filter-chip.types'
-import { Box, Stack } from '@mui/material'
+import { Stack } from '@mui/material'
 import FilterBar from '@/app/components/guest/filter-bar'
 import FoodCategory from '@/app/components/guest/food-category'
 import React, { useEffect } from 'react'
@@ -41,7 +41,7 @@ export default function Menu({ params }: { params: { restaurant: string } }) {
 
   return (
     <Stack className='mb-4'>
-      <Box className='sticky top-0 z-10'>{<FilterBar chipData={filterChips} />}</Box>
+     <FilterBar chipData={filterChips}/>
       {menuStore?.visibleDishes.map((category) => (
         <FoodCategory
           key={category.category.id}
