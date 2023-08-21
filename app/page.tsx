@@ -46,7 +46,7 @@ export default function Home() {
         //TODO Example
         user ? <button onClick={() => signout()}>SIGNOUT</button> : ''
       }
-      <Link href='/fmsinn/1'>GO TO MENU</Link>
+      <Link href='/1'>GO TO MENU</Link>
       {dishesByCategory.data?.map((category) => (
         <div
           className='grid gap-2 border p-2 border-blue-400'
