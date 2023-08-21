@@ -43,7 +43,7 @@ export default function FilterBar({ chipData }: FilterBarProps) {
                           variant='outlined'
                           key={filter.label}
                           label={filter.label}
-                          color={isFilterActive(filter.label) ? 'primary' : 'error'}
+                          color={isFilterActive(filter.label) ? 'success' : 'error'}
                           onClick={() => {
                               menuStore?.updateFilter(filter)
                               menuStore?.filter()

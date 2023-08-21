@@ -14,7 +14,7 @@ export default function FoodItem({ dish }: FoodItemProps) {
     <Card
       sx={{ minWidth: 250 }}
       onClick={() => setActiveDish(dish)}
-      className='cursor-pointer bg-accent'
+      className='cursor-pointer border-solid border-2'
       key={dish.id}
     >
       {dish.picture ? (
