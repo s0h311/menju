@@ -74,7 +74,7 @@ export default function CartDialog() {
                 </div>
               ))}
             </div>
-            <hr></hr>
+            <hr />
             <div className='pt-3 text-right'>
               <p className='pb-2'>{cart.netTotal}€</p>
               <div>
