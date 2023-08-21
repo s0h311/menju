@@ -49,19 +49,19 @@ declare module '@mui/material/TextField' {
 export const theme = createTheme({
   palette: {
     primary: {
-      main: '#56a352',
+      main: '#7eaa92',
     },
     secondary: {
-      main: '#d7ead6',
+      main: '#caddc3',
     },
     accent: {
-      main: '#5b8e40',
+      main: '#f7e987',
     },
     bgColor: {
-      main: '#fcfaf2',
+      main: '#f4f4f4',
     },
     textColor: {
-      main: '#211d07',
+      main: '#445069',
     },
   },
 })

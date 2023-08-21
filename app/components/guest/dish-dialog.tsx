@@ -69,7 +69,7 @@ export default function DishDialog({ dish, setOpenDialog }: DishDialogProps) {
           <div className='flex space-x-2 whitespace-nowrap overflow-x-scroll no-scrollbar cursor-pointer'>
             {dish.labels.map((label) => (
               <p
-                className='rounded-xl px-2 py-1 bg-accent text-secondary text-sm'
+                className='rounded-xl px-2 py-1 bg-primary text-text text-sm'
                 key={label}
               >
                 {label}
@@ -98,7 +98,7 @@ export default function DishDialog({ dish, setOpenDialog }: DishDialogProps) {
                   key={ingredient}
                 >
                   <Checkbox
-                    color='accent'
+                    color='primary'
                     size='small'
                     defaultChecked
                     disabled
@@ -116,7 +116,7 @@ export default function DishDialog({ dish, setOpenDialog }: DishDialogProps) {
                   onClick={() => onIngredientCheckboxChange(ingredient)}
                 >
                   <Checkbox
-                    color='accent'
+                    color='primary'
                     size='small'
                     checked={!order.leftOutIngredients.includes(ingredient)}
                   />
