@@ -8,10 +8,17 @@ import { Dish } from './types/dish.type'
 import { useState, useEffect } from 'react'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { User } from '@supabase/gotrue-js/src/lib/types'
+import { useStore } from 'zustand'
+import { useRestaurantStore } from '@/store/restaurantStore'
 
 export default function Home() {
   const supabase = createClientComponentClient()
-  const dishesByCategory = trpc.dishesByCategory.useQuery({ restaurantId: 1, language: 'it' })
+  const restaurantStore = useStore(useRestaurantStore, (state) => state)
+
+  const dishesByCategory = trpc.dishesByCategory.useQuery({
+    restaurantId: restaurantStore.restaurantId,
+    language: 'it',
+  })
 
   const [activeDish, setActiveDish] = useState<Dish | null>(null)
   const [user, setUser] = useState<User | null>(null) //TODO example retrieve user

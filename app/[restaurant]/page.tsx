@@ -13,7 +13,7 @@ import { useRestaurantStore } from '@/store/restaurantStore'
 
 export default function Menu({ params }: { params: { restaurant: string } }) {
   const menuStore = useStore(useMenuStore, (state) => state)
-  const globalStore = useStore(useRestaurantStore, (state) => state)
+  const restaurantStore = useStore(useRestaurantStore, (state) => state)
 
   const restaurantId: number = parseInt(params.restaurant)
 
@@ -30,8 +30,8 @@ export default function Menu({ params }: { params: { restaurant: string } }) {
   }, [dishesByCategory.data, menuStore])
 
   useEffect(() => {
-    globalStore?.setRestaurantId(restaurantId)
-  }, [globalStore, restaurantId])
+    restaurantStore?.setRestaurantId(restaurantId)
+  }, [restaurantStore, restaurantId])
 
   const filterChips: FilterChipModel[] = getFilterChips(dishesByCategory.data)
 
