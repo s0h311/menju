@@ -10,7 +10,7 @@ const kanit = Kanit({
 })
 
 export const metadata: Metadata = {
-  title: 'FMSInn',
+  title: 'Menju',
   description: 'The easiest way to get your food',
 }
 

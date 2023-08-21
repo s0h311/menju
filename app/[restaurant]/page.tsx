@@ -9,10 +9,14 @@ import FoodCategory from '@/app/components/guest/food-category'
 import React, { useEffect } from 'react'
 import { useMenuStore } from '@/store/menu-store'
 import useStore from '@/store/nextjs-hook'
+import { useRestaurantStore } from '@/store/restaurantStore'
 
 export default function Menu({ params }: { params: { restaurant: string } }) {
-  const restaurantId: number = parseInt(params.restaurant)
   const menuStore = useStore(useMenuStore, (state) => state)
+  const restaurantStore = useStore(useRestaurantStore, (state) => state)
+
+  const restaurantId: number = parseInt(params.restaurant)
+
   const dishesByCategory = trpc.dishesByCategory.useQuery({
     restaurantId,
     language: 'de',
@@ -24,6 +28,10 @@ export default function Menu({ params }: { params: { restaurant: string } }) {
       menuStore.setVisibleDishes(dishesByCategory.data)
     }
   }, [dishesByCategory.data, menuStore])
+
+  useEffect(() => {
+    restaurantStore?.setRestaurantId(restaurantId)
+  }, [restaurantStore, restaurantId])
 
   const filterChips: FilterChipModel[] = getFilterChips(dishesByCategory.data)
 

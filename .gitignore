@@ -8,3 +8,4 @@ next-env.d.ts
 /.yarn/install-state.*
 /.vscode/
 /.idea/
+.DS_Store
