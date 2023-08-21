@@ -11,13 +11,6 @@ type FilterBarProps = {
 }
 
 export default function FilterBar({ chipData }: FilterBarProps) {
-    const [expanded, setExpanded] = React.useState<string | false>(false);
-
-    const handleChange =
-        (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
-            setExpanded(isExpanded ? panel : false);
-        };
-
   const menuStore = useStore(useMenuStore, (state) => state)
   function isFilterActive(filterLabel: string): boolean {
     let isFilterActive = false
@@ -31,7 +24,7 @@ export default function FilterBar({ chipData }: FilterBarProps) {
 
   return (
       <ThemeProvider theme={theme}>
-      <Accordion className="sticky top-2 opacity-95 bg-secondary"  expanded={expanded === 'panel1'} onChange={handleChange('panel1')} sx={{ maxWidth: '100%'}}>
+      <Accordion className="rounded sticky top-2 opacity-95 border-solid border-2 border-primary" >
               <AccordionSummary
                   expandIcon={<ExpandMoreIcon/>}
                   aria-controls="panel1a-content"
@@ -46,11 +39,11 @@ export default function FilterBar({ chipData }: FilterBarProps) {
               <AccordionDetails>
                   {chipData.map((filter: FilterChipModel) => (
                       <Chip
-                          className={'mb-1 mr-1'}
+                          className={'mb-1 mr-1 border-solid border-2'}
                           variant='outlined'
                           key={filter.label}
                           label={filter.label}
-                          color={isFilterActive(filter.label) ? 'success' : 'error'}
+                          color={isFilterActive(filter.label) ? 'primary' : 'error'}
                           onClick={() => {
                               menuStore?.updateFilter(filter)
                               menuStore?.filter()

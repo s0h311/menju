@@ -14,7 +14,7 @@ export default function FoodItem({ dish }: FoodItemProps) {
     <Card
       sx={{ minWidth: 250 }}
       onClick={() => setActiveDish(dish)}
-      className='cursor-pointer'
+      className='cursor-pointer bg-accent'
       key={dish.id}
     >
       {dish.picture ? (
@@ -68,14 +68,12 @@ export default function FoodItem({ dish }: FoodItemProps) {
         </Stack>
       </CardContent>
 
-      {activeDish ? (
+      {activeDish &&
         <DishDialog
           dish={activeDish}
           setOpenDialog={setActiveDish}
         />
-      ) : (
-        ''
-      )}
+      }
     </Card>
   )
 }
