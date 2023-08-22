@@ -11,6 +11,19 @@ const nextConfig = {
       ],
     ],
   },
+  async headers() {
+    return [
+      {
+        source: '/api/:path*',
+        headers: [
+          {
+            key: 'Access-Control-Allow-Origin',
+            value: 'https://menju.co',
+          },
+        ],
+      },
+    ]
+  },
   images: {
     remotePatterns: [
       // TODO termporary, should be deleted after FMS-11
