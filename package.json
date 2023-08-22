@@ -8,8 +8,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "postinstall": "prisma generate",
     "dev": "next lint && next dev",
-    "build": "next lint && prisma generate && next build",
+    "build": "next lint && next build",
     "start": "next start",
     "lint": "next lint",
     "db:push": "dotenv -e .env.development -- prisma db push",
