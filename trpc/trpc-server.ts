@@ -18,7 +18,11 @@ const t = initTRPC.create({
 })
 
 const prisma = new PrismaClient()
-const supabaseAdmin = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL || '', process.env.SUPABASE_SERVICE_ROLE || '')
+const supabaseAdmin = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL || '',
+  process.env.SUPABASE_SERVICE_ROLE || '',
+  { auth: { persistSession: false } }
+)
 
 const getMultiLanguageStringProperty = (property: JSONValue, language: Language): string => {
   if (property && typeof property === 'object') {
