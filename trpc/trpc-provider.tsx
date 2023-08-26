@@ -6,7 +6,12 @@ import { useState } from 'react'
 import { trpc } from '@/trpc/trpc'
 import superjson from 'superjson'
 
-const host = process.env.HOST ?? 'http://localhost:3000'
+const getBaseUrl = () => {
+  if (typeof window !== 'undefined') {
+    return ''
+  }
+  return process.env.URL
+}
 
 export const TrpcProvider: React.FC<{ children: React.ReactNode }> = (p) => {
   const [queryClient] = useState(() => new QueryClient())
@@ -15,7 +20,7 @@ export const TrpcProvider: React.FC<{ children: React.ReactNode }> = (p) => {
       transformer: superjson,
       links: [
         httpBatchLink({
-          url: `https://menju.co/api/trpc`,
+          url: `${getBaseUrl()}/api/trpc`,
         }),
       ],
     })
