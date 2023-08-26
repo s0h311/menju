@@ -18,8 +18,8 @@ const t = initTRPC.create({
   transformer: superjson,
 })
 
-const prisma = new PrismaClient()
-const supabaseAdmin = createClient(
+const prismaClient = new PrismaClient()
+const supabaseClientAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL || '',
   process.env.SUPABASE_SERVICE_ROLE || '',
   { auth: { persistSession: false } }
@@ -31,9 +31,9 @@ export const appRouter = t.router({
       input: { restaurantId, language },
     } = req
 
-    const categories = await prisma.dishCategory.findMany({ where: { restaurantId } })
+    const categories = await prismaClient.dishCategory.findMany({ where: { restaurantId } })
     const categoryIds = structuredClone(categories).map((category) => category.id)
-    const dishes = await prisma.dish.findMany({ where: { categoryId: { in: categoryIds } } })
+    const dishes = await prismaClient.dish.findMany({ where: { categoryId: { in: categoryIds } } })
     // Can be optimized by removing dishes that are filtered below
     const dishesByCategory: DishesByCategory[] = categories.map((category) => ({
       category: {
@@ -58,15 +58,15 @@ export const appRouter = t.router({
 
   createOrder: t.procedure.input(zCart).mutation(async (req) => {
     const { input } = req
-    return prisma.order.create({data: {...input}});
+    return prismaClient.order.create({data: {...input}});
   }),
 
   addRestaurant: t.procedure.input(zRegisterCredentials).mutation(async (req): Promise<UserResponse> => {
     const { input: credentials } = req
 
-    const restaurant = await prisma.restaurant.create({ data: { name: credentials.name } })
+    const restaurant = await prismaClient.restaurant.create({ data: { name: credentials.name } })
 
-    return supabaseAdmin.auth.admin.createUser({
+    return supabaseClientAdmin.auth.admin.createUser({
       email: credentials.email,
       password: credentials.password,
       email_confirm: true,
