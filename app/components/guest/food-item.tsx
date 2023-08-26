@@ -17,14 +17,12 @@ export default function FoodItem({ dish }: FoodItemProps) {
       className='cursor-pointer border-solid border-2'
       key={dish.id}
     >
-      {dish.picture ? (
+      {dish.picture && (
         <CardMedia
           sx={{ height: 150 }}
           image={dish.picture}
           title={dish.name}
         />
-      ) : (
-        ''
       )}
       <CardContent>
         <div className='grid grid-flow-col'>
@@ -45,23 +43,23 @@ export default function FoodItem({ dish }: FoodItemProps) {
           }
           spacing={2}
         >
-          <ul>
+          <ul className='list-none'>
             {dish.requiredIngredients.map((ingredient) => (
               <li
                 className='text-sm flex items-center'
                 key={ingredient}
               >
-                <p className='text-sm leading-none'>{ingredient}</p>
+               {ingredient}
               </li>
             ))}
           </ul>
-          <ul>
+          <ul className='list-none'>
             {dish.optionalIngredients.map((ingredient) => (
               <li
                 className='text-sm flex items-center'
                 key={ingredient}
               >
-                <p className=''>{ingredient} (Optional)</p>
+                {ingredient} (Optional)
               </li>
             ))}
           </ul>
