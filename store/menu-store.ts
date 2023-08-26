@@ -1,7 +1,7 @@
 import { DishesByCategory } from '@/app/types/dish.type'
 import { FilterChipModel } from '@/app/types/filter-chip.types'
 import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
+import {createJSONStorage, persist} from 'zustand/middleware'
 
 export type MenuState = {
   allDishes: DishesByCategory[]
@@ -71,6 +71,7 @@ export const useMenuStore = create(
     }),
     {
       name: 'menu',
+      storage: createJSONStorage(() => sessionStorage),
     }
   )
 )
