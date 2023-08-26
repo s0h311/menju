@@ -1,7 +1,7 @@
 import { DishesByCategory } from '@/app/types/dish.type'
 import { FilterChipModel } from '@/app/types/filter-chip.types'
 import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
+import {createJSONStorage, persist} from 'zustand/middleware'
 
 export type MenuState = {
   allDishes: DishesByCategory[]
@@ -16,7 +16,6 @@ export type MenuState = {
 }
 
 const updateFilter = (filter: FilterChipModel, activeFilter: FilterChipModel[]): FilterChipModel[] => {
-  console.log(activeFilter)
   const existingFilter = activeFilter.find((f) => f.label === filter.label)
   if (existingFilter) {
     return activeFilter.filter((f) => f.label !== filter.label)
@@ -72,6 +71,7 @@ export const useMenuStore = create(
     }),
     {
       name: 'menu',
+      storage: createJSONStorage(() => sessionStorage),
     }
   )
 )
