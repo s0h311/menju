@@ -39,7 +39,7 @@ export default function FilterBar({ chipData }: FilterBarProps) {
               <AccordionDetails>
                   {chipData.map((filter: FilterChipModel) => (
                       <Chip
-                          className={'mb-1 mr-1 border-solid border-2'}
+                          className={'m-1 border-solid border-2'}
                           variant='outlined'
                           key={filter.label}
                           label={filter.label}
