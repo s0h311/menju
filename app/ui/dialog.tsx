@@ -39,7 +39,7 @@ export default function Dialog({
           PaperProps={{ sx: { borderRadius: '16px', maxHeight: '65dvh' } }}
           onClose={onClose}
           open={open}
-          fullWidth={true}
+          fullWidth
           maxWidth='lg'
           aria-labelledby='dialog-title'
           aria-describedby='dialog-description'
@@ -51,7 +51,7 @@ export default function Dialog({
             {title}
           </Title>
           <Content
-            className='no-scrollbar'
+            className='no-scrollbar h-full'
             sx={{ p: 0 }}
           >
             {children}
