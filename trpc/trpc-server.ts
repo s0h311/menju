@@ -7,6 +7,7 @@ import {
   MultiLanguageArrayProperty,
   Nutrition,
   Ingredient,
+  zNewDishCategory,
 } from '@/app/types/dish.type'
 import { JSONValue } from 'superjson/dist/types'
 import { Language, zCart, zLanguageAndRestaurantId } from '@/app/types/order.type'
@@ -48,6 +49,8 @@ const getIngredients = (property: JSONValue, language: Language, type: 'required
   return []
 }
 
+const capitalize = (text: string): string => text.charAt(0).toUpperCase() + text.slice(1)
+
 export const appRouter = t.router({
   dishesByCategory: t.procedure.input(zLanguageAndRestaurantId).query(async (req) => {
     const {
@@ -61,7 +64,7 @@ export const appRouter = t.router({
     const dishesByCategory: DishesByCategory[] = categories.map((category) => ({
       category: {
         ...category,
-        name: getMultiLanguageStringProperty(category.name, language),
+        name: capitalize(getMultiLanguageStringProperty(category.name, language)),
       },
       dishes: dishes
         .filter((dish) => dish.categoryId == category.id)
@@ -108,6 +111,19 @@ export const appRouter = t.router({
         restaurantId: restaurant.id,
       },
     })
+  }),
+
+  addDishCategory: t.procedure.input(zNewDishCategory).mutation(async (req) => {
+    const { input } = req
+    const dishCategory = await prisma.dishCategory.create({
+      data: {
+        ...input,
+      },
+    })
+    return {
+      ...dishCategory,
+      name: capitalize(getMultiLanguageStringProperty(dishCategory.name, 'de')),
+    }
   }),
 })
 
