@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { zRestaurantId } from './order.type'
 
 export const zAllergy = z.object({
   id: z.number(),
@@ -66,6 +67,7 @@ export const zNewDishCategory = z.object({
     it: z.string(),
   }),
   picture: z.string().url().nullable(),
+  restaurantId: zRestaurantId,
 })
 
 export type Allergy = z.infer<typeof zAllergy>
