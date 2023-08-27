@@ -52,7 +52,7 @@ export const zDish = z.object({
 export const zDishCategory = z.object({
   id: z.number(),
   name: z.string(),
-  picture: z.string(), // URL of the picture
+  picture: z.string().nullable(), // URL of the picture
   restaurantId: z.number(),
 })
 
@@ -61,10 +61,20 @@ export const zDishesByCategory = z.object({
   dishes: z.array(zDish),
 })
 
+export const zNewDishCategory = z.object({
+  name: z.object({
+    de: z.string(),
+    en: z.string(),
+    it: z.string(),
+  }),
+  picture: z.string().url().nullable(),
+})
+
 export type Allergy = z.infer<typeof zAllergy>
 export type Nutrition = z.infer<typeof zNutrition>
 export type Dish = z.infer<typeof zDish>
 export type DishCategory = z.infer<typeof zDishCategory>
+export type NewDishCategory = z.infer<typeof zNewDishCategory>
 export type DishesByCategory = z.infer<typeof zDishesByCategory>
 export type MultiLanguageStringProperty = z.infer<typeof zMultiLanguageStringProperty>
 export type MultiLanguageArrayProperty = z.infer<typeof zMultiLanguageArrayProperty>
