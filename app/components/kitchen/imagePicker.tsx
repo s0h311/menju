@@ -6,7 +6,7 @@ type ImagePickerProps = {
 }
 
 export default function ImagePicker({ onChange }: ImagePickerProps) {
-  const input = useRef<HTMLInputElement | null>(null)
+  const inputElement = useRef<HTMLInputElement | null>(null)
 
   const handleChange = async (event: ChangeEvent<HTMLInputElement>) => {
     const input = event.target
@@ -24,9 +24,9 @@ export default function ImagePicker({ onChange }: ImagePickerProps) {
 
   return (
     <>
-      <Button onClick={() => input.current?.click()}>Bild Auswählen</Button>
+      <Button onClick={() => inputElement.current?.click()}>Bild Auswählen</Button>
       <input
-        ref={input}
+        ref={inputElement}
         className='hidden'
         type='file'
         accept='image/*'

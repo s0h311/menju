@@ -60,6 +60,7 @@ export const appRouter = t.router({
     const categories = await prisma.dishCategory.findMany({ where: { restaurantId } })
     const categoryIds = structuredClone(categories).map((category) => category.id)
     const dishes = await prisma.dish.findMany({ where: { categoryId: { in: categoryIds } } })
+
     // Can be optimized by removing dishes that are filtered below
     const dishesByCategory: DishesByCategory[] = categories.map((category) => ({
       category: {
@@ -123,6 +124,22 @@ export const appRouter = t.router({
     return {
       ...dishCategory,
       name: capitalize(getMultiLanguageStringProperty(dishCategory.name, 'de')),
+    }
+  }),
+
+  updateDishCategory: t.procedure.input(zNewDishCategory).mutation(async (req) => {
+    const { input } = req
+    const updatedDishCategory = await prisma.dishCategory.update({
+      where: {
+        id: input.id,
+      },
+      data: {
+        ...input,
+      },
+    })
+    return {
+      ...updatedDishCategory,
+      name: capitalize(getMultiLanguageStringProperty(updatedDishCategory.name, 'de')),
     }
   }),
 })
