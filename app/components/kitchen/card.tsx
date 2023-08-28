@@ -23,11 +23,8 @@ export type CardProps = {
 export default function Card({ title, image, onClick, onEdit, children }: CardProps) {
   return (
     <ThemeProvider theme={theme}>
-      <MCard
-        sx={{ cursor: 'pointer' }}
-        onClick={onClick}
-      >
-        <CardActionArea>
+      <MCard sx={{ cursor: 'pointer' }}>
+        <CardActionArea onClick={onClick}>
           <CardMedia
             sx={{ height: '13dvh' }}
             component='img'
@@ -35,22 +32,22 @@ export default function Card({ title, image, onClick, onEdit, children }: CardPr
           />
           <CardContent>
             <Typography
+              sx={{ fontSize: '18px', whiteSpace: 'nowrap' }}
               gutterBottom
-              variant='h6'
             >
               {title}
             </Typography>
             <Typography variant='body2'>{children}</Typography>
           </CardContent>
-          <CardActions>
-            <IconButton
-              color='primary'
-              onClick={onEdit}
-            >
-              <EditRounded />
-            </IconButton>
-          </CardActions>
         </CardActionArea>
+        <CardActions>
+          <IconButton
+            color='primary'
+            onClick={onEdit}
+          >
+            <EditRounded />
+          </IconButton>
+        </CardActions>
       </MCard>
     </ThemeProvider>
   )

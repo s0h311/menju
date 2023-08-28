@@ -11,20 +11,24 @@ import { trpc } from '@/trpc/trpc'
 import useStore from '@/store/nextjs-hook'
 import { useMenuStore } from '@/store/menu-store'
 import ImagePicker from './imagePicker'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import useStorageUploader from '@/app/hooks/useStorageUploader'
+import { useRestaurantStore } from '@/store/restaurantStore'
 
 type AddDishCategoryProps = {
-  dishCategory?: DishCategory
+  editingDishCategory?: DishCategory
   onClose: () => void
 }
 
-export default function AddDishCategory({ dishCategory, onClose }: AddDishCategoryProps) {
+export default function AddDishCategory({ editingDishCategory, onClose }: AddDishCategoryProps) {
   const addDishCategoryMutation = trpc.addDishCategory.useMutation()
+  const updateDishCategoryMutation = trpc.updateDishCategory.useMutation()
   const menuStore = useStore(useMenuStore, (state) => state)
-  const [preview, setPreview] = useState<string | null>(null)
+  const restaurantStore = useStore(useRestaurantStore, (state) => state)
   const storageUploader = useStorageUploader()
+  const [preview, setPreview] = useState<string | null>(null)
   const imageFile = useRef<File | null>(null)
+  const imageStoragePath = useRef<string | null>(null)
 
   const {
     register,
@@ -33,46 +37,74 @@ export default function AddDishCategory({ dishCategory, onClose }: AddDishCatego
     setError,
     setValue,
     getValues,
+    watch,
   } = useForm<NewDishCategory>({
     defaultValues: {
-      name: { de: '', en: '', it: '' },
-      picture: null,
-      restaurantId: menuStore?.restaurantId,
+      id: editingDishCategory?.id || undefined,
+      name: { de: editingDishCategory?.name || '', en: '', it: '' },
+      picture: editingDishCategory?.picture || null,
+      restaurantId: restaurantStore?.restaurantId,
     },
     resolver: zodResolver(zNewDishCategory),
   })
 
-  const addDishCategory = (dishCategory: NewDishCategory): void => {
-    addDishCategoryMutation.mutateAsync(dishCategory, {
-      onSuccess: async (category) => {
-        if (imageFile.current) {
-          const { data, error } = await storageUploader.uploadImage(imageFile.current)
-          if (data) {
-            setValue('picture', data.path)
-          }
-          if (error) {
-            setError('name.de', {
-              type: 'supabaseError',
-              message: error.message,
-            })
-          }
-        }
+  useEffect(() => {
+    if (restaurantStore?.restaurantId) {
+      setValue('restaurantId', restaurantStore.restaurantId)
+    }
+  }, [restaurantStore?.restaurantId, setValue])
 
-        menuStore?.addDishCategory(category)
-        onClose()
-      },
-    })
+  const onSubmit = async (dishCategory: NewDishCategory): Promise<void> => {
+    if (imageFile.current) {
+      await uploadImage(imageFile.current)
+      if (imageStoragePath.current) {
+        dishCategory.picture = imageStoragePath.current
+      }
+    }
+
+    if (editingDishCategory) {
+      updateDishCategoryMutation.mutateAsync(dishCategory, {
+        onSuccess: async (category: DishCategory) => {
+          if (editingDishCategory.picture && editingDishCategory.picture !== getValues().picture) {
+            await storageUploader.removeImage([editingDishCategory.picture])
+          }
+          menuStore?.updateDishCategory(category)
+          onClose()
+        },
+      })
+    } else {
+      addDishCategoryMutation.mutateAsync(dishCategory, {
+        onSuccess: async (category: DishCategory) => {
+          menuStore?.addDishCategory(category)
+          onClose()
+        },
+      })
+    }
   }
 
-  const onImageChange = async (data: string, file: File): Promise<void> => {
-    setPreview(data)
+  const uploadImage = async (imageFile: File): Promise<void> => {
+    const { data, error } = await storageUploader.uploadImage(imageFile)
+    if (data) {
+      imageStoragePath.current = data.path
+    }
+    if (error) {
+      setError('name.de', {
+        type: 'supabaseError',
+        message: error.message,
+      })
+    }
+  }
+
+  const onImageChange = async (imageData: string, file: File): Promise<void> => {
+    setPreview(imageData)
     imageFile.current = file
   }
 
   const removeImage = () => {
     setPreview(null)
-    setValue('picture', null)
     imageFile.current = null
+    setValue('picture', null)
+    watch('picture') // Trigger rerender manually, as react-hook-form doesn't trigger one when 'setValue' is used
   }
 
   return (
@@ -81,7 +113,7 @@ export default function AddDishCategory({ dishCategory, onClose }: AddDishCatego
         sx={{ cursor: 'pointer' }}
         component='form'
         autoComplete='off'
-        onSubmit={handleSubmit(addDishCategory)}
+        onSubmit={handleSubmit(onSubmit)}
         noValidate
       >
         {(getValues().picture || preview) && (
@@ -95,10 +127,7 @@ export default function AddDishCategory({ dishCategory, onClose }: AddDishCatego
         <CardContent sx={{ display: 'grid', gap: '10px' }}>
           {!getValues().picture && !preview && (
             <>
-              <ImagePicker
-                {...register('picture')}
-                onChange={onImageChange}
-              />
+              <ImagePicker onChange={onImageChange} />
               <TextField
                 id='pictureUrl'
                 label='Bild Link'
@@ -115,11 +144,11 @@ export default function AddDishCategory({ dishCategory, onClose }: AddDishCatego
             label='Name'
             {...register('name.de')}
             error={!!errors.name}
-            helperText={errors.name?.message}
+            helperText={errors.name?.de?.message}
             multiline
             color='accent'
           />
-          <CardActions sx={{ padding: '0' }}>
+          <CardActions sx={{ padding: '0', paddingTop: '7px', marginBottom: '-8px' }}>
             <Button
               sx={{ width: '100%' }}
               variant='outlined'

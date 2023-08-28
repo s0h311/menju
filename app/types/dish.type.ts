@@ -63,12 +63,15 @@ export const zDishesByCategory = z.object({
 })
 
 export const zNewDishCategory = z.object({
-  name: z.object({
-    de: z.string(),
-    en: z.string(),
-    it: z.string(),
-  }),
-  picture: z.string().url().nullable(),
+  id: z.number().optional(),
+  name: z
+    .object({
+      de: z.string().nonempty(),
+      en: z.string(),
+      it: z.string(),
+    })
+    .required(),
+  picture: z.string().url().nullish(),
   restaurantId: zRestaurantId,
 })
 

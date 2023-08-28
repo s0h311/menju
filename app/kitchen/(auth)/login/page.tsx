@@ -54,7 +54,7 @@ export default function Login() {
 
     if (data.user) {
       restaurantStore?.setRestaurantId(data.user.user_metadata['restaurantId'])
-      router.push('/')
+      router.push('/kitchen')
     }
   }
 

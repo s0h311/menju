@@ -2,13 +2,15 @@
 
 import { useMenuStore } from '@/store/menu-store'
 import useStore from '@/store/nextjs-hook'
-import { Dish, DishesByCategory } from '@/app/types/dish.type'
+import { Dish, DishCategory, DishesByCategory } from '@/app/types/dish.type'
 import { useState } from 'react'
 import CardGrid from '@/app/components/kitchen/cardGrid'
 import Card from '@/app/components/kitchen/card'
+import AddDishCategory from '@/app/components/kitchen/addDishCategory'
 
-export default function KitchenAddAndEdit() {
+export default function KitchenDishes() {
   const [activeDishesCategory, setActiveDishesCategory] = useState<DishesByCategory | null>(null)
+  const [editingDishCategory, setEditingDishCategory] = useState<DishCategory | null>(null)
 
   const menuStore = useStore(useMenuStore, (state) => state)
   const allDishes: Dish[] =
@@ -21,14 +23,24 @@ export default function KitchenAddAndEdit() {
     <section className='grid grid-cols-2 gap-5 xl:gap-10 w-full h-full'>
       <CardGrid title='Kategorien'>
         {menuStore?.allDishes.map((card: DishesByCategory) => (
-          <Card
-            key={card.category.id}
-            title={card.category.name}
-            image={card.category.picture || card.dishes.at(0)?.picture || ''}
-            onClick={() => setActiveDishesCategory(card)}
-          >
-            <p>Anzahl Gerichte: {card.dishes.length}</p>
-          </Card>
+          <div key={card.category.id}>
+            {!editingDishCategory || editingDishCategory.id !== card.category.id ? (
+              <Card
+                key={card.category.id}
+                title={card.category.name}
+                image={card.category.picture || card.dishes.at(0)?.picture || ''}
+                onClick={() => setActiveDishesCategory(card)}
+                onEdit={() => setEditingDishCategory(card.category)}
+              >
+                Anzahl Gerichte: {card.dishes.length}
+              </Card>
+            ) : (
+              <AddDishCategory
+                editingDishCategory={card.category}
+                onClose={() => setEditingDishCategory(null)}
+              />
+            )}
+          </div>
         ))}
       </CardGrid>
       <CardGrid
@@ -42,7 +54,7 @@ export default function KitchenAddAndEdit() {
             title={card.name}
             image={card.picture || ''}
           >
-            <p>{card.price}</p>
+            {card.price}
           </Card>
         ))}
       </CardGrid>
