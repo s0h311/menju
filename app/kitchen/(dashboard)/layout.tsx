@@ -20,7 +20,7 @@ export default function AdminDashboardLayout({ children }: KitchenDashboardLayou
     {
       id: 2,
       label: 'Kategorien & Gerichte',
-      path: '/kitchen/addAndEdit',
+      path: '/kitchen/dishes',
     },
   ]
 
