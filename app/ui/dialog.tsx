@@ -46,7 +46,7 @@ export default function Dialog({
         >
           <Title
             id='dialog-title'
-            sx={{ pt: 0 }}
+            sx={{ pt: 3 }}
           >
             {title}
           </Title>

@@ -55,7 +55,7 @@ export default function CartDialog() {
           proceedText='bestellen'
           proceedDisabled={!cart.positions.length}
         >
-          <div className='px-5 gap-3'>
+          <div className='px-5'>
             <div className='flex justify-between'>
               <p>Gericht</p>
               <p className='w-1/4'>Qty</p>
@@ -97,7 +97,7 @@ export default function CartDialog() {
                 </FormControl>
               </div>
               <textarea
-                className='border-2'
+                className='border-2 rounded-lg w-full p-2'
                 placeholder='notiz hinzufügen'
                 onChange={(e) => setCartOrder({ ...cartOrder, note: e.target.value })}
               />
