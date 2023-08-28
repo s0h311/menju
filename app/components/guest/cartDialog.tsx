@@ -38,6 +38,14 @@ export default function CartDialog() {
     setCart(cartOrder)
   }
 
+  const removePosition = (position: number) => {
+    for (let i = 0; i < cartOrder.positions.length; i++) {
+      if (cartOrder.positions[i].dish.id === position) {
+      }
+    }
+    setCart(cartOrder)
+  }
+
   return (
     <>
       {!open ? (
@@ -68,7 +76,7 @@ export default function CartDialog() {
                   className='flex justify-between'
                 >
                   <p>{cartDish.dish.name}</p>
-                  <p>X</p>
+                  <p onClick={() => removePosition(cartDish.dish.id)}>X</p>
                   <p className='w-1/3'>{cartDish.quantity}</p>
                   <p>{cartDish.dish.price}</p>
                 </div>

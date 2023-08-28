@@ -42,6 +42,7 @@ export const useCartStore = create(
       reset: () => {
         set(initialState)
       },
+
       addPosition: (position: OrderPosition) =>
         set((state) => ({
           cart: {
