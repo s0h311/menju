@@ -6,7 +6,12 @@ import { useState } from 'react'
 import { trpc } from '@/trpc/trpc'
 import superjson from 'superjson'
 
-const getBaseUrl = () => (typeof window !== 'undefined' ? '' : process.env.URL)
+const getBaseUrl = () => {
+  if (typeof window !== 'undefined') {
+    return ''
+  }
+  return process.env.URL
+}
 
 export const TrpcProvider: React.FC<{ children: React.ReactNode }> = (p) => {
   const [queryClient] = useState(() => new QueryClient())

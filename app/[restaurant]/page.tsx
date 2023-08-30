@@ -17,23 +17,23 @@ export default function Menu({ params }: { params: { restaurant: string } }) {
 
   const restaurantId: number = parseInt(params.restaurant)
 
-  const { data: dishesByCategory } = trpc.dishesByCategory.useQuery({
+  const dishesByCategory = trpc.dishesByCategory.useQuery({
     restaurantId,
     language: 'de',
   })
 
   useEffect(() => {
-    if (dishesByCategory && menuStore?.visibleDishes.length === 0) {
-      menuStore.setAllDishes(dishesByCategory)
-      menuStore.setVisibleDishes(dishesByCategory)
+    if (dishesByCategory.data && menuStore?.visibleDishes.length === 0) {
+      menuStore.setAllDishes(dishesByCategory.data)
+      menuStore.setVisibleDishes(dishesByCategory.data)
     }
-  }, [dishesByCategory, menuStore])
+  }, [dishesByCategory.data, menuStore])
 
   useEffect(() => {
     restaurantStore?.setRestaurantId(restaurantId)
   }, [restaurantStore, restaurantId])
 
-  const filterChips: FilterChipModel[] = getFilterChips(dishesByCategory)
+  const filterChips: FilterChipModel[] = getFilterChips(dishesByCategory.data)
 
   function getFilterChips(dishesByCategory: DishesByCategory[] | undefined): FilterChipModel[] {
     const filterChipNames: Set<string> = new Set<string>()
@@ -49,7 +49,7 @@ export default function Menu({ params }: { params: { restaurant: string } }) {
 
   return (
     <Stack className='mb-4'>
-      <FilterBar chipData={filterChips} />
+     <FilterBar chipData={filterChips}/>
       {menuStore?.visibleDishes.map((category) => (
         <FoodCategory
           key={category.category.id}
