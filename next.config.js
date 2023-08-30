@@ -47,6 +47,14 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'www.hamburg.de',
       },
+      {
+        protocol: 'https',
+        hostname: 'lenamerz.de',
+      },
+      {
+        protocol: 'https',
+        hostname: 'images.lecker.de',
+      },
     ],
   },
 }
