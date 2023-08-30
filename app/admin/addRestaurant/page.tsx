@@ -35,7 +35,7 @@ export default function AddRestaurant() {
   const displayErrorOrSuccess = (data: UserResponse) => {
     if (data?.error) {
       setError('password', {
-        type: 'supabase error',
+        type: 'supabaseError',
         message: data?.error.message,
       })
     }
@@ -82,7 +82,7 @@ export default function AddRestaurant() {
           helperText={errors.password?.message}
         />
 
-        {addRestaurantSuccess ? <p className='text-green-700'>Restaurant added successfully</p> : ''}
+        {addRestaurantSuccess && <p className='text-green-700'>Restaurant added successfully</p>}
 
         <Button
           sx={{ borderRadius: '5px' }}
