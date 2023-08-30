@@ -1,7 +1,7 @@
-import { DishesByCategory } from '@/app/types/dish.type'
+import { DishCategory, DishesByCategory } from '@/app/types/dish.type'
 import { FilterChipModel } from '@/app/types/filter-chip.types'
 import { create } from 'zustand'
-import {createJSONStorage, persist} from 'zustand/middleware'
+import { createJSONStorage, persist } from 'zustand/middleware'
 
 export type MenuState = {
   allDishes: DishesByCategory[]
@@ -13,6 +13,7 @@ export type MenuState = {
   setVisibleDishes: (dishes: DishesByCategory[]) => void
   restaurantId: number
   setRestaurantId: (restaurantId: number) => void
+  addDishCategory: (dishCategory: DishCategory) => void
 }
 
 const updateFilter = (filter: FilterChipModel, activeFilter: FilterChipModel[]): FilterChipModel[] => {
@@ -68,6 +69,16 @@ export const useMenuStore = create(
           visibleDishes: dishes,
         })),
       setRestaurantId: (restaurantId: number) => set(() => ({ restaurantId })),
+      addDishCategory: (dishCategory: DishCategory) =>
+        set(() => ({
+          allDishes: [
+            ...get().allDishes,
+            {
+              category: dishCategory,
+              dishes: [],
+            },
+          ],
+        })),
     }),
     {
       name: 'menu',

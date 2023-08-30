@@ -7,8 +7,7 @@
   --secondary: #caddc3;
   --accent: #f7e987;
   --bg-color: #f4f4f4;
-  --text-color: #445069
-;
+  --text-color: #445069;
 
   background-color: var(--bg-color);
   color: var(--text-color);
