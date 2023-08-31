@@ -103,8 +103,7 @@ export default function AddDishCategory({ editingDishCategory, onClose }: AddDis
   const removeImage = () => {
     setPreview(null)
     imageFile.current = null
-    setValue('picture', null)
-    watch('picture') // Trigger rerender manually, as react-hook-form doesn't trigger one when 'setValue' is used
+    setValue('picture', null, { shouldValidate: true }) // the second argument is to trigger a rerender
   }
 
   return (

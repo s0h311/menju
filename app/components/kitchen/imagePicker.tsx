@@ -24,7 +24,13 @@ export default function ImagePicker({ onChange }: ImagePickerProps) {
 
   return (
     <>
-      <Button onClick={() => inputElement.current?.click()}>Bild Auswählen</Button>
+      <Button
+        sx={{ width: '100%' }}
+        variant='outlined'
+        onClick={() => inputElement.current?.click()}
+      >
+        Bild Auswählen
+      </Button>
       <input
         ref={inputElement}
         className='hidden'

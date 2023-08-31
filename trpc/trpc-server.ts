@@ -13,6 +13,7 @@ import { JSONValue } from 'superjson/dist/types'
 import { Language, zCart, zLanguageAndRestaurantId } from '@/app/types/order.type'
 import { zRegisterCredentials } from '@/app/types/credentials.type'
 import { UserResponse, createClient } from '@supabase/supabase-js'
+import { z } from 'zod'
 
 const t = initTRPC.create({
   transformer: superjson,
@@ -132,6 +133,15 @@ export const appRouter = t.router({
       ...updatedDishCategory,
       name: capitalize(getMultiLanguageStringProperty(updatedDishCategory.name, 'de')),
     }
+  }),
+
+  deleteDishCategory: t.procedure.input(z.number()).mutation(async (req) => {
+    const { input: dishCategoryId } = req
+    await prisma.dishCategory.delete({
+      where: {
+        id: dishCategoryId,
+      },
+    })
   }),
 })
 
