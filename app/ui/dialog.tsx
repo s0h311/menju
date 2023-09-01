@@ -8,6 +8,7 @@ import {
 } from '@mui/material'
 import React from 'react'
 import { theme } from './theme'
+import { Breakpoint, SxProps } from '@mui/system'
 
 type DialogProps = {
   title?: string
@@ -15,9 +16,12 @@ type DialogProps = {
   closeText: string
   proceedText?: string
   dialogDescription?: string
+  maxWidth?: Breakpoint
+  sx?: SxProps
   children: React.ReactNode
   onClose: () => void
   onProceed?: () => void
+  revertSuccessError?: boolean
 }
 
 export default function Dialog({
@@ -29,6 +33,9 @@ export default function Dialog({
   closeText,
   proceedText,
   dialogDescription,
+  maxWidth,
+  sx,
+  revertSuccessError,
 }: DialogProps) {
   return (
     <>
@@ -38,7 +45,7 @@ export default function Dialog({
           onClose={onClose}
           open={open}
           fullWidth
-          maxWidth='lg'
+          maxWidth={maxWidth || 'lg'}
           aria-labelledby='dialog-title'
           aria-describedby='dialog-description'
         >
@@ -50,7 +57,7 @@ export default function Dialog({
           </Title>
           <Content
             className='no-scrollbar h-full'
-            sx={{ p: 0 }}
+            sx={{ ...sx, p: 0 }}
           >
             {children}
             <p id='dialog-description'>{dialogDescription}</p>
@@ -58,7 +65,7 @@ export default function Dialog({
           <Actions sx={{ p: '20px' }}>
             <Button
               variant='text'
-              color='accent'
+              color={revertSuccessError ? 'success' : 'error'}
               onClick={onClose}
             >
               {closeText}
@@ -66,7 +73,7 @@ export default function Dialog({
             <Button
               sx={{ borderRadius: '16px' }}
               variant='outlined'
-              color='accent'
+              color={revertSuccessError ? 'error' : 'success'}
               onClick={onProceed}
             >
               {proceedText}

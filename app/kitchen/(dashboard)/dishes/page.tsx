@@ -7,10 +7,13 @@ import { useState } from 'react'
 import CardGrid from '@/app/components/kitchen/cardGrid'
 import Card from '@/app/components/kitchen/card'
 import AddDishCategory from '@/app/components/kitchen/addDishCategory'
+import Dialog from '@/app/ui/dialog'
+import { trpc } from '@/trpc/trpc'
 
 export default function KitchenDishes() {
   const [activeDishesCategory, setActiveDishesCategory] = useState<DishesByCategory | null>(null)
   const [editingDishCategory, setEditingDishCategory] = useState<DishCategory | null>(null)
+  const [deletingDishCategory, setDeletingDishCategory] = useState<DishCategory | null>(null)
 
   const menuStore = useStore(useMenuStore, (state) => state)
   const allDishes: Dish[] =
@@ -18,6 +21,19 @@ export default function KitchenDishes() {
       .filter((dishesByCategory: DishesByCategory) => dishesByCategory.dishes.length)
       .map((dishesByCategory: DishesByCategory) => dishesByCategory.dishes)
       .flat() || []
+
+  const deleteDishCategoryMutation = trpc.deleteDishCategory.useMutation()
+
+  const deleteDishCategory = (): void => {
+    if (deletingDishCategory) {
+      deleteDishCategoryMutation.mutateAsync(deletingDishCategory?.id, {
+        onSuccess: () => {
+          menuStore?.removeDishCategory(deletingDishCategory?.id)
+          setDeletingDishCategory(null)
+        },
+      })
+    }
+  }
 
   return (
     <section className='grid grid-cols-2 gap-5 xl:gap-10 w-full h-full'>
@@ -31,6 +47,7 @@ export default function KitchenDishes() {
                 image={card.category.picture || card.dishes.at(0)?.picture || ''}
                 onClick={() => setActiveDishesCategory(card)}
                 onEdit={() => setEditingDishCategory(card.category)}
+                onDelete={() => setDeletingDishCategory(card.category)}
               >
                 Anzahl Gerichte: {card.dishes.length}
               </Card>
@@ -58,6 +75,19 @@ export default function KitchenDishes() {
           </Card>
         ))}
       </CardGrid>
+
+      <Dialog
+        sx={{ display: 'grid', placeItems: 'center', marginTop: '20px' }}
+        open={!!deletingDishCategory}
+        closeText='Abbrechen'
+        proceedText='Löschen'
+        maxWidth='xs'
+        onClose={() => setDeletingDishCategory(null)}
+        onProceed={deleteDishCategory}
+        revertSuccessError
+      >
+        Möchtest du wirklich diese Kategorie löschen?
+      </Dialog>
     </section>
   )
 }

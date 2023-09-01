@@ -9,7 +9,7 @@ import {
   IconButton,
   CardActionArea,
 } from '@mui/material'
-import { EditRounded } from '@mui/icons-material'
+import { EditRounded, DeleteForeverRounded } from '@mui/icons-material'
 import { theme } from '@/app/ui/theme'
 
 export type CardProps = {
@@ -18,9 +18,10 @@ export type CardProps = {
   children?: ReactNode
   onClick?: () => void
   onEdit?: () => void
+  onDelete?: () => void
 }
 
-export default function Card({ title, image, onClick, onEdit, children }: CardProps) {
+export default function Card({ title, image, onClick, onDelete, onEdit, children }: CardProps) {
   return (
     <ThemeProvider theme={theme}>
       <MCard sx={{ cursor: 'pointer' }}>
@@ -46,6 +47,12 @@ export default function Card({ title, image, onClick, onEdit, children }: CardPr
             onClick={onEdit}
           >
             <EditRounded />
+          </IconButton>
+          <IconButton
+            color='primary'
+            onClick={onDelete}
+          >
+            <DeleteForeverRounded />
           </IconButton>
         </CardActions>
       </MCard>
