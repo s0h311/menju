@@ -7,7 +7,6 @@ export default function Home() {
         <p>Welcome to</p>
         <p className='italic'>Menju</p>
       </h1>
-
       <Link
         className='rounded-xl border border-accent px-3 py-1 text-xl active:border-none active:bg-accent active:text-primary'
         href='/1'
