@@ -6,12 +6,15 @@ import { FilterChipModel } from '@/app/types/filter-chip.types'
 import { Stack } from '@mui/material'
 import FilterBar from '@/app/components/guest/filter-bar'
 import FoodCategory from '@/app/components/guest/food-category'
-import React, { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useMenuStore } from '@/store/menu-store'
 import useStore from '@/store/nextjs-hook'
 import { useRestaurantStore } from '@/store/restaurantStore'
+import DishDialog from '../components/guest/dish-dialog'
 
 export default function Menu({ params }: { params: { restaurant: string } }) {
+  const [activeDish, setActiveDish] = useState<Dish | null>(null)
+
   const menuStore = useStore(useMenuStore, (state) => state)
   const restaurantStore = useStore(useRestaurantStore, (state) => state)
 
@@ -54,8 +57,15 @@ export default function Menu({ params }: { params: { restaurant: string } }) {
         <FoodCategory
           key={category.category.id}
           category={category.category}
+          onCardClick={(dish) => setActiveDish(dish)}
         />
       ))}
+      {activeDish && (
+        <DishDialog
+          dish={activeDish}
+          setOpenDialog={setActiveDish}
+        />
+      )}
     </Stack>
   )
 }

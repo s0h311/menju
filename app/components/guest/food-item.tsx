@@ -1,19 +1,16 @@
 import { Card, CardContent, CardMedia, Divider, Stack } from '@mui/material'
-import React, { useState } from 'react'
 import { Dish } from '@/app/types/dish.type'
-import DishDialog from '@/app/components/guest/dish-dialog'
 
 type FoodItemProps = {
   dish: Dish
+  onClick: () => void
 }
 
-export default function FoodItem({ dish }: FoodItemProps) {
-  const [activeDish, setActiveDish] = useState<Dish | null>(null)
-
+export default function FoodItem({ dish, onClick }: FoodItemProps) {
   return (
     <Card
       sx={{ minWidth: 250 }}
-      onClick={() => setActiveDish(dish)}
+      onClick={onClick}
       className='cursor-pointer border-solid border-2'
       key={dish.id}
     >
@@ -49,7 +46,7 @@ export default function FoodItem({ dish }: FoodItemProps) {
                 className='text-sm flex items-center'
                 key={ingredient}
               >
-               {ingredient}
+                {ingredient}
               </li>
             ))}
           </ul>
@@ -65,13 +62,6 @@ export default function FoodItem({ dish }: FoodItemProps) {
           </ul>
         </Stack>
       </CardContent>
-
-      {activeDish &&
-        <DishDialog
-          dish={activeDish}
-          setOpenDialog={setActiveDish}
-        />
-      }
     </Card>
   )
 }
