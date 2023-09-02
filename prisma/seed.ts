@@ -23,24 +23,21 @@ const main = async () => {
       price: 6.5,
       picture: 'https://www.blog.vegan-masterclass.de/wp-content/uploads/2021/09/Doener_mit_gegrillter_Paprika.jpg',
       ingredients: {
-        required: {
-          en: ['Bread'],
-          de: ['Brot'],
-          it: ['Pane'],
-        },
-        optional: {
-          en: ['Meat', 'Salat', 'Sauce'],
-          de: ['Fleisch', 'Salat', 'Soße'],
-          it: ['Carne', 'Insalata', 'Salsa'],
-        },
+        required: [{ de: 'Bread', en: 'Brot', it: 'pane' }],
+        optional: [
+          { de: 'Fleisch', en: 'Meat', it: 'Carne' },
+          { de: 'Salat', en: 'Salat', it: 'Insalata' },
+          { de: 'Soße', en: 'Sauce', it: 'Salsa' },
+        ],
       },
-      labels: {
-        de: ['Vegan', 'Sehr beliebt', 'Gibts nur hier', 'Geiles Frühstück'],
-        en: ['Vegan', 'Popular', 'Only here', 'Best Breakfast'],
-        it: ['Vegan', 'Popular', 'Only here', 'Best Breakfast'],
-      },
+      labels: [
+        { de: 'Vegan', en: 'Vegan', it: 'Vegan' },
+        { de: 'Sehr beliebt', en: 'Popular', it: 'Popular' },
+        { de: 'Gibts nur hier', en: 'Only here', it: 'Only here' },
+        { de: 'Geiles Frühstück', en: 'Best Breakfast', it: 'Best Breakfast' },
+      ],
       nutritions: { energy: 560, protein: 30 },
-      type: 'VEGAN',
+      dietType: 'VEGAN',
       description: {
         de: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet quod quos perspiciatis, porro voluptate numquam quae facere odit fugiat.',
         en: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet quod quos perspiciatis.',
@@ -65,24 +62,21 @@ const main = async () => {
       picture:
         'https://www.eatbetter.de/sites/eatbetter.de/files/styles/facebook/public/2021-07/nudeln_mit_kichererbsen_1.jpg?h=4521fff0&itok=C9tS61Im',
       ingredients: {
-        required: {
-          en: ['Pasta'],
-          de: ['Nudeln'],
-          it: ['Pasta'],
-        },
-        optional: {
-          en: ['Parmesan', 'Tomato sauce'],
-          de: ['Parmesan', 'Tomatensoße'],
-          it: ['Parmigiano', 'Salsa di pomodoro'],
-        },
+        required: [{ de: 'Nudeln', en: 'Pasta', it: 'Pasta' }],
+        optional: [
+          { de: 'Parmesan', en: 'Parmesan', it: 'Parmigiano' },
+          { de: 'Tomatensoße', en: 'Tomato sauce', it: 'Salsa di pomodoro' },
+        ],
       },
-      labels: {
-        de: ['Vegan', 'Sehr beliebt', 'Gibts nur hier', 'Geiles Frühstück'],
-        en: ['Vegan', 'Popular', 'Only here', 'Best Breakfast'],
-        it: ['Vegan', 'Popular', 'Only here', 'Best Breakfast'],
-      },
+      labels: [
+        { de: 'Vegan', en: 'Vegan', it: 'Vegan' },
+        { de: 'Sehr beliebt', en: 'Popular', it: 'Popular' },
+        { de: 'Gibts nur hier', en: 'Only here', it: 'Only here' },
+        { de: 'Krass', en: 'wow', it: 'nice' },
+        { de: 'Geiles Frühstück', en: 'Best Breakfast', it: 'Best Breakfast' },
+      ],
       nutritions: { energy: 560, protein: 30 },
-      type: 'VEGAN',
+      dietType: 'VEGAN',
       description: {
         de: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet quod quos perspiciatis, porro voluptate numquam quae facere odit fugiat.',
         en: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet quod quos perspiciatis.',
@@ -99,30 +93,59 @@ const main = async () => {
       picture:
         'https://www.hamburg.de/image/15536634/kingTeaser/990/420/d4e83a1a6365d5c6804a9bf2ccef7fbc/RS/symbolbild-pizza-bild.jpg',
       ingredients: {
-        required: {
-          en: ['Dough'],
-          de: ['Teig'],
-          it: ['Impasto'],
-        },
-        optional: {
-          en: ['Cheese', 'Tomato sauce'],
-          de: ['Käse', 'Tomatensoße'],
-          it: ['Formaggio', 'Salsa di pomodoro'],
-        },
+        required: [{ de: 'teig', en: 'dough', it: 'impasto' }],
+        optional: [
+          { de: 'tomatensoße', en: 'tomatosauce', it: 'salsa di pomodoro' },
+          { de: 'Käse', en: 'Cheese', it: 'Formaggio' },
+        ],
       },
-      labels: {
-        de: ['Vegan', 'Sehr beliebt', 'Gibts nur hier', 'Geiles Frühstück'],
-        en: ['Vegan', 'Popular', 'Only here', 'Best Breakfast'],
-        it: ['Vegan', 'Popular', 'Only here', 'Best Breakfast'],
-      },
+      labels: [
+        { de: 'Beste Pizza der Stadt', en: 'Best pizza in town', it: 'La migliore pizza in città' },
+        { de: 'Sehr beliebt', en: 'Popular', it: 'Popular' },
+        { de: 'Gibts nur hier', en: 'Only here', it: 'Only here' },
+        { de: 'Krass', en: 'wow', it: 'nice' },
+      ],
       nutritions: { energy: 560, protein: 30 },
-      type: 'VEGAN',
+      dietType: 'VEGAN',
       description: {
         de: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet quod quos perspiciatis, porro voluptate numquam quae facere odit fugiat.',
         en: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet quod quos perspiciatis.',
         it: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.',
       },
       categoryId: dishCategory2.id,
+    },
+  })
+
+  const dish4 = await prisma.dish.create({
+    data: {
+      name: { de: 'Pizza', en: 'Pizza', it: 'Pizza' },
+      price: 7.5,
+      picture:
+        'https://images.lecker.de/pizza-bianca-mit-pilzen,id=a5ed1fe9,b=lecker,w=710,ca=0,8.14,100,91.86,rm=sk.webp',
+      categoryId: 1,
+      ingredients: {
+        required: [{ de: 'teig', en: 'dough', it: 'impasto' }],
+        optional: [{ de: 'tomatensoße', en: 'tomatosauce', it: 'salsa di pomodoro' }],
+      },
+      labels: [{ de: 'Beste Pizza der Stadt', en: 'Best pizza in town', it: 'La migliore pizza in città' }],
+      allergies: [
+        { de: 'Nuss', en: 'Nut', it: 'noce' },
+        { de: 'Soja', en: '', it: '' },
+      ],
+      nutritions: {
+        energy: 790,
+        protein: 34,
+      },
+      dietType: 'VEGETARIAN',
+      description: {
+        de: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque tempore explicabo id.',
+        en: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque tempore explicabo id.',
+        it: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque tempore explicabo id.',
+      },
+      saleStartDate: new Date(),
+      saleEndDate: new Date(),
+      salePrice: 6.5,
+      saleDays: [0, 2, 6],
     },
   })
 }
