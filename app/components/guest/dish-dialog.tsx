@@ -92,7 +92,7 @@ export default function DishDialog({ dish, setOpenDialog }: DishDialogProps) {
           <div>
             <h3>Zutaten</h3>
             <ul className='grid grid-cols-2'>
-              {dish.requiredIngredients.map((ingredient) => (
+              {dish.ingredients.required.map((ingredient) => (
                 <li
                   className='text-sm flex items-center'
                   key={ingredient}
@@ -109,7 +109,7 @@ export default function DishDialog({ dish, setOpenDialog }: DishDialogProps) {
             </ul>
 
             <ul className='grid grid-cols-2'>
-              {dish.optionalIngredients.map((ingredient) => (
+              {dish.ingredients.optional.map((ingredient) => (
                 <li
                   className='text-sm flex items-center cursor-pointer'
                   key={ingredient}
