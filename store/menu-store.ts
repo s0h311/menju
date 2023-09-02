@@ -1,4 +1,4 @@
-import { DishCategory, DishesByCategory } from '@/app/types/dish.type'
+import { Dish, DishCategory, DishesByCategory } from '@/app/types/dish.type'
 import { FilterChipModel } from '@/app/types/filter-chip.types'
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
@@ -12,8 +12,11 @@ export type MenuState = {
   setAllDishes: (dishes: DishesByCategory[]) => void
   setVisibleDishes: (dishes: DishesByCategory[]) => void
   addDishCategory: (dishCategory: DishCategory) => void
-  removeDishCategory: (dishCategoryId: number) => void
   updateDishCategory: (dishCategory: DishCategory) => void
+  removeDishCategory: (dishCategoryId: number) => void
+  addDish: (dish: Dish) => void
+  updateDish: (dish: Dish) => void
+  removeDish: (dishCategoryId: number, dishId: number) => void
 }
 
 const updateFilter = (filter: FilterChipModel, activeFilter: FilterChipModel[]): FilterChipModel[] => {
@@ -53,6 +56,7 @@ export const useMenuStore = create(
         set(() => ({
           activeFilter: updateFilter(filter, get().activeFilter),
         })),
+
       filter: () =>
         set(() => ({
           visibleDishes: applyFilter(get().allDishes, get().activeFilter),
@@ -63,10 +67,12 @@ export const useMenuStore = create(
           allDishes: dishes,
         }))
       },
+
       setVisibleDishes: (dishes: DishesByCategory[]) =>
         set(() => ({
           visibleDishes: dishes,
         })),
+
       addDishCategory: (dishCategory: DishCategory) =>
         set(() => ({
           allDishes: [
@@ -77,15 +83,53 @@ export const useMenuStore = create(
             },
           ],
         })),
-      removeDishCategory: (dishCategoryId: number) =>
-        set(() => ({
-          allDishes: get().allDishes.filter((dishesByCategory) => dishesByCategory.category.id !== dishCategoryId),
-        })),
+
       updateDishCategory: (dishCategory: DishCategory) => {
         const dishesByCategory = get().allDishes.find((dbc) => dbc.category.id === dishCategory.id)
         if (dishesByCategory) {
           dishesByCategory.category = dishCategory
         }
+        set(() => ({
+          allDishes: get().allDishes,
+        }))
+      },
+
+      removeDishCategory: (dishCategoryId: number) =>
+        set(() => ({
+          allDishes: get().allDishes.filter((dishesByCategory) => dishesByCategory.category.id !== dishCategoryId),
+        })),
+
+      addDish: (dish: Dish) => {
+        const dishesByCategory = get().allDishes.find((dbc) => dbc.category.id === dish.categoryId)
+        if (dishesByCategory) {
+          dishesByCategory.dishes.push(dish)
+        }
+        set(() => ({
+          allDishes: get().allDishes,
+        }))
+      },
+
+      updateDish: (dish: Dish) => {
+        const dishesByCategory = get().allDishes.find((dbc) => dbc.category.id === dish.categoryId)
+        const dishIndex = dishesByCategory?.dishes.findIndex((oldDish) => oldDish.id === dish.id)
+
+        if (dishesByCategory && dishIndex && dishIndex >= 0) {
+          dishesByCategory.dishes.splice(dishIndex, 1, dish)
+        }
+
+        set(() => ({
+          allDishes: get().allDishes,
+        }))
+      },
+
+      removeDish: (dishCategoryId: number, dishId: number) => {
+        const dishesByCategory = get().allDishes.find((dbc) => dbc.category.id === dishCategoryId)
+        const dishIndex = dishesByCategory?.dishes.findIndex((oldDish) => oldDish.id === dishId)
+
+        if (dishesByCategory && dishIndex && dishIndex >= 0) {
+          dishesByCategory.dishes.splice(dishIndex, 1)
+        }
+
         set(() => ({
           allDishes: get().allDishes,
         }))

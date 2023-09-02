@@ -28,17 +28,18 @@ export default function FoodCategory({ category, onCardClick }: FoodCategoryProp
           spacing={2}
           className='overflow-x-auto no-scrollbar p-1'
         >
-          {menuStore?.visibleDishes
-            .filter((cat) => category.id === cat.category.id)
-            .map((dish) =>
-              dish.dishes.map((dish) => (
-                <FoodItem
-                  key={dish.id}
-                  dish={dish}
-                  onClick={() => onCardClick(dish)}
-                />
-              ))
-            )}
+          {menuStore?.visibleDishes.length &&
+            menuStore.visibleDishes
+              .filter((cat) => category.id === cat.category.id)
+              .map((dish) =>
+                dish.dishes.map((dish) => (
+                  <FoodItem
+                    key={dish.id}
+                    dish={dish}
+                    onClick={() => onCardClick(dish)}
+                  />
+                ))
+              )}
         </Stack>
       </Box>
     </ThemeProvider>

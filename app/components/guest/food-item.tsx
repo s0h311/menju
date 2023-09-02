@@ -41,7 +41,7 @@ export default function FoodItem({ dish, onClick }: FoodItemProps) {
           spacing={2}
         >
           <ul className='list-none'>
-            {dish.requiredIngredients.map((ingredient) => (
+            {dish.ingredients.required.map((ingredient) => (
               <li
                 className='text-sm flex items-center'
                 key={ingredient}
@@ -51,7 +51,7 @@ export default function FoodItem({ dish, onClick }: FoodItemProps) {
             ))}
           </ul>
           <ul className='list-none'>
-            {dish.optionalIngredients.map((ingredient) => (
+            {dish.ingredients.optional.map((ingredient) => (
               <li
                 className='text-sm flex items-center'
                 key={ingredient}
