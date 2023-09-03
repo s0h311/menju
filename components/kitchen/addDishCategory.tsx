@@ -12,7 +12,7 @@ import useStore from '@/store/nextjs-hook'
 import { useMenuStore } from '@/store/menu-store'
 import ImagePicker from './imagePicker'
 import { useEffect, useRef, useState } from 'react'
-import useStorageUploader from '@/app/hooks/useStorageUploader'
+import useStorageUploader from '@/hooks/useStorageUploader'
 import { useRestaurantStore } from '@/store/restaurantStore'
 
 type AddDishCategoryProps = {

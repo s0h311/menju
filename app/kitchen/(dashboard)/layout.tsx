@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import Dashboard from '../../components/shared/dashboard'
+import Dashboard from '@/components/shared/dashboard'
 import { SidebarMenu } from '@/types/dashboard.type'
 
 export const metadata: Metadata = {

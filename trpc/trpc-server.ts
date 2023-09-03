@@ -11,7 +11,7 @@ import {
   getMultiLanguageStringProperty
 } from "@/trpc/business-domain/dish-service";
 import {z} from "zod";
-import {createUser} from "@/trpc/data/supabase-client";
+import {createUser} from "@/trpc/data/supabase-admin-client";
 import {
   createDishCategory, createOrder,
   createRestaurant,
