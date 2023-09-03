@@ -5,15 +5,17 @@ import { Button, IconButton, ThemeProvider } from '@mui/material'
 import { Add, ReplayRounded } from '@mui/icons-material'
 import { theme } from '@/app/ui/theme'
 import AddDishCategory from './addDishCategory'
+import AddDish from './addDish'
 
 type CardGridProps = {
   title: string
+  contentType: 'dishCategory' | 'dish'
   withReset?: boolean
   onReset?: () => void
   children: ReactNode
 }
 
-export default function CardGrid({ title, withReset, onReset, children }: CardGridProps) {
+export default function CardGrid({ title, contentType, withReset, onReset, children }: CardGridProps) {
   const [editingActive, setEditingActive] = useState<boolean>(false)
 
   return (
@@ -30,15 +32,22 @@ export default function CardGrid({ title, withReset, onReset, children }: CardGr
           </IconButton>
         )}
         <div className='grid grid-cols-2 xl:grid-cols-3 gap-5'>
-          {!editingActive ? (
+          {(!editingActive || contentType === 'dish') && (
             <Button
               variant='outlined'
               onClick={() => setEditingActive(true)}
             >
               <Add />
             </Button>
-          ) : (
+          )}
+          {editingActive && contentType === 'dishCategory' && (
             <AddDishCategory onClose={() => setEditingActive(false)} />
+          )}
+          {editingActive && contentType === 'dish' && (
+            <AddDish
+              open={editingActive}
+              onClose={() => setEditingActive(false)}
+            />
           )}
           {children}
         </div>

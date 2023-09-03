@@ -5,10 +5,13 @@ import {
   DialogContent as Content,
   Button,
   ThemeProvider,
+  Breakpoint,
+  SxProps,
 } from '@mui/material'
-import React from 'react'
 import { theme } from './theme'
-import { Breakpoint, SxProps } from '@mui/system'
+import { ReactNode } from 'react'
+import Image from 'next/image'
+import { StaticImport } from 'next/dist/shared/lib/get-img-props'
 
 type DialogProps = {
   title?: string
@@ -18,7 +21,12 @@ type DialogProps = {
   dialogDescription?: string
   maxWidth?: Breakpoint
   sx?: SxProps
-  children: React.ReactNode
+  imageData?: {
+    src?: string | StaticImport | null
+    alt: string
+    onClick?: () => void
+  } | null
+  children: ReactNode
   onClose: () => void
   onProceed?: () => void
   revertSuccessError?: boolean
@@ -36,6 +44,7 @@ export default function Dialog({
   maxWidth,
   sx,
   revertSuccessError,
+  imageData,
 }: DialogProps) {
   return (
     <>
@@ -45,7 +54,7 @@ export default function Dialog({
           onClose={onClose}
           open={open}
           fullWidth
-          maxWidth={maxWidth || 'lg'}
+          maxWidth={maxWidth || 'xs'}
           aria-labelledby='dialog-title'
           aria-describedby='dialog-description'
         >
@@ -55,9 +64,20 @@ export default function Dialog({
           >
             {title}
           </Title>
+          {imageData?.src && (
+            <Image
+              className={`rounded-t-2xl mb-2 ${imageData.onClick ? 'cursor-pointer' : ''}`}
+              src={imageData.src}
+              width={500}
+              height={400}
+              quality={80}
+              alt={imageData.alt}
+              onClick={imageData.onClick}
+            />
+          )}
           <Content
             className='no-scrollbar h-full'
-            sx={{ ...sx, p: 0 }}
+            sx={sx}
           >
             {children}
             <p id='dialog-description'>{dialogDescription}</p>

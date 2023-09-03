@@ -37,7 +37,6 @@ export default function AddDishCategory({ editingDishCategory, onClose }: AddDis
     setError,
     setValue,
     getValues,
-    watch,
   } = useForm<NewDishCategory>({
     defaultValues: {
       id: editingDishCategory?.id || undefined,
