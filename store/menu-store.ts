@@ -1,7 +1,7 @@
-import { DishesByCategory } from '@/app/types/dish.type'
+import { DishCategory, DishesByCategory } from '@/app/types/dish.type'
 import { FilterChipModel } from '@/app/types/filter-chip.types'
 import { create } from 'zustand'
-import {createJSONStorage, persist} from 'zustand/middleware'
+import { createJSONStorage, persist } from 'zustand/middleware'
 
 export type MenuState = {
   allDishes: DishesByCategory[]
@@ -11,8 +11,9 @@ export type MenuState = {
   filter: () => void
   setAllDishes: (dishes: DishesByCategory[]) => void
   setVisibleDishes: (dishes: DishesByCategory[]) => void
-  restaurantId: number
-  setRestaurantId: (restaurantId: number) => void
+  addDishCategory: (dishCategory: DishCategory) => void
+  removeDishCategory: (dishCategoryId: number) => void
+  updateDishCategory: (dishCategory: DishCategory) => void
 }
 
 const updateFilter = (filter: FilterChipModel, activeFilter: FilterChipModel[]): FilterChipModel[] => {
@@ -48,7 +49,6 @@ export const useMenuStore = create(
       allDishes: [],
       visibleDishes: [],
       activeFilter: [],
-      restaurantId: 0,
       updateFilter: (filter: FilterChipModel) =>
         set(() => ({
           activeFilter: updateFilter(filter, get().activeFilter),
@@ -67,7 +67,29 @@ export const useMenuStore = create(
         set(() => ({
           visibleDishes: dishes,
         })),
-      setRestaurantId: (restaurantId: number) => set(() => ({ restaurantId })),
+      addDishCategory: (dishCategory: DishCategory) =>
+        set(() => ({
+          allDishes: [
+            ...get().allDishes,
+            {
+              category: dishCategory,
+              dishes: [],
+            },
+          ],
+        })),
+      removeDishCategory: (dishCategoryId: number) =>
+        set(() => ({
+          allDishes: get().allDishes.filter((dishesByCategory) => dishesByCategory.category.id !== dishCategoryId),
+        })),
+      updateDishCategory: (dishCategory: DishCategory) => {
+        const dishesByCategory = get().allDishes.find((dbc) => dbc.category.id === dishCategory.id)
+        if (dishesByCategory) {
+          dishesByCategory.category = dishCategory
+        }
+        set(() => ({
+          allDishes: get().allDishes,
+        }))
+      },
     }),
     {
       name: 'menu',

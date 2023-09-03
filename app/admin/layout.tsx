@@ -16,13 +16,11 @@ export default function AdminDashboardLayout({ children }: AdminDashboardLayoutP
       id: 1,
       label: 'Start',
       path: '/admin',
-      title: 'Willkommen',
     },
     {
       id: 2,
       label: 'Add new restaurant',
       path: '/admin/addRestaurant',
-      title: 'Restaurants verwalten',
     },
   ]
 

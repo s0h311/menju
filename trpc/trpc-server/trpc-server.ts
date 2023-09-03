@@ -38,7 +38,7 @@ export const appRouter = t.router({
     const dishesByCategory: DishesByCategory[] = categories.map((category) => ({
       category: {
         ...category,
-        name: getMultiLanguageStringProperty(category.name, language),
+        name: capitalize(getMultiLanguageStringProperty(category.name, language)),
       },
       dishes: dishes
         .filter((dish) => dish.categoryId == category.id)
@@ -73,6 +73,44 @@ export const appRouter = t.router({
       user_metadata: {
         name: credentials.name,
         restaurantId: restaurant.id,
+      },
+    })
+  }),
+
+  addDishCategory: t.procedure.input(zNewDishCategory).mutation(async (req) => {
+    const { input } = req
+    const dishCategory = await prisma.dishCategory.create({
+      data: {
+        ...input,
+      },
+    })
+    return {
+      ...dishCategory,
+      name: capitalize(getMultiLanguageStringProperty(dishCategory.name, 'de')),
+    }
+  }),
+
+  updateDishCategory: t.procedure.input(zNewDishCategory).mutation(async (req) => {
+    const { input } = req
+    const updatedDishCategory = await prisma.dishCategory.update({
+      where: {
+        id: input.id,
+      },
+      data: {
+        ...input,
+      },
+    })
+    return {
+      ...updatedDishCategory,
+      name: capitalize(getMultiLanguageStringProperty(updatedDishCategory.name, 'de')),
+    }
+  }),
+
+  deleteDishCategory: t.procedure.input(z.number()).mutation(async (req) => {
+    const { input: dishCategoryId } = req
+    await prisma.dishCategory.delete({
+      where: {
+        id: dishCategoryId,
       },
     })
   }),
