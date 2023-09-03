@@ -10,7 +10,7 @@ import {
   CardActionArea,
 } from '@mui/material'
 import { EditRounded, DeleteForeverRounded } from '@mui/icons-material'
-import { theme } from '@/app/ui/theme'
+import { theme } from '@/ui/theme'
 
 export type CardProps = {
   title: string

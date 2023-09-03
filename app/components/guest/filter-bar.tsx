@@ -1,10 +1,10 @@
 import {Accordion, AccordionDetails, AccordionSummary, Chip, ThemeProvider} from '@mui/material'
 import React from 'react'
-import { FilterChipModel } from '@/app/types/filter-chip.types'
+import { FilterChipModel } from '@/types/filter-chip.types'
 import { useMenuStore } from '@/store/menu-store'
 import useStore from '@/store/nextjs-hook'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import {theme} from "@/app/ui/theme";
+import {theme} from "@/ui/theme";
 
 type FilterBarProps = {
   chipData: FilterChipModel[]

@@ -1,8 +1,8 @@
 'use client'
 
-import { Dish, DishesByCategory } from '@/app/types/dish.type'
+import { Dish, DishesByCategory } from '@/types/dish.type'
 import { trpc } from '@/trpc/trpc'
-import { FilterChipModel } from '@/app/types/filter-chip.types'
+import { FilterChipModel } from '@/types/filter-chip.types'
 import { Stack } from '@mui/material'
 import FilterBar from '@/app/components/guest/filter-bar'
 import FoodCategory from '@/app/components/guest/food-category'

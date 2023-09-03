@@ -1,10 +1,10 @@
 import { Box, Divider, Stack, ThemeProvider } from '@mui/material'
 import React from 'react'
 import FoodItem from './food-item'
-import { Dish, DishCategory } from '@/app/types/dish.type'
+import { Dish, DishCategory } from '@/types/dish.type'
 import { useMenuStore } from '@/store/menu-store'
 import useStore from '@/store/nextjs-hook'
-import { theme } from '@/app/ui/theme'
+import { theme } from '@/ui/theme'
 
 type FoodCategoryProps = {
   category: DishCategory

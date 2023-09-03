@@ -1,5 +1,5 @@
 import {createClient} from "@supabase/supabase-js";
-import {RegisterCredentials} from "@/app/types/credentials.type";
+import {RegisterCredentials} from "@/types/credentials.type";
 
 
 const supabaseClientAdmin = createClient(

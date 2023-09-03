@@ -2,9 +2,9 @@ import {initTRPC} from '@trpc/server'
 import superjson from 'superjson'
 import {
  zNewDishCategory,
-} from '@/app/types/dish.type'
-import { zCart, zLanguageAndRestaurantId} from '@/app/types/order.type'
-import {zRegisterCredentials} from '@/app/types/credentials.type'
+} from '@/types/dish.type'
+import { zCart, zLanguageAndRestaurantId} from '@/types/order.type'
+import {zRegisterCredentials} from '@/types/credentials.type'
 import { UserResponse} from '@supabase/supabase-js'
 import {
   capitalize,

@@ -1,10 +1,10 @@
 import {JSONValue} from "superjson/dist/types";
-import {Language} from "@/app/types/order.type";
+import {Language} from "@/types/order.type";
 import {
     Ingredient,
     MultiLanguageArrayProperty,
     MultiLanguageStringProperty
-} from "@/app/types/dish.type";
+} from "@/types/dish.type";
 
 export const capitalize = (text: string): string => text.charAt(0).toUpperCase() + text.slice(1)
 

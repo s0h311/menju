@@ -1,6 +1,6 @@
 import { PrismaClient} from "@prisma/client";
-import {DishesByCategory, NewDishCategory, Nutrition} from "@/app/types/dish.type";
-import {Cart, Language, RestaurantId} from "@/app/types/order.type";
+import {DishesByCategory, NewDishCategory, Nutrition} from "@/types/dish.type";
+import {Cart, Language, RestaurantId} from "@/types/order.type";
 
 import {
     capitalize,
