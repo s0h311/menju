@@ -1,6 +1,12 @@
 import {JSONValue} from "superjson/dist/types";
 import {Language} from "@/app/types/order.type";
-import {Ingredient, MultiLanguageArrayProperty, MultiLanguageStringProperty} from "@/app/types/dish.type";
+import {
+    Ingredient,
+    MultiLanguageArrayProperty,
+    MultiLanguageStringProperty
+} from "@/app/types/dish.type";
+
+export const capitalize = (text: string): string => text.charAt(0).toUpperCase() + text.slice(1)
 
 export const getMultiLanguageStringProperty = (property: JSONValue, language: Language): string => {
     if (property && typeof property === 'object') {

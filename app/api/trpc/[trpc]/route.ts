@@ -1,5 +1,5 @@
 import { FetchCreateContextFnOptions, fetchRequestHandler } from '@trpc/server/adapters/fetch'
-import { appRouter } from '@/trpc/trpc-server/trpc-server'
+import { appRouter } from '@/trpc/trpc-server'
 
 const handler = (request: Request) =>
   fetchRequestHandler({
