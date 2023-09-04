@@ -5,14 +5,14 @@ import { TextField, ThemeProvider, Card as MCard, Button, CardContent, CardActio
 import { LoadingButton } from '@mui/lab'
 import { Check, Close } from '@mui/icons-material'
 import { useForm } from 'react-hook-form'
-import { theme } from '@/app/ui/theme'
-import { DishCategory, NewDishCategory, zNewDishCategory } from '@/app/types/dish.type'
+import { theme } from '@/ui/theme'
+import { DishCategory, NewDishCategory, zNewDishCategory } from '@/types/dish.type'
 import { trpc } from '@/trpc/trpc'
 import useStore from '@/store/nextjs-hook'
 import { useMenuStore } from '@/store/menu-store'
 import ImagePicker from './imagePicker'
 import { useEffect, useRef, useState } from 'react'
-import useStorageUploader from '@/app/hooks/useStorageUploader'
+import useStorageUploader from '@/hooks/useStorageUploader'
 import { useRestaurantStore } from '@/store/restaurantStore'
 
 type AddDishCategoryProps = {

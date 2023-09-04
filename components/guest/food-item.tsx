@@ -1,5 +1,5 @@
 import { Card, CardContent, CardMedia, Divider, Stack } from '@mui/material'
-import { Dish } from '@/app/types/dish.type'
+import { Dish } from '@/types/dish.type'
 
 type FoodItemProps = {
   dish: Dish

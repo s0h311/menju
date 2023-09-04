@@ -1,16 +1,16 @@
 'use client'
 
-import { Dish, DishesByCategory } from '@/app/types/dish.type'
+import { Dish, DishesByCategory } from '@/types/dish.type'
 import { trpc } from '@/trpc/trpc'
-import { FilterChipModel } from '@/app/types/filter-chip.types'
+import { FilterChipModel } from '@/types/filter-chip.types'
 import { Stack } from '@mui/material'
-import FilterBar from '@/app/components/guest/filter-bar'
-import FoodCategory from '@/app/components/guest/food-category'
+import FilterBar from '@/components/guest/filter-bar'
+import FoodCategory from '@/components/guest/food-category'
 import { useEffect, useState } from 'react'
 import { useMenuStore } from '@/store/menu-store'
 import useStore from '@/store/nextjs-hook'
 import { useRestaurantStore } from '@/store/restaurantStore'
-import DishDialog from '../components/guest/dish-dialog'
+import DishDialog from '@/components/guest/dish-dialog'
 
 export default function Menu({ params }: { params: { restaurant: string } }) {
   const [activeDish, setActiveDish] = useState<Dish | null>(null)
