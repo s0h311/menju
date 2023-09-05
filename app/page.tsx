@@ -1,6 +1,12 @@
+'use client'
+
 import Link from 'next/link'
+import useDishService from './hooks/useDishService'
 
 export default function Home() {
+  const dishService = useDishService({ restaurantId: 1, language: 'de' })
+  console.log(dishService.dishesByCategory)
+
   return (
     <section className='grid place-items-center gap-10 mt-10'>
       <h1 className='text-2xl flex items-center gap-1'>

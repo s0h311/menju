@@ -2,6 +2,7 @@ import { Dish, DishCategory, DishesByCategory } from '@/app/types/dish.type'
 import { FilterChipModel } from '@/app/types/filter-chip.types'
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
+import { getState, setState, removeDish, addDish } from './menuStore/dish'
 
 export type MenuState = {
   allDishes: DishesByCategory[]
@@ -99,15 +100,7 @@ export const useMenuStore = create(
           allDishes: get().allDishes.filter((dishesByCategory) => dishesByCategory.category.id !== dishCategoryId),
         })),
 
-      addDish: (dish: Dish) => {
-        const dishesByCategory = get().allDishes.find((dbc) => dbc.category.id === dish.categoryId)
-        if (dishesByCategory) {
-          dishesByCategory.dishes.push(dish)
-        }
-        set(() => ({
-          allDishes: get().allDishes,
-        }))
-      },
+      addDish: (dish: Dish) => addDish(get, set, dish),
 
       updateDish: (dish: Dish) => {
         const dishesByCategory = get().allDishes.find((dbc) => dbc.category.id === dish.categoryId)
@@ -122,18 +115,7 @@ export const useMenuStore = create(
         }))
       },
 
-      removeDish: (dishCategoryId: number, dishId: number) => {
-        const dishesByCategory = get().allDishes.find((dbc) => dbc.category.id === dishCategoryId)
-        const dishIndex = dishesByCategory?.dishes.findIndex((oldDish) => oldDish.id === dishId)
-
-        if (dishesByCategory && dishIndex && dishIndex >= 0) {
-          dishesByCategory.dishes.splice(dishIndex, 1)
-        }
-
-        set(() => ({
-          allDishes: get().allDishes,
-        }))
-      },
+      removeDish: (dishCategoryId: number, dishId: number) => removeDish(get, set, dishCategoryId, dishId),
     }),
     {
       name: 'menu',

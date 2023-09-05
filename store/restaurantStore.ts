@@ -2,15 +2,15 @@ import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 
 type RestaurantState = {
-  restaurantId: number
+  restaurantId: number | null
   setRestaurantId: (restaurantId: number) => void
 }
 
 export const useRestaurantStore = create(
   persist<RestaurantState>(
     (set) => ({
-      restaurantId: 0,
-      setRestaurantId: (restaurantId: number) => set(() => ({ restaurantId })),
+      restaurantId: null,
+      setRestaurantId: (restaurantId: number) => set({ restaurantId }),
     }),
     {
       name: 'restaurant',

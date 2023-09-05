@@ -11,6 +11,7 @@ import { useMenuStore } from '@/store/menu-store'
 import useStore from '@/store/nextjs-hook'
 import { useRestaurantStore } from '@/store/restaurantStore'
 import DishDialog from '../components/guest/dish-dialog'
+import useDishService from '../hooks/useDishService'
 
 export default function Menu({ params }: { params: { restaurant: string } }) {
   const [activeDish, setActiveDish] = useState<Dish | null>(null)
