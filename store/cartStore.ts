@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import { Cart, OrderPosition } from '@/app/types/order.type'
+import { Cart, OrderPosition } from '@/types/order.type'
 import { useRestaurantStore } from './restaurantStore'
 
 type CartState = {

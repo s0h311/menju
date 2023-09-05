@@ -1,7 +1,7 @@
 'use client'
 
 import { Box, TextField, Button } from '@mui/material'
-import { zRegisterCredentials, RegisterCredentials } from '@/app/types/credentials.type'
+import { zRegisterCredentials, RegisterCredentials } from '@/types/credentials.type'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { trpc } from '@/trpc/trpc'

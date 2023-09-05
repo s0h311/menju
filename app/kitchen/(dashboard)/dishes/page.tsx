@@ -1,13 +1,13 @@
 'use client'
 
-import { useMenuStore } from '@/store/menu-store'
-import useStore from '@/store/nextjs-hook'
-import { Dish, DishCategory, DishesByCategory } from '@/app/types/dish.type'
+import { useMenuStore } from '@/store/menuStore'
+import useStore from '@/hooks/useStore'
+import { Dish, DishCategory, DishesByCategory } from '@/types/dish.type'
 import { useState } from 'react'
-import CardGrid from '@/app/components/kitchen/cardGrid'
-import Card from '@/app/components/kitchen/card'
-import AddDishCategory from '@/app/components/kitchen/addDishCategory'
-import Dialog from '@/app/ui/dialog'
+import CardGrid from '@/components/kitchen/cardGrid'
+import Card from '@/components/kitchen/card'
+import AddDishCategory from '@/components/kitchen/addDishCategory'
+import Dialog from '@/ui/dialog'
 import { trpc } from '@/trpc/trpc'
 
 export default function KitchenDishes() {

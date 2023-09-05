@@ -3,7 +3,7 @@ import { LanguageAndRestaurantId } from '../types/order.type'
 import { useRestaurantStore } from '@/store/restaurantStore'
 import { useEffect, useState } from 'react'
 import { DishesByCategory } from '../types/dish.type'
-import useStore from '@/store/nextjs-hook'
+import useStore from '@/hooks/useStore'
 
 export default function useDishService(configs?: LanguageAndRestaurantId) {
   // STORES

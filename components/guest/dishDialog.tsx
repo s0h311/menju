@@ -1,12 +1,12 @@
-import Dialog from '@/app/ui/dialog'
+import Dialog from '@/ui/dialog'
 import { Checkbox, ThemeProvider } from '@mui/material'
-import { Dish } from '@/app/types/dish.type'
+import { Dish } from '@/types/dish.type'
 import Image from 'next/image'
 import { useState } from 'react'
-import { OrderPosition } from '../../types/order.type'
-import { useCartStore } from '@/store/store'
-import { theme } from '@/app/ui/theme'
-import useStore from '@/store/nextjs-hook'
+import { OrderPosition } from '@/types/order.type'
+import { useCartStore } from '@/store/cartStore'
+import { theme } from '@/ui/theme'
+import useStore from '@/hooks/useStore'
 
 type DishDialogProps = {
   dish: Dish
