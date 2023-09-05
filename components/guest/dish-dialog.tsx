@@ -6,7 +6,7 @@ import { useState } from 'react'
 import { OrderPosition } from '@/types/order.type'
 import { useCartStore } from '@/store/store'
 import { theme } from '@/ui/theme'
-import useStore from '@/store/nextjs-hook'
+import useStore from '@/hooks/useStore'
 
 type DishDialogProps = {
   dish: Dish

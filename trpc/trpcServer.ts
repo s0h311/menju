@@ -4,9 +4,9 @@ import { zNewDish, zNewDishCategory } from '@/types/dish.type'
 import { zCart, zLanguageAndRestaurantId } from '@/types/order.type'
 import { zRegisterCredentials } from '@/types/credentials.type'
 import { UserResponse } from '@supabase/supabase-js'
-import { capitalize, getMultiLanguageStringProperty } from '@/trpc/business-domain/dish-service'
+import { capitalize, getMultiLanguageStringProperty } from '@/trpc/businessDomain/dishService'
 import { z } from 'zod'
-import { createUser } from '@/trpc/data/supabase-admin-client'
+import { createUser } from '@/trpc/data/supabaseAdminClient'
 import {
   createDish,
   createDishCategory,
@@ -17,7 +17,7 @@ import {
   getDishesByCategoryFromRestaurant,
   updateDish,
   updateDishCategory,
-} from '@/trpc/data/prisma-client'
+} from '@/trpc/data/prismaClient'
 import { Restaurant } from '@prisma/client'
 
 const t = initTRPC.create({
