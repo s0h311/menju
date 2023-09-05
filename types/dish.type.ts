@@ -32,7 +32,7 @@ export const zDish = z.object({
   id: z.number(),
   name: z.string(),
   price: z.number(),
-  picture: z.string().nullable(), // URL of the picture
+  picture: z.string().url().nullable(),
   categoryId: z.number(),
   ingredients: zIngredients,
   labels: z.array(z.string()),
@@ -49,7 +49,7 @@ export const zDish = z.object({
 export const zDishCategory = z.object({
   id: z.number(),
   name: z.string(),
-  picture: z.string().nullable(), // URL of the picture
+  picture: z.string().url().nullable(),
   restaurantId: z.number(),
 })
 
