@@ -4,9 +4,9 @@ import { Dish } from '@/types/dish.type'
 import Image from 'next/image'
 import { useState } from 'react'
 import { OrderPosition } from '@/types/order.type'
-import { useCartStore } from '@/store/store'
+import { useCartStore } from '@/store/cartStore'
 import { theme } from '@/ui/theme'
-import useStore from '@/store/nextjs-hook'
+import useStore from '@/hooks/useStore'
 
 type DishDialogProps = {
   dish: Dish
@@ -92,7 +92,7 @@ export default function DishDialog({ dish, setOpenDialog }: DishDialogProps) {
           <div>
             <h3>Zutaten</h3>
             <ul className='grid grid-cols-2'>
-              {dish.requiredIngredients.map((ingredient) => (
+              {dish.ingredients.required.map((ingredient) => (
                 <li
                   className='text-sm flex items-center'
                   key={ingredient}
@@ -109,7 +109,7 @@ export default function DishDialog({ dish, setOpenDialog }: DishDialogProps) {
             </ul>
 
             <ul className='grid grid-cols-2'>
-              {dish.optionalIngredients.map((ingredient) => (
+              {dish.ingredients.optional.map((ingredient) => (
                 <li
                   className='text-sm flex items-center cursor-pointer'
                   key={ingredient}

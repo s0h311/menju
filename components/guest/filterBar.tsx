@@ -1,8 +1,8 @@
 import { Accordion, AccordionDetails, AccordionSummary, Chip, ThemeProvider } from '@mui/material'
 import React from 'react'
 import { FilterChipModel } from '@/types/filter-chip.types'
-import { useMenuStore } from '@/store/menu-store'
-import useStore from '@/store/nextjs-hook'
+import { useMenuStore } from '@/store/menuStore'
+import useStore from '@/hooks/useStore'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { theme } from '@/ui/theme'
 

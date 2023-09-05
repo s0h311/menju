@@ -4,13 +4,13 @@ import { Dish, DishesByCategory } from '@/types/dish.type'
 import { trpc } from '@/trpc/trpc'
 import { FilterChipModel } from '@/types/filter-chip.types'
 import { Stack } from '@mui/material'
-import FilterBar from '@/components/guest/filter-bar'
-import FoodCategory from '@/components/guest/food-category'
+import FilterBar from '@/components/guest/filterBar'
+import FoodCategory from '@/components/guest/foodCategory'
 import { useEffect, useState } from 'react'
-import { useMenuStore } from '@/store/menu-store'
-import useStore from '@/store/nextjs-hook'
+import { useMenuStore } from '@/store/menuStore'
+import useStore from '@/hooks/useStore'
 import { useRestaurantStore } from '@/store/restaurantStore'
-import DishDialog from '@/components/guest/dish-dialog'
+import DishDialog from '@/components/guest/dishDialog'
 
 export default function Menu({ params }: { params: { restaurant: string } }) {
   const [activeDish, setActiveDish] = useState<Dish | null>(null)

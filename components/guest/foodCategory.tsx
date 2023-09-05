@@ -1,9 +1,9 @@
 import { Box, Divider, Stack, ThemeProvider } from '@mui/material'
 import React from 'react'
-import FoodItem from './food-item'
+import FoodItem from './foodItem'
 import { Dish, DishCategory } from '@/types/dish.type'
-import { useMenuStore } from '@/store/menu-store'
-import useStore from '@/store/nextjs-hook'
+import { useMenuStore } from '@/store/menuStore'
+import useStore from '@/hooks/useStore'
 import { theme } from '@/ui/theme'
 
 type FoodCategoryProps = {
@@ -28,17 +28,18 @@ export default function FoodCategory({ category, onCardClick }: FoodCategoryProp
           spacing={2}
           className='overflow-x-auto no-scrollbar p-1'
         >
-          {menuStore?.visibleDishes
-            .filter((cat) => category.id === cat.category.id)
-            .map((dish) =>
-              dish.dishes.map((dish) => (
-                <FoodItem
-                  key={dish.id}
-                  dish={dish}
-                  onClick={() => onCardClick(dish)}
-                />
-              ))
-            )}
+          {menuStore?.visibleDishes.length &&
+            menuStore.visibleDishes
+              .filter((cat) => category.id === cat.category.id)
+              .map((dish) =>
+                dish.dishes.map((dish) => (
+                  <FoodItem
+                    key={dish.id}
+                    dish={dish}
+                    onClick={() => onCardClick(dish)}
+                  />
+                ))
+              )}
         </Stack>
       </Box>
     </ThemeProvider>

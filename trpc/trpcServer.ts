@@ -1,25 +1,29 @@
 import { initTRPC } from '@trpc/server'
 import superjson from 'superjson'
-import { zNewDishCategory } from '@/types/dish.type'
+import { zNewDish, zNewDishCategory } from '@/types/dish.type'
 import { zCart, zLanguageAndRestaurantId } from '@/types/order.type'
 import { zRegisterCredentials } from '@/types/credentials.type'
 import { UserResponse } from '@supabase/supabase-js'
-import { capitalize, getMultiLanguageStringProperty } from '@/trpc/business-domain/dish-service'
+import { capitalize, getMultiLanguageStringProperty } from '@/trpc/helpers/dishHelpers'
 import { z } from 'zod'
-import { createUser } from '@/trpc/data/supabase-admin-client'
+import { createUser } from '@/trpc/data/supabaseAdminClient'
 import {
+  createDish,
   createDishCategory,
   createOrder,
   createRestaurant,
+  deleteDish,
   deleteDishCategory,
   getDishesByCategoryFromRestaurant,
+  updateDish,
   updateDishCategory,
-} from '@/trpc/data/prisma-client'
+} from '@/trpc/data/prismaClient'
 import { Restaurant } from '@prisma/client'
 
 const t = initTRPC.create({
   transformer: superjson,
 })
+
 export const appRouter = t.router({
   dishesByCategory: t.procedure.input(zLanguageAndRestaurantId).query(async (req) => {
     const {
@@ -39,6 +43,8 @@ export const appRouter = t.router({
     return await createUser(input, restaurant)
   }),
 
+  // DISH CATEGORY CRUD //
+
   addDishCategory: t.procedure.input(zNewDishCategory).mutation(async (req) => {
     const { input } = req
     const dishCategory = await createDishCategory(input)
@@ -56,6 +62,23 @@ export const appRouter = t.router({
   deleteDishCategory: t.procedure.input(z.number()).mutation(async (req) => {
     const { input: dishCategoryId } = req
     await deleteDishCategory(dishCategoryId)
+  }),
+
+  // DISH CRUD //
+
+  addDish: t.procedure.input(zNewDish).mutation(async (req) => {
+    const { input } = req
+    return await createDish(input)
+  }),
+
+  updateDish: t.procedure.input(zNewDish).mutation(async (req) => {
+    const { input } = req
+    return await updateDish(input)
+  }),
+
+  deleteDish: t.procedure.input(z.number()).mutation(async (req) => {
+    const { input: id } = req
+    await deleteDish(id)
   }),
 })
 
