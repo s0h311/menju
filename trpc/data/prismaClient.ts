@@ -2,7 +2,7 @@ import { PrismaClient, Restaurant } from '@prisma/client'
 import { DishCategory, DishesByCategory, NewDish, NewDishCategory } from '@/types/dish.type'
 import { Cart, Language, RestaurantId } from '@/types/order.type'
 
-import { capitalize, getMultiLanguageStringProperty, mapDish } from '@/trpc/businessDomain/dishService'
+import { capitalize, getMultiLanguageStringProperty, mapDish } from '@/trpc/helpers/dishHelpers'
 
 const prismaClient = new PrismaClient()
 

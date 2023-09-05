@@ -1,6 +1,6 @@
 import { Box, Divider, Stack, ThemeProvider } from '@mui/material'
 import React from 'react'
-import FoodItem from './food-item'
+import FoodItem from './foodItem'
 import { Dish, DishCategory } from '@/types/dish.type'
 import { useMenuStore } from '@/store/menuStore'
 import useStore from '@/hooks/useStore'

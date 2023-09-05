@@ -4,7 +4,7 @@ import { zNewDish, zNewDishCategory } from '@/types/dish.type'
 import { zCart, zLanguageAndRestaurantId } from '@/types/order.type'
 import { zRegisterCredentials } from '@/types/credentials.type'
 import { UserResponse } from '@supabase/supabase-js'
-import { capitalize, getMultiLanguageStringProperty } from '@/trpc/businessDomain/dishService'
+import { capitalize, getMultiLanguageStringProperty } from '@/trpc/helpers/dishHelpers'
 import { z } from 'zod'
 import { createUser } from '@/trpc/data/supabaseAdminClient'
 import {

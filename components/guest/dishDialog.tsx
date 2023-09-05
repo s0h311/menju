@@ -4,7 +4,7 @@ import { Dish } from '@/types/dish.type'
 import Image from 'next/image'
 import { useState } from 'react'
 import { OrderPosition } from '@/types/order.type'
-import { useCartStore } from '@/store/store'
+import { useCartStore } from '@/store/cartStore'
 import { theme } from '@/ui/theme'
 import useStore from '@/hooks/useStore'
 
