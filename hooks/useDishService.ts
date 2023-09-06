@@ -1,44 +1,89 @@
 import { trpc } from '@/trpc/trpc'
-import { LanguageAndRestaurantId } from '../types/order.type'
+import { Language, LanguageAndRestaurantId } from '../types/order.type'
 import { useRestaurantStore } from '@/store/restaurantStore'
 import { useEffect, useState } from 'react'
-import { DishesByCategory } from '../types/dish.type'
+import { DishesByCategory } from '@/types/dish.type'
 import useStore from '@/hooks/useStore'
+import { useMenuStore } from '@/store/menuStore'
 
 export default function useDishService(configs?: LanguageAndRestaurantId) {
-  // STORES
+  // RESTAURANT ID & LANGUAGE //
+
   const restaurantStore = useStore(useRestaurantStore, (state) => state, true)
 
+  const [dataOutdated, setDataOutdated] = useState<boolean>(true)
+
+  const isDataOutdated = (
+    configs: LanguageAndRestaurantId,
+    storeRestaurantId: number | null,
+    storeLanguage: Language
+  ) => configs.restaurantId !== storeRestaurantId || configs.language !== storeLanguage
+
   useEffect(() => {
-    if (configs) {
-      restaurantStore?.setRestaurantId(configs.restaurantId)
+    if (
+      restaurantStore &&
+      configs &&
+      configs.restaurantId &&
+      isDataOutdated(configs, restaurantStore.restaurantId, restaurantStore.language)
+    ) {
+      restaurantStore.setRestaurantId(configs.restaurantId)
+      restaurantStore.setLanguage(configs.language)
+      setDataOutdated(true)
+    } else {
+      setDataOutdated(false)
     }
   }, [configs, restaurantStore])
 
-  // LOAD CONFIGS
-  if (restaurantStore && !restaurantStore.restaurantId && !configs?.restaurantId) {
-    throw new Error("'restaurantId' must be present")
+  // DISHES & DISH CATEGORY //
+
+  const menuStore = useStore(useMenuStore, (state) => state, true)
+
+  const {
+    data: dishesByCategoryData,
+    isSuccess: isSuccessDishesByCategory,
+    refetch: refetchDishes,
+  } = trpc.dishesByCategory.useQuery(
+    {
+      restaurantId: (configs?.restaurantId || restaurantStore?.restaurantId)!,
+      language: (configs?.language || restaurantStore?.language)!,
+    },
+    { enabled: dataOutdated, refetchOnWindowFocus: false }
+  )
+
+  const [dishesByCategory, setDishesByCategory] = useState<DishesByCategory[]>([])
+  const visibleDishes = menuStore?.visibleDishes
+
+  useEffect(() => {
+    refetchDishes()
+  }, [dataOutdated, refetchDishes])
+
+  useEffect(() => {
+    if (isSuccessDishesByCategory && menuStore) {
+      menuStore.setAllDishes(dishesByCategoryData)
+      setDishesByCategory(menuStore.allDishes)
+    }
+  }, [dishesByCategoryData, isSuccessDishesByCategory, menuStore])
+
+  // EXPORTING FUNCTIONS //
+
+  const setRestaurantId = (restaurantId: number) => {
+    if (restaurantId !== restaurantStore?.restaurantId) {
+      restaurantStore?.setRestaurantId(restaurantId)
+      setDataOutdated(true)
+    }
   }
 
-  // eslint-disable-next-line
-  // @ts-ignore
-  const restaurantId: number = configs.restaurantId || restaurantStore.restaurantId
-
-  // TRPC Queries
-  const { data: dishesByCategoryData, isSuccess: isSuccessDishesByCategory } = trpc.dishesByCategory.useQuery({
-    restaurantId,
-    language: 'de',
-  })
-
-  // FETCH
-  const [dishesByCategory, setDishesByCategory] = useState<DishesByCategory[]>([])
-  useEffect(() => {
-    if (isSuccessDishesByCategory) {
-      setDishesByCategory(dishesByCategoryData)
+  const setLanguage = (language: Language) => {
+    if (language !== restaurantStore?.language) {
+      restaurantStore?.setLanguage(language)
+      setDataOutdated(true)
     }
-  }, [dishesByCategoryData, isSuccessDishesByCategory])
+  }
 
   return {
     dishesByCategory,
+    visibleDishes,
+    setRestaurantId,
+    setLanguage,
   }
 }

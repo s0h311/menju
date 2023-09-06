@@ -14,7 +14,8 @@ export const updateFilter = (get: getState, set: setState, filter: FilterChipMod
 export const filter = (get: getState, set: setState) =>
   set({ visibleDishes: applyFilter(get().allDishes, get().activeFilter) })
 
-export const setAllDishes = (get: getState, set: setState, dishes: DishesByCategory[]) => set({ allDishes: dishes })
+export const setAllDishes = (get: getState, set: setState, dishes: DishesByCategory[]) =>
+  set({ allDishes: dishes, visibleDishes: dishes })
 
 export const setVisibleDishes = (get: getState, set: setState, dishes: DishesByCategory[]) =>
   set({ visibleDishes: dishes })

@@ -6,40 +6,20 @@ import { FilterChipModel } from '@/types/filter-chip.types'
 import { Stack } from '@mui/material'
 import FilterBar from '@/components/guest/filterBar'
 import FoodCategory from '@/components/guest/foodCategory'
-import { useEffect, useState } from 'react'
-import { useMenuStore } from '@/store/menuStore'
-import useStore from '@/hooks/useStore'
-import { useRestaurantStore } from '@/store/restaurantStore'
+import { useState } from 'react'
 import DishDialog from '@/components/guest/dishDialog'
 import useDishService from '@/hooks/useDishService'
 
 export default function Menu({ params }: { params: { restaurant: string } }) {
-  const [activeDish, setActiveDish] = useState<Dish | null>(null)
-
-  const menuStore = useStore(useMenuStore, (state) => state)
-  const restaurantStore = useStore(useRestaurantStore, (state) => state)
-
   const restaurantId: number = parseInt(params.restaurant)
+  const dishService = useDishService({ restaurantId, language: 'de' })
 
-  const { data: dishesByCategory } = trpc.dishesByCategory.useQuery({
-    restaurantId,
-    language: 'de',
-  })
-
-  useEffect(() => {
-    if (dishesByCategory && menuStore?.visibleDishes.length === 0) {
-      menuStore.setAllDishes(dishesByCategory)
-      menuStore.setVisibleDishes(dishesByCategory)
-    }
-  }, [dishesByCategory, menuStore])
-
-  useEffect(() => {
-    restaurantStore?.setRestaurantId(restaurantId)
-  }, [restaurantStore, restaurantId])
+  const [activeDish, setActiveDish] = useState<Dish | null>(null)
+  const { dishesByCategory, visibleDishes } = dishService
 
   const filterChips: FilterChipModel[] = getFilterChips(dishesByCategory)
 
-  function getFilterChips(dishesByCategory: DishesByCategory[] | undefined): FilterChipModel[] {
+  function getFilterChips(dishesByCategory: DishesByCategory[]): FilterChipModel[] {
     const filterChipNames: Set<string> = new Set<string>()
     const filterChips: FilterChipModel[] = []
     dishesByCategory?.map((dishes: DishesByCategory): void => {
@@ -54,7 +34,7 @@ export default function Menu({ params }: { params: { restaurant: string } }) {
   return (
     <Stack className='mb-4'>
       <FilterBar chipData={filterChips} />
-      {menuStore?.visibleDishes.map((category) => (
+      {visibleDishes?.map((category) => (
         <FoodCategory
           key={category.category.id}
           category={category.category}
