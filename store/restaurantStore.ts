@@ -3,7 +3,7 @@ import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 
 type RestaurantState = {
-  restaurantId: number | null
+  restaurantId: number
   language: Language
   setRestaurantId: (restaurantId: number) => void
   setLanguage: (language: Language) => void
@@ -12,7 +12,7 @@ type RestaurantState = {
 export const useRestaurantStore = create(
   persist<RestaurantState>(
     (set) => ({
-      restaurantId: null,
+      restaurantId: 0,
       language: 'de',
       setRestaurantId: (restaurantId: number) => set({ restaurantId }),
       setLanguage: (language: Language) => ({ language }),

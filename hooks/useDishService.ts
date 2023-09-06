@@ -13,11 +13,8 @@ export default function useDishService(configs?: LanguageAndRestaurantId) {
 
   const [dataOutdated, setDataOutdated] = useState<boolean>(true)
 
-  const isDataOutdated = (
-    configs: LanguageAndRestaurantId,
-    storeRestaurantId: number | null,
-    storeLanguage: Language
-  ) => configs.restaurantId !== storeRestaurantId || configs.language !== storeLanguage
+  const isDataOutdated = (configs: LanguageAndRestaurantId, storeRestaurantId: number, storeLanguage: Language) =>
+    configs.restaurantId !== storeRestaurantId || configs.language !== storeLanguage
 
   useEffect(() => {
     if (

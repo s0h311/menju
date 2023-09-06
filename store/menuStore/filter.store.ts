@@ -1,6 +1,6 @@
 import { DishesByCategory } from '@/types/dish.type'
-import { FilterChipModel } from '@/types/filter-chip.types'
-import { MenuState } from '../menuStore'
+import { FilterChipModel } from '@/types/filterChip.type'
+import { MenuState } from '@/store/menuStore'
 
 export type getState = () => MenuState
 export type setState = (
