@@ -1,10 +1,10 @@
 import { Dish, DishCategory, DishesByCategory } from '@/types/dish.type'
-import { FilterChipModel } from '@/types/filter-chip.types'
+import { FilterChipModel } from '@/types/filterChip.type'
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
-import { addDish, removeDish, updateDish } from './menuStore/dish.store'
-import { addDishCategory, removeDishCategory, updateDishCategory } from './menuStore/dishCategory.store'
-import { filter, setAllDishes, setVisibleDishes, updateFilter } from './menuStore/filter.store'
+import { addDish, removeDish, updateDish } from '@/store/menuStore/dish.store'
+import { addDishCategory, removeDishCategory, updateDishCategory } from '@/store/menuStore/dishCategory.store'
+import { filter, setAllDishes, setVisibleDishes, updateFilter } from '@/store/menuStore/filter.store'
 
 export type MenuState = {
   allDishes: DishesByCategory[]
