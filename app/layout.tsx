@@ -1,7 +1,7 @@
 import './globals.css'
 import type { Metadata } from 'next'
 import { Kanit } from 'next/font/google'
-import { TrpcProvider } from '@/trpc/trpc-provider'
+import { TrpcProvider } from '@/trpc/trpcProvider'
 
 const kanit = Kanit({
   weight: '400',

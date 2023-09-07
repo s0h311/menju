@@ -4,22 +4,20 @@ import Image from 'next/image'
 import image from '@/public/images/login-food.jpg'
 import { Box, TextField, ThemeProvider } from '@mui/material'
 import { LoadingButton } from '@mui/lab'
-import { theme } from '@/app/ui/theme'
-import { zLoginCredentials, LoginCredentials } from '@/app/types/credentials.type'
+import { theme } from '@/ui/theme'
+import { zLoginCredentials, LoginCredentials } from '@/types/credentials.type'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
-import useDeviceType from '@/app/hooks/useDeviceType'
+import useDeviceType from '@/hooks/useDeviceType'
 import { useRouter } from 'next/navigation'
-import { useStore } from 'zustand'
-import { useRestaurantStore } from '@/store/restaurantStore'
+import useDishService from '@/hooks/useDishService'
 
 export default function Login() {
   const supabase = createClientComponentClient()
   const router = useRouter()
 
-  const restaurantStore = useStore(useRestaurantStore, (state) => state)
-
+  const { setRestaurantId } = useDishService()
   const { isMobile } = useDeviceType()
 
   const {
@@ -53,7 +51,7 @@ export default function Login() {
     }
 
     if (data.user) {
-      restaurantStore?.setRestaurantId(data.user.user_metadata['restaurantId'])
+      setRestaurantId(data.user.user_metadata['restaurantId'])
       router.push('/kitchen')
     }
   }

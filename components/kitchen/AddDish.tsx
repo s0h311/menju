@@ -1,14 +1,14 @@
 'use client'
 
-import { DishCategory, NewDish, zNewDish } from '@/app/types/dish.type'
-import Dialog from '@/app/ui/dialog'
+import { DishCategory, NewDish, zNewDish } from '@/types/dish.type'
+import Dialog from '@/ui/dialog'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import ImagePicker from './imagePicker'
 import { TextField, Select, InputLabel, MenuItem, FormControl } from '@mui/material'
 import { useEffect, useRef, useState } from 'react'
-import useStore from '@/store/nextjs-hook'
-import { useMenuStore } from '@/store/menu-store'
+import useStore from '@/hooks/useStore'
+import { useMenuStore } from '@/store/menuStore'
 
 type AddDishProps = {
   open: boolean

@@ -2,7 +2,7 @@
 
 import { ReactNode } from 'react'
 import Sidebar from './sidebar'
-import { SidebarMenu } from '@/app/types/dashboard.type'
+import { SidebarMenu } from '@/types/dashboard.type'
 
 type DashboardProps = {
   sidebarMenus: SidebarMenu[]

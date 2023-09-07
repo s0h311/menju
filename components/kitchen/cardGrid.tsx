@@ -3,7 +3,7 @@
 import { ReactNode, useState } from 'react'
 import { Button, IconButton, ThemeProvider } from '@mui/material'
 import { Add, ReplayRounded } from '@mui/icons-material'
-import { theme } from '@/app/ui/theme'
+import { theme } from '@/ui/theme'
 import AddDishCategory from './addDishCategory'
 import AddDish from './addDish'
 

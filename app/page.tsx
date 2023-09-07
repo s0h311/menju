@@ -2,10 +2,10 @@
 
 import { trpc } from '@/trpc/trpc'
 import Link from 'next/link'
-import { Dish } from './types/dish.type'
+import { Dish } from '@/types/dish.type'
 import { useRef } from 'react'
-import useStore from '@/store/nextjs-hook'
-import { useMenuStore } from '@/store/menu-store'
+import useStore from '@/hooks/useStore'
+import { useMenuStore } from '@/store/menuStore'
 
 export default function Home() {
   const menuStore = useStore(useMenuStore, (state) => state)
