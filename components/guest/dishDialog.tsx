@@ -17,7 +17,7 @@ export default function DishDialog({ dish, setOpenDialog }: DishDialogProps) {
   const cartStore = useStore(useCartStore, (state) => state)
 
   const [order, setOrder] = useState<OrderPosition>({
-    dishId: dish.id,
+    dish,
     quantity: 1,
     leftOutIngredients: [],
   })

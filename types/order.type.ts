@@ -1,10 +1,11 @@
 import { z } from 'zod'
+import { zDish } from './dish.type'
 
 export const zLanguage = z.enum(['en', 'de', 'it'])
 export const zRestaurantId = z.number().int().positive().finite()
 
 const zOrderPosition = z.object({
-  dishId: z.number(),
+  dish: zDish,
   quantity: z.number(),
   leftOutIngredients: z.string().array(),
 })
