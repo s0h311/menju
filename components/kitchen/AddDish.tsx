@@ -31,6 +31,21 @@ export default function AddDish({ open, editingDish, onClose }: AddDishProps) {
     console.log(dishCategories)
   }, [menuStore?.allDishes])
 
+  const tagInput = useRef<HTMLInputElement>(null)
+
+  const onTagAdd = () => {
+    const inputValue = tagInput.current?.value || ''
+
+    if (!inputValue) return
+
+    const newLabel = { de: inputValue || '', en: '', it: '' }
+    const labels = getValues('labels')
+    if (!labels || !labels.length) {
+      return setValue('labels', [newLabel])
+    }
+    setValue('labels', [...labels, newLabel])
+  }
+
   const {
     register,
     handleSubmit,
@@ -73,10 +88,10 @@ export default function AddDish({ open, editingDish, onClose }: AddDishProps) {
     setValue('picture', null, { shouldValidate: true }) // the second argument is to trigger a rerender
   }
 
-  /* const watcher = watch()
+  const watcher = watch()
   useEffect(() => {
     console.log(getValues())
-  }, [watcher]) */
+  }, [watcher])
 
   return (
     <Dialog
@@ -148,8 +163,19 @@ export default function AddDish({ open, editingDish, onClose }: AddDishProps) {
           </Select>
         </FormControl>
 
-        <div className='flex space-x-2 whitespace-nowrap overflow-x-scroll no-scrollbar cursor-pointer'>
-          <button>+</button>
+        <div className='flex space-x-2 w-full whitespace-nowrap overflow-x-scroll no-scrollbar cursor-pointer'>
+          <input
+            className='px-2 py-1 -mr-2 rounded-l-xl bg-primary text-text text-sm outline-none w-1-3 min-w-[33%]'
+            ref={tagInput}
+            type='text'
+            placeholder='Neuer Tag'
+          />
+          <button
+            className='rounded-r-xl bg-secondary px-2'
+            onClick={onTagAdd}
+          >
+            +
+          </button>
           {getValues().labels?.map((label) => (
             <p
               className='rounded-xl px-2 py-1 bg-primary text-text text-sm'
