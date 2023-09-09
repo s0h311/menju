@@ -28,6 +28,8 @@ const zIngredients = z.object({
   optional: z.array(z.string()),
 })
 
+const zDietType = z.enum(['VEGAN', 'VEGETARIAN', 'PESCATARIAN', 'OMNIVORE'])
+
 export const zDish = z.object({
   id: z.number(),
   name: z.string(),
@@ -38,7 +40,7 @@ export const zDish = z.object({
   labels: z.array(z.string()),
   allergies: z.array(z.string()),
   nutritions: zNutritions.nullable(),
-  dietType: z.enum(['VEGAN', 'VEGETARIAN', 'PESCATARIAN', 'OMNIVORE']).nullable(),
+  dietType: zDietType.nullable(),
   description: z.string().nullable(),
   saleStartDate: z.date().nullable(),
   saleEndDate: z.date().nullable(),
@@ -75,7 +77,7 @@ export const zNewDish = z.object({
   labels: z.array(zMultiLanguageStringProperty).optional(),
   allergies: z.array(zMultiLanguageStringProperty).optional(),
   nutritions: zNutritions.optional(),
-  dietType: z.enum(['VEGAN', 'VEGETARIAN', 'PESCATARIAN', 'OMNIVORE']).nullish(),
+  dietType: zDietType.nullish(),
   description: zMultiLanguageStringProperty.optional(),
   saleStartDate: z.date().nullish(),
   saleEndDate: z.date().nullish(),
@@ -93,3 +95,4 @@ export type DishesByCategory = z.infer<typeof zDishesByCategory>
 export type MultiLanguageStringProperty = z.infer<typeof zMultiLanguageStringProperty>
 export type PIngredients = z.infer<typeof zPIngredients>
 export type Ingredients = z.infer<typeof zIngredients>
+export type DietType = z.infer<typeof zDietType>

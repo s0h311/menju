@@ -12,6 +12,7 @@ import { theme } from './theme'
 import { ReactNode } from 'react'
 import Image from 'next/image'
 import { StaticImport } from 'next/dist/shared/lib/get-img-props'
+import { LoadingButton } from '@mui/lab'
 
 type DialogProps = {
   title?: string
@@ -30,6 +31,7 @@ type DialogProps = {
   onClose: () => void
   onProceed?: () => void
   revertSuccessError?: boolean
+  loading?: boolean
 }
 
 export default function Dialog({
@@ -45,12 +47,13 @@ export default function Dialog({
   sx,
   revertSuccessError,
   imageData,
+  loading,
 }: DialogProps) {
   return (
     <>
       <ThemeProvider theme={theme}>
         <MatDialog
-          PaperProps={{ sx: { borderRadius: '16px', maxHeight: '65dvh' } }}
+          PaperProps={{ sx: { borderRadius: '16px', maxHeight: '75dvh' } }}
           onClose={onClose}
           open={open}
           fullWidth
@@ -58,12 +61,7 @@ export default function Dialog({
           aria-labelledby='dialog-title'
           aria-describedby='dialog-description'
         >
-          <Title
-            id='dialog-title'
-            sx={{ p: 0 }}
-          >
-            {title}
-          </Title>
+          {title && <Title id='dialog-title'>{title}</Title>}
           {imageData?.src && (
             <Image
               className={`rounded-t-2xl mb-2 ${imageData.onClick ? 'cursor-pointer' : ''}`}
@@ -90,14 +88,15 @@ export default function Dialog({
             >
               {closeText}
             </Button>
-            <Button
+            <LoadingButton
+              loading={loading}
               sx={{ borderRadius: '16px' }}
               variant='outlined'
               color={revertSuccessError ? 'error' : 'success'}
               onClick={onProceed}
             >
               {proceedText}
-            </Button>
+            </LoadingButton>
           </Actions>
         </MatDialog>
       </ThemeProvider>
