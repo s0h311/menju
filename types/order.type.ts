@@ -10,10 +10,12 @@ const zOrderPosition = z.object({
   leftOutIngredients: z.string().array(),
 })
 
+const zPaymentMethod = z.enum(['CARD', 'CASH', 'COUPON'])
+
 export const zCart = z.object({
   table: z.string(),
   positions: z.array(zOrderPosition),
-  paymentMethod: z.enum(['CARD', 'CASH', 'COUPON']),
+  paymentMethod: zPaymentMethod,
   isPayed: z.boolean().nullable(),
   netTotal: z.number(),
   vat: z.number().nullable(),
@@ -31,3 +33,4 @@ export type RestaurantId = z.infer<typeof zRestaurantId>
 export type OrderPosition = z.infer<typeof zOrderPosition>
 export type Cart = z.infer<typeof zCart>
 export type LanguageAndRestaurantId = z.infer<typeof zLanguageAndRestaurantId>
+export type PaymentMethod = z.infer<typeof zPaymentMethod>

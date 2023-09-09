@@ -25,13 +25,25 @@ export const useCartStore = create(
         note: null,
       },
       setCart: (cart: Cart) => set(() => ({ cart: cart })),
-      addPosition: (position: OrderPosition) =>
+      addPosition: (position: OrderPosition) => {
+        const currentPosition = get().cart.positions.find((currentPosition) => {
+          currentPosition.dish.id === position.dish.id &&
+            currentPosition.leftOutIngredients.every((p) => position.leftOutIngredients.includes(p))
+          //TODO funktioniert nicht
+        })
+        if (currentPosition) {
+          currentPosition.quantity++
+          return set(() => ({
+            cart: get().cart,
+          }))
+        }
         set(() => ({
           cart: {
             ...get().cart,
             positions: [...get().cart.positions, position],
           },
-        })),
+        }))
+      },
     }),
     {
       name: 'cart',
