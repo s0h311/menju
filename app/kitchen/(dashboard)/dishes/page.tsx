@@ -37,7 +37,10 @@ export default function KitchenDishes() {
 
   return (
     <section className='grid grid-cols-2 gap-5 xl:gap-10 w-full h-full'>
-      <CardGrid title='Kategorien'>
+      <CardGrid
+        title='Kategorien'
+        contentType='dishCategory'
+      >
         {menuStore?.allDishes.map((card: DishesByCategory) => (
           <div key={card.category.id}>
             {!editingDishCategory || editingDishCategory.id !== card.category.id ? (
@@ -62,6 +65,7 @@ export default function KitchenDishes() {
       </CardGrid>
       <CardGrid
         title={activeDishesCategory ? `Gerichte - ${activeDishesCategory.category.name}` : 'Alle Gerichte'}
+        contentType='dish'
         withReset
         onReset={() => setActiveDishesCategory(null)}
       >
