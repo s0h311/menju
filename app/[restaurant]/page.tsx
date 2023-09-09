@@ -8,7 +8,7 @@ import FoodCategory from '@/components/guest/foodCategory'
 import { useState } from 'react'
 import DishDialog from '@/components/guest/dishDialog'
 import useDishService from '@/hooks/useDishService'
-import CartDialog from '../components/guest/cartDialog'
+import CartDialog from '../../components/guest/cartDialog'
 
 export default function Menu({ params }: { params: { restaurant: string } }) {
   const restaurantId: number = parseInt(params.restaurant)
