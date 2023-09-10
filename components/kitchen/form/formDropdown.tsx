@@ -10,7 +10,7 @@ type FormDropdownProps = {
     name: string
   }
   error: boolean
-  items: { id: string | number; name: string | number }[]
+  items: { id: string | number; name: string }[]
 }
 
 export default function FormDropdown({ label, register, error, items }: FormDropdownProps) {

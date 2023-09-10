@@ -13,6 +13,7 @@ export default function FormMultiSelectionChips<T>({ items, activeItem, onClick 
           className={`rounded-xl px-2 py-1 text-text text-sm cursor-pointer ${
             activeItem === item ? 'bg-accent' : 'bg-slate-500'
           }`}
+          type='button'
           onClick={() => onClick(item)}
         >
           {String(item)}

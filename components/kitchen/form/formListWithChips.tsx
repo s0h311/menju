@@ -44,6 +44,7 @@ export default function FormListWithChips({
       />
       <button
         className={`rounded-r-xl px-2 ${addButttonColor}`}
+        type='button'
         onClick={addItem}
       >
         +
