@@ -5,7 +5,7 @@ import Dialog from '@/ui/dialog'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Box, TextField } from '@mui/material'
-import { useEffect, useRef, useState } from 'react'
+import { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from 'react'
 import useStore from '@/hooks/useStore'
 import { useMenuStore } from '@/store/menuStore'
 import { TextareaAutosize } from '@mui/base'
@@ -37,7 +37,6 @@ export default function AddDish({ open, editingDish, onClose }: AddDishProps) {
     if (categories) {
       setDishCategories(categories)
     }
-    console.log(dishCategories)
   }, [menuStore?.allDishes])
 
   const {
@@ -150,6 +149,7 @@ export default function AddDish({ open, editingDish, onClose }: AddDishProps) {
       closeText='Abbrechen'
       proceedText='Hinzufügen'
       onClose={onClose}
+      onProceed={handleSubmit(onSubmit)}
       maxWidth='xs'
       imageData={{
         src: getValues().picture || preview,
@@ -161,7 +161,9 @@ export default function AddDish({ open, editingDish, onClose }: AddDishProps) {
       <Box
         sx={{ display: 'grid', gap: '12px' }}
         component='form'
-        onSubmit={handleSubmit(onSubmit)}
+        onKeyDown={(event: KeyboardEvent) => {
+          if (event.key === 'Enter') return event.preventDefault()
+        }}
       >
         {/* Image */}
         {!getValues().picture && !preview && (
@@ -189,7 +191,13 @@ export default function AddDish({ open, editingDish, onClose }: AddDishProps) {
           label='Preis'
           required
           type='number'
-          {...(register('price'), { valueAsNumber: true, min: 0.5 })}
+          inputProps={{
+            min: 1,
+            max: 10000,
+          }}
+          onChange={(event: ChangeEvent<HTMLInputElement>) => {
+            setValue('price', event.target.valueAsNumber)
+          }}
           error={!!errors.price}
           helperText={errors.price?.message}
           color='accent'

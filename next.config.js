@@ -55,6 +55,7 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'images.lecker.de',
       },
+      { protocol: 'https', hostname: 'xtapuuiutmkpsjijkgfw.supabase.co' },
     ],
   },
 }
