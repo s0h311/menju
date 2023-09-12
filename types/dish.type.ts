@@ -1,5 +1,4 @@
 import { z } from 'zod'
-import { zRestaurantId } from './order.type'
 
 export const zAllergy = z.object({
   id: z.number(),
@@ -12,23 +11,12 @@ export const zNutritions = z.object({
   protein: z.number(),
 })
 
-const zMultiLanguageStringProperty = z.object({
-  de: z.string().nonempty(),
-  en: z.string(),
-  it: z.string(),
-})
-
-const zPIngredients = z.object({
-  required: z.array(zMultiLanguageStringProperty),
-  optional: z.array(zMultiLanguageStringProperty),
-})
-
-const zIngredients = z.object({
+export const zIngredients = z.object({
   required: z.array(z.string()),
   optional: z.array(z.string()),
 })
 
-const zDietType = z.enum(['VEGAN', 'VEGETARIAN', 'PESCATARIAN', 'OMNIVORE'])
+export const zDietType = z.enum(['VEGAN', 'VEGETARIAN', 'PESCATARIAN', 'OMNIVORE'])
 
 export const zDish = z.object({
   id: z.number(),
@@ -60,39 +48,10 @@ export const zDishesByCategory = z.object({
   dishes: z.array(zDish),
 })
 
-export const zNewDishCategory = z.object({
-  id: z.number().optional(),
-  name: zMultiLanguageStringProperty,
-  picture: z.string().url().nullish(),
-  restaurantId: zRestaurantId,
-})
-
-export const zNewDish = z.object({
-  id: z.number().optional(),
-  name: zMultiLanguageStringProperty,
-  price: z.number(),
-  picture: z.string().url().nullish(),
-  categoryId: z.number(),
-  ingredients: zPIngredients,
-  labels: z.array(zMultiLanguageStringProperty).optional(),
-  allergies: z.array(zMultiLanguageStringProperty).optional(),
-  nutritions: zNutritions.optional(),
-  dietType: zDietType.nullish(),
-  description: zMultiLanguageStringProperty.optional(),
-  saleStartDate: z.date().nullish(),
-  saleEndDate: z.date().nullish(),
-  salePrice: z.number().nullish(),
-  saleDays: z.array(z.number()).optional(),
-})
-
 export type Allergy = z.infer<typeof zAllergy>
 export type Nutritions = z.infer<typeof zNutritions>
 export type Dish = z.infer<typeof zDish>
-export type NewDish = z.infer<typeof zNewDish>
 export type DishCategory = z.infer<typeof zDishCategory>
-export type NewDishCategory = z.infer<typeof zNewDishCategory>
 export type DishesByCategory = z.infer<typeof zDishesByCategory>
-export type MultiLanguageStringProperty = z.infer<typeof zMultiLanguageStringProperty>
-export type PIngredients = z.infer<typeof zPIngredients>
 export type Ingredients = z.infer<typeof zIngredients>
 export type DietType = z.infer<typeof zDietType>

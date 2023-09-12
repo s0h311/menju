@@ -1,6 +1,7 @@
 'use client'
 
-import { DietType, Dish, DishCategory, MultiLanguageStringProperty, NewDish, zNewDish } from '@/types/dish.type'
+import { DietType, Dish, DishCategory } from '@/types/dish.type'
+import { DBMultiLanguageStringProperty, DBDish, zDBDish } from '@/types/db/dish.db.type'
 import Dialog from '@/ui/dialog'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -15,10 +16,11 @@ import FormListWithChips from './form/formListWithChips'
 import FormMultiSelectionChips from './form/formMultiSelectionChips'
 import useStorageUploader from '@/hooks/useStorageUploader'
 import { trpc } from '@/trpc/trpc'
+import { initialDBDish } from '@/types/db/dish.initial.db.type'
 
 type AddDishProps = {
   open: boolean
-  editingDish?: NewDish
+  editingDish?: Dish
   onClose: () => void
 }
 
@@ -46,27 +48,9 @@ export default function AddDish({ open, editingDish, onClose }: AddDishProps) {
     setError,
     setValue,
     getValues,
-  } = useForm<NewDish>({
-    defaultValues: editingDish
-      ? { ...editingDish }
-      : {
-          id: undefined,
-          name: { de: '', en: '', it: '' },
-          price: 0,
-          picture: null,
-          categoryId: 0,
-          ingredients: { required: [], optional: [] },
-          labels: [],
-          allergies: [],
-          nutritions: { energy: 0, protein: 0 },
-          dietType: null,
-          description: { de: '', en: '', it: '' },
-          saleStartDate: null,
-          saleEndDate: null,
-          salePrice: null,
-          saleDays: [],
-        },
-    resolver: zodResolver(zNewDish),
+  } = useForm<DBDish>({
+    defaultValues: initialDBDish,
+    resolver: zodResolver(zDBDish),
   })
 
   const onImageChange = async (imageData: string, file: File): Promise<void> => {
@@ -81,7 +65,7 @@ export default function AddDish({ open, editingDish, onClose }: AddDishProps) {
   }
 
   const addMultiLanguageItem = (
-    newItem: MultiLanguageStringProperty,
+    newItem: DBMultiLanguageStringProperty,
     fieldName: 'labels' | 'allergies' | 'ingredients.required' | 'ingredients.optional'
   ) => {
     const field = getValues(fieldName)
@@ -90,7 +74,7 @@ export default function AddDish({ open, editingDish, onClose }: AddDishProps) {
   }
 
   const removeMultiLanguageItem = (
-    item: MultiLanguageStringProperty,
+    item: DBMultiLanguageStringProperty,
     fieldName: 'labels' | 'allergies' | 'ingredients.required' | 'ingredients.optional'
   ) => {
     let field = getValues(fieldName)
@@ -100,7 +84,7 @@ export default function AddDish({ open, editingDish, onClose }: AddDishProps) {
 
   const dietTypes: DietType[] = ['VEGAN', 'VEGETARIAN', 'PESCATARIAN', 'OMNIVORE']
 
-  const onSubmit = async (dish: NewDish): Promise<void> => {
+  const onSubmit = async (dish: DBDish): Promise<void> => {
     if (imageFile.current) {
       await uploadImage(imageFile.current)
       if (imageStoragePath.current) {
@@ -147,7 +131,7 @@ export default function AddDish({ open, editingDish, onClose }: AddDishProps) {
       open={open}
       title={!getValues().picture && !preview ? 'Neues Gericht hinzufügen' : ''}
       closeText='Abbrechen'
-      proceedText='Hinzufügen'
+      proceedText={editingDish ? 'Ändern' : 'Hinzufügen'}
       onClose={onClose}
       onProceed={handleSubmit(onSubmit)}
       maxWidth='xs'
@@ -198,6 +182,7 @@ export default function AddDish({ open, editingDish, onClose }: AddDishProps) {
           onChange={(event: ChangeEvent<HTMLInputElement>) => {
             setValue('price', event.target.valueAsNumber)
           }}
+          value={getValues('price')}
           error={!!errors.price}
           helperText={errors.price?.message}
           color='accent'
@@ -213,8 +198,8 @@ export default function AddDish({ open, editingDish, onClose }: AddDishProps) {
 
         {/* Labels */}
         <FormListWithChips
-          onItemAdd={(item: MultiLanguageStringProperty) => addMultiLanguageItem(item, 'labels')}
-          onItemRemove={(item: MultiLanguageStringProperty) => removeMultiLanguageItem(item, 'labels')}
+          onItemAdd={(item: DBMultiLanguageStringProperty) => addMultiLanguageItem(item, 'labels')}
+          onItemRemove={(item: DBMultiLanguageStringProperty) => removeMultiLanguageItem(item, 'labels')}
           items={getValues().labels || []}
           placeholder='Label'
           chipColor='bg-teal-800'
@@ -223,8 +208,8 @@ export default function AddDish({ open, editingDish, onClose }: AddDishProps) {
 
         {/* Allergies */}
         <FormListWithChips
-          onItemAdd={(item: MultiLanguageStringProperty) => addMultiLanguageItem(item, 'allergies')}
-          onItemRemove={(item: MultiLanguageStringProperty) => removeMultiLanguageItem(item, 'allergies')}
+          onItemAdd={(item: DBMultiLanguageStringProperty) => addMultiLanguageItem(item, 'allergies')}
+          onItemRemove={(item: DBMultiLanguageStringProperty) => removeMultiLanguageItem(item, 'allergies')}
           items={getValues().allergies || []}
           placeholder='Allergen'
           chipColor='bg-cyan-800'
@@ -233,8 +218,8 @@ export default function AddDish({ open, editingDish, onClose }: AddDishProps) {
 
         {/* Required Ingredients */}
         <FormListWithChips
-          onItemAdd={(item: MultiLanguageStringProperty) => addMultiLanguageItem(item, 'ingredients.required')}
-          onItemRemove={(item: MultiLanguageStringProperty) => removeMultiLanguageItem(item, 'ingredients.required')}
+          onItemAdd={(item: DBMultiLanguageStringProperty) => addMultiLanguageItem(item, 'ingredients.required')}
+          onItemRemove={(item: DBMultiLanguageStringProperty) => removeMultiLanguageItem(item, 'ingredients.required')}
           items={getValues().ingredients.required || []}
           placeholder='Zutat'
           chipColor='bg-sky-800'
@@ -243,8 +228,8 @@ export default function AddDish({ open, editingDish, onClose }: AddDishProps) {
 
         {/* Optional Ingredients */}
         <FormListWithChips
-          onItemAdd={(item: MultiLanguageStringProperty) => addMultiLanguageItem(item, 'ingredients.optional')}
-          onItemRemove={(item: MultiLanguageStringProperty) => removeMultiLanguageItem(item, 'ingredients.optional')}
+          onItemAdd={(item: DBMultiLanguageStringProperty) => addMultiLanguageItem(item, 'ingredients.optional')}
+          onItemRemove={(item: DBMultiLanguageStringProperty) => removeMultiLanguageItem(item, 'ingredients.optional')}
           items={getValues().ingredients.optional || []}
           placeholder='optionale Zutat'
           chipColor='bg-sky-900'

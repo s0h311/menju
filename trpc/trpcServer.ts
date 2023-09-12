@@ -1,6 +1,6 @@
 import { initTRPC } from '@trpc/server'
 import superjson from 'superjson'
-import { zNewDish, zNewDishCategory } from '@/types/dish.type'
+import { zDBDish, zDBDishCategory } from '@/types/db/dish.db.type'
 import { zCart, zLanguageAndRestaurantId } from '@/types/order.type'
 import { zRegisterCredentials } from '@/types/credentials.type'
 import { UserResponse } from '@supabase/supabase-js'
@@ -45,7 +45,7 @@ export const appRouter = t.router({
 
   // DISH CATEGORY CRUD //
 
-  addDishCategory: t.procedure.input(zNewDishCategory).mutation(async (req) => {
+  addDishCategory: t.procedure.input(zDBDishCategory).mutation(async (req) => {
     const { input } = req
     const dishCategory = await createDishCategory(input)
     return {
@@ -54,7 +54,7 @@ export const appRouter = t.router({
     }
   }),
 
-  updateDishCategory: t.procedure.input(zNewDishCategory).mutation(async (req) => {
+  updateDishCategory: t.procedure.input(zDBDishCategory).mutation(async (req) => {
     const { input } = req
     return await updateDishCategory(input)
   }),
@@ -66,12 +66,12 @@ export const appRouter = t.router({
 
   // DISH CRUD //
 
-  addDish: t.procedure.input(zNewDish).mutation(async (req) => {
+  addDish: t.procedure.input(zDBDish).mutation(async (req) => {
     const { input } = req
     return await createDish(input)
   }),
 
-  updateDish: t.procedure.input(zNewDish).mutation(async (req) => {
+  updateDish: t.procedure.input(zDBDish).mutation(async (req) => {
     const { input } = req
     return await updateDish(input)
   }),

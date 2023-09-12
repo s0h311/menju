@@ -9,6 +9,7 @@ import Card from '@/components/kitchen/card'
 import AddDishCategory from '@/components/kitchen/addDishCategory'
 import Dialog from '@/ui/dialog'
 import { trpc } from '@/trpc/trpc'
+import AddDish from '@/components/kitchen/addDish'
 
 export default function KitchenDishes() {
   const [activeDishesCategory, setActiveDishesCategory] = useState<DishesByCategory | null>(null)
@@ -88,21 +89,22 @@ export default function KitchenDishes() {
             key={card.id}
             title={card.name}
             image={card.picture || ''}
+            onClick={() => setEditingDish(card)}
             onEdit={() => setEditingDish(card)}
             onDelete={() => setDeletingDish(card)}
           >
-            {card.price}
+            Preis: {card.price.toFixed(2)} EUR
           </Card>
         ))}
       </CardGrid>
 
-      {/* {editingDish && (
+      {editingDish && (
         <AddDish
           open={!!editingDish}
           editingDish={editingDish}
-          onClose={() => setEditingDish(false)}
+          onClose={() => setEditingDish(null)}
         />
-      )} */}
+      )}
 
       <Dialog
         sx={{ display: 'grid', placeItems: 'center', marginTop: '20px' }}
