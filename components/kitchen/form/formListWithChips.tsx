@@ -1,10 +1,10 @@
-import { MultiLanguageStringProperty } from '@/types/dish.type'
+import { DBMultiLanguageStringProperty } from '@/types/db/dish.db.type'
 import { useRef, KeyboardEvent } from 'react'
 
 type FormListWithChipsProps = {
-  onItemAdd: (item: MultiLanguageStringProperty) => void
-  onItemRemove: (item: MultiLanguageStringProperty) => void
-  items: MultiLanguageStringProperty[]
+  onItemAdd: (item: DBMultiLanguageStringProperty) => void
+  onItemRemove: (item: DBMultiLanguageStringProperty) => void
+  items: DBMultiLanguageStringProperty[]
   placeholder: string
   chipColor: string
   addButttonColor: string
@@ -49,7 +49,7 @@ export default function FormListWithChips({
       >
         +
       </button>
-      {items.map((item: MultiLanguageStringProperty) => (
+      {items.map((item: DBMultiLanguageStringProperty) => (
         <button
           className={`rounded-xl px-2 py-1 text-white text-sm cursor-pointer ${chipColor}`}
           key={item.de}

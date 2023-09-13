@@ -16,7 +16,7 @@ import FormListWithChips from './form/formListWithChips'
 import FormMultiSelectionChips from './form/formMultiSelectionChips'
 import useStorageUploader from '@/hooks/useStorageUploader'
 import { trpc } from '@/trpc/trpc'
-import { initialDBDish } from '@/types/db/dish.initial.db.type'
+import { initialDBDish } from '@/types/db/dish.initial.db'
 
 type AddDishProps = {
   open: boolean
