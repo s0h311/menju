@@ -6,7 +6,8 @@ import { LoadingButton } from '@mui/lab'
 import { Check, Close } from '@mui/icons-material'
 import { useForm } from 'react-hook-form'
 import { theme } from '@/ui/theme'
-import { DishCategory, NewDishCategory, zNewDishCategory } from '@/types/dish.type'
+import { DishCategory } from '@/types/dish.type'
+import { DBDishCategory, zDBDishCategory } from '@/types/db/dish.db.type'
 import { trpc } from '@/trpc/trpc'
 import useStore from '@/hooks/useStore'
 import { useMenuStore } from '@/store/menuStore'
@@ -37,14 +38,14 @@ export default function AddDishCategory({ editingDishCategory, onClose }: AddDis
     setError,
     setValue,
     getValues,
-  } = useForm<NewDishCategory>({
+  } = useForm<DBDishCategory>({
     defaultValues: {
       id: editingDishCategory?.id || undefined,
       name: { de: editingDishCategory?.name || '', en: '', it: '' },
       picture: editingDishCategory?.picture || null,
       restaurantId: restaurantStore?.restaurantId,
     },
-    resolver: zodResolver(zNewDishCategory),
+    resolver: zodResolver(zDBDishCategory),
   })
 
   useEffect(() => {
@@ -53,7 +54,7 @@ export default function AddDishCategory({ editingDishCategory, onClose }: AddDis
     }
   }, [restaurantStore?.restaurantId, setValue])
 
-  const onSubmit = async (dishCategory: NewDishCategory): Promise<void> => {
+  const onSubmit = async (dishCategory: DBDishCategory): Promise<void> => {
     if (imageFile.current) {
       await uploadImage(imageFile.current)
       if (imageStoragePath.current) {

@@ -33,7 +33,7 @@ export default function Card({ title, image, onClick, onDelete, onEdit, children
           />
           <CardContent>
             <Typography
-              sx={{ fontSize: '18px', whiteSpace: 'nowrap' }}
+              sx={{ fontSize: '18px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
               gutterBottom
             >
               {title}

@@ -1,0 +1,17 @@
+export const initialDBDish = {
+  id: undefined,
+  name: { de: '', en: '', it: '' },
+  price: 0,
+  picture: null,
+  categoryId: 0,
+  ingredients: { required: [], optional: [] },
+  labels: [],
+  allergies: [],
+  nutritions: { energy: 0, protein: 0 },
+  dietType: null,
+  description: { de: '', en: '', it: '' },
+  saleStartDate: null,
+  saleEndDate: null,
+  salePrice: null,
+  saleDays: [],
+}
