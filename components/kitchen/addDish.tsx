@@ -5,8 +5,8 @@ import { DBMultiLanguageStringProperty, DBDish, zDBDish } from '@/types/db/dish.
 import Dialog from '@/ui/dialog'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Box, TextField } from '@mui/material'
-import { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from 'react'
+import { TextField } from '@mui/material'
+import { ChangeEvent, useEffect, useRef, useState } from 'react'
 import useStore from '@/hooks/useStore'
 import { useMenuStore } from '@/store/menuStore'
 import { TextareaAutosize } from '@mui/base'
@@ -69,8 +69,8 @@ export default function AddDish({ open, editingDish, onClose }: AddDishProps) {
     fieldName: 'labels' | 'allergies' | 'ingredients.required' | 'ingredients.optional'
   ) => {
     const field = getValues(fieldName)
-    if (!field || !field.length) setValue(fieldName, [newItem])
-    else setValue(fieldName, [...field, newItem])
+    if (!field || !field.length) setValue(fieldName, [newItem], { shouldValidate: true })
+    else setValue(fieldName, [...field, newItem], { shouldValidate: true })
   }
 
   const removeMultiLanguageItem = (
@@ -79,7 +79,7 @@ export default function AddDish({ open, editingDish, onClose }: AddDishProps) {
   ) => {
     let field = getValues(fieldName)
     field = field?.filter((currentField) => currentField.de !== item.de)
-    setValue(fieldName, field)
+    setValue(fieldName, field, { shouldValidate: true })
   }
 
   const dietTypes: DietType[] = ['VEGAN', 'VEGETARIAN', 'PESCATARIAN', 'OMNIVORE']
@@ -127,7 +127,7 @@ export default function AddDish({ open, editingDish, onClose }: AddDishProps) {
 
   return (
     <Dialog
-      sx={{ p: '20px' }}
+      sx={{ display: 'grid', gap: '12px', pb: 0, px: '20px', overflowY: 'unset' }}
       open={open}
       title={!getValues().picture && !preview ? 'Neues Gericht hinzufügen' : ''}
       closeText='Abbrechen'
@@ -142,114 +142,105 @@ export default function AddDish({ open, editingDish, onClose }: AddDishProps) {
       }}
       loading={isSubmitSuccessful}
     >
-      <Box
-        sx={{ display: 'grid', gap: '12px' }}
-        component='form'
-        onKeyDown={(event: KeyboardEvent) => {
-          if (event.key === 'Enter') return event.preventDefault()
+      {/* Image */}
+      {!getValues().picture && !preview && (
+        <FormImage
+          onImageChange={onImageChange}
+          register={{ ...register('picture') }}
+          error={{ error: !!errors.picture, helperText: errors.picture?.message }}
+        />
+      )}
+
+      {/* Name */}
+      <TextField
+        id='name'
+        label='Name'
+        required
+        {...register('name.de')}
+        error={!!errors.name}
+        helperText={errors.name?.de?.message}
+        color='accent'
+      />
+
+      {/* Price */}
+      <TextField
+        id='price'
+        label='Preis'
+        required
+        type='number'
+        inputProps={{
+          min: 1,
+          max: 10000,
         }}
-      >
-        {/* Image */}
-        {!getValues().picture && !preview && (
-          <FormImage
-            onImageChange={onImageChange}
-            register={{ ...register('picture') }}
-            error={{ error: !!errors.picture, helperText: errors.picture?.message }}
-          />
-        )}
+        onChange={(event: ChangeEvent<HTMLInputElement>) => {
+          setValue('price', event.target.valueAsNumber)
+        }}
+        error={!!errors.price}
+        helperText={errors.price?.message}
+        color='accent'
+      />
 
-        {/* Name */}
-        <TextField
-          id='name'
-          label='Name'
-          required
-          {...register('name.de')}
-          error={!!errors.name}
-          helperText={errors.name?.de?.message}
-          color='accent'
-        />
+      {/* CategoryId */}
+      <FormDropdown
+        label='Kategorie'
+        register={{ ...register('categoryId') }}
+        error={!!errors.categoryId}
+        items={dishCategories}
+      />
 
-        {/* Price */}
-        <TextField
-          id='price'
-          label='Preis'
-          required
-          type='number'
-          inputProps={{
-            min: 1,
-            max: 10000,
-          }}
-          onChange={(event: ChangeEvent<HTMLInputElement>) => {
-            setValue('price', event.target.valueAsNumber)
-          }}
-          value={getValues('price')}
-          error={!!errors.price}
-          helperText={errors.price?.message}
-          color='accent'
-        />
+      {/* Labels */}
+      <FormListWithChips
+        onItemAdd={(item: DBMultiLanguageStringProperty) => addMultiLanguageItem(item, 'labels')}
+        onItemRemove={(item: DBMultiLanguageStringProperty) => removeMultiLanguageItem(item, 'labels')}
+        items={getValues().labels || []}
+        placeholder='Label'
+        chipColor='bg-teal-800'
+        addButttonColor='bg-teal-600'
+      />
 
-        {/* CategoryId */}
-        <FormDropdown
-          label='Kategorie'
-          register={{ ...register('categoryId') }}
-          error={!!errors.categoryId}
-          items={dishCategories}
-        />
+      {/* Allergies */}
+      <FormListWithChips
+        onItemAdd={(item: DBMultiLanguageStringProperty) => addMultiLanguageItem(item, 'allergies')}
+        onItemRemove={(item: DBMultiLanguageStringProperty) => removeMultiLanguageItem(item, 'allergies')}
+        items={getValues().allergies || []}
+        placeholder='Allergen'
+        chipColor='bg-cyan-800'
+        addButttonColor='bg-cyan-600'
+      />
 
-        {/* Labels */}
-        <FormListWithChips
-          onItemAdd={(item: DBMultiLanguageStringProperty) => addMultiLanguageItem(item, 'labels')}
-          onItemRemove={(item: DBMultiLanguageStringProperty) => removeMultiLanguageItem(item, 'labels')}
-          items={getValues().labels || []}
-          placeholder='Label'
-          chipColor='bg-teal-800'
-          addButttonColor='bg-teal-600'
-        />
+      {/* Required Ingredients */}
+      <FormListWithChips
+        onItemAdd={(item: DBMultiLanguageStringProperty) => addMultiLanguageItem(item, 'ingredients.required')}
+        onItemRemove={(item: DBMultiLanguageStringProperty) => removeMultiLanguageItem(item, 'ingredients.required')}
+        items={getValues().ingredients.required || []}
+        placeholder='Zutat'
+        chipColor='bg-sky-800'
+        addButttonColor='bg-sky-600'
+      />
 
-        {/* Allergies */}
-        <FormListWithChips
-          onItemAdd={(item: DBMultiLanguageStringProperty) => addMultiLanguageItem(item, 'allergies')}
-          onItemRemove={(item: DBMultiLanguageStringProperty) => removeMultiLanguageItem(item, 'allergies')}
-          items={getValues().allergies || []}
-          placeholder='Allergen'
-          chipColor='bg-cyan-800'
-          addButttonColor='bg-cyan-600'
-        />
+      {/* Optional Ingredients */}
+      <FormListWithChips
+        onItemAdd={(item: DBMultiLanguageStringProperty) => addMultiLanguageItem(item, 'ingredients.optional')}
+        onItemRemove={(item: DBMultiLanguageStringProperty) => removeMultiLanguageItem(item, 'ingredients.optional')}
+        items={getValues().ingredients.optional || []}
+        placeholder='optionale Zutat'
+        chipColor='bg-sky-900'
+        addButttonColor='bg-sky-800'
+      />
 
-        {/* Required Ingredients */}
-        <FormListWithChips
-          onItemAdd={(item: DBMultiLanguageStringProperty) => addMultiLanguageItem(item, 'ingredients.required')}
-          onItemRemove={(item: DBMultiLanguageStringProperty) => removeMultiLanguageItem(item, 'ingredients.required')}
-          items={getValues().ingredients.required || []}
-          placeholder='Zutat'
-          chipColor='bg-sky-800'
-          addButttonColor='bg-sky-600'
-        />
+      {/* DietType */}
+      <FormMultiSelectionChips
+        items={dietTypes}
+        activeItem={getValues('dietType')}
+        onClick={(dietType) => setValue('dietType', dietType, { shouldValidate: true })}
+      />
 
-        {/* Optional Ingredients */}
-        <FormListWithChips
-          onItemAdd={(item: DBMultiLanguageStringProperty) => addMultiLanguageItem(item, 'ingredients.optional')}
-          onItemRemove={(item: DBMultiLanguageStringProperty) => removeMultiLanguageItem(item, 'ingredients.optional')}
-          items={getValues().ingredients.optional || []}
-          placeholder='optionale Zutat'
-          chipColor='bg-sky-900'
-          addButttonColor='bg-sky-800'
-        />
-
-        {/* DietType */}
-        <FormMultiSelectionChips
-          items={dietTypes}
-          activeItem={getValues('dietType')}
-          onClick={(dietType) => setValue('dietType', dietType)}
-        />
-
-        {/* Description */}
-        <TextareaAutosize
-          className='border border-slate-500 shadow-sm rounded-l-lg rounded-tr-lg p-3 outline-none'
-          placeholder='Beschreibung'
-          {...register('description.de')}
-        />
-      </Box>
+      {/* Description */}
+      <TextareaAutosize
+        className='border border-slate-500 shadow-sm rounded-l-lg rounded-tr-lg p-3 outline-none'
+        placeholder='Beschreibung'
+        {...register('description.de')}
+      />
     </Dialog>
   )
 }
