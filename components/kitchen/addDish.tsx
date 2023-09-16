@@ -78,7 +78,9 @@ export default function AddDish({ open, editingDish, onClose }: AddDishProps) {
     fieldName: 'labels' | 'allergies' | 'ingredients.required' | 'ingredients.optional'
   ) => {
     let field = getValues(fieldName)
-    field = field?.filter((currentField) => currentField.de !== item.de)
+    if (field) {
+      field = field?.filter((currentField) => currentField.de !== item.de)
+    }
     setValue(fieldName, field, { shouldValidate: true })
   }
 
