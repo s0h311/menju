@@ -2,8 +2,8 @@ import { PrismaClient, Restaurant } from '@prisma/client'
 import { DishCategory, DishesByCategory } from '@/types/dish.type'
 import { DBDish, DBDishCategory } from '@/types/db/dish.db.type'
 import { Cart, Language, RestaurantId } from '@/types/order.type'
-
 import { capitalize, getMultiLanguageStringProperty, mapDish } from '@/trpc/helpers/dishHelpers'
+import { JsonObject } from '@prisma/client/runtime/library'
 
 const prismaClient = new PrismaClient()
 
@@ -76,6 +76,10 @@ export async function createDish(dbDish: DBDish) {
   const dish = await prismaClient.dish.create({
     data: {
       ...dbDish,
+      labels: dbDish.labels as unknown as JsonObject,
+      allergies: dbDish.allergies as unknown as JsonObject,
+      nutritions: dbDish.nutritions as JsonObject,
+      description: dbDish.description as JsonObject,
     },
   })
   return mapDish(dish, 'de')
@@ -88,6 +92,10 @@ export async function updateDish(dbDish: DBDish) {
     },
     data: {
       ...dbDish,
+      labels: dbDish.labels as unknown as JsonObject,
+      allergies: dbDish.allergies as unknown as JsonObject,
+      nutritions: dbDish.nutritions as JsonObject,
+      description: dbDish.description as JsonObject,
     },
   })
   return mapDish(dish, 'de')

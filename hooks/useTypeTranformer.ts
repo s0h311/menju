@@ -10,16 +10,19 @@ export default function useTypeTransformer() {
     it: '',
   })
 
+  const stringArrayToDBMultiLanguageStringArray = (arr: string[]): DBMultiLanguageStringProperty[] =>
+    arr.map((element) => stringToDBMultiLanguageString(element))
+
   const dishToDBDish = (dish: Dish): DBDish => ({
     ...dish,
-    name: { de: dish.name, en: '', it: '' },
+    name: stringToDBMultiLanguageString(dish.name),
     ingredients: {
-      required: dish.ingredients.required.map((ingredient) => stringToDBMultiLanguageString(ingredient)),
-      optional: dish.ingredients.optional.map((ingredient) => stringToDBMultiLanguageString(ingredient)),
+      required: stringArrayToDBMultiLanguageStringArray(dish.ingredients.required),
+      optional: stringArrayToDBMultiLanguageStringArray(dish.ingredients.optional),
     },
-    labels: dish.labels.map((label) => stringToDBMultiLanguageString(label)),
-    allergies: dish.allergies.map((allergy) => stringToDBMultiLanguageString(allergy)),
-    description: dish.description ? stringToDBMultiLanguageString(dish.description) : null,
+    labels: !dish.labels ? null : stringArrayToDBMultiLanguageStringArray(dish.labels),
+    allergies: !dish.allergies ? null : stringArrayToDBMultiLanguageStringArray(dish.allergies),
+    description: !dish.description ? null : stringToDBMultiLanguageString(dish.description),
   })
 
   return {
