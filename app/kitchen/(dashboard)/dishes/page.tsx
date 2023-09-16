@@ -21,6 +21,7 @@ export default function KitchenDishes() {
 
   const menuStore = useStore(useMenuStore, (state) => state)
   const { dishesByCategory } = useDishService()
+
   const allDishes: Dish[] =
     dishesByCategory
       .filter((dishesByCategory: DishesByCategory) => dishesByCategory.dishes.length)
@@ -58,7 +59,7 @@ export default function KitchenDishes() {
         title='Kategorien'
         contentType='dishCategory'
       >
-        {menuStore?.allDishes.map((card: DishesByCategory) => (
+        {dishesByCategory.map((card: DishesByCategory) => (
           <div key={card.category.id}>
             {!editingDishCategory || editingDishCategory.id !== card.category.id ? (
               <Card

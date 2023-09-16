@@ -17,12 +17,7 @@ export default function useDishService(configs?: LanguageAndRestaurantId) {
     configs.restaurantId !== storeRestaurantId || configs.language !== storeLanguage
 
   useEffect(() => {
-    if (
-      restaurantStore &&
-      configs &&
-      configs.restaurantId &&
-      isDataOutdated(configs, restaurantStore.restaurantId, restaurantStore.language)
-    ) {
+    if (restaurantStore && configs && isDataOutdated(configs, restaurantStore.restaurantId, restaurantStore.language)) {
       restaurantStore.setRestaurantId(configs.restaurantId)
       restaurantStore.setLanguage(configs.language)
       setDataOutdated(true)
@@ -34,15 +29,14 @@ export default function useDishService(configs?: LanguageAndRestaurantId) {
   // DISHES & DISH CATEGORY //
 
   const menuStore = useStore(useMenuStore, (state) => state, true)
-
   const {
     data: dishesByCategoryData,
     isSuccess: isSuccessDishesByCategory,
     refetch: refetchDishes,
   } = trpc.dishesByCategory.useQuery(
     {
-      restaurantId: (configs?.restaurantId || restaurantStore?.restaurantId)!,
-      language: (configs?.language || restaurantStore?.language)!,
+      restaurantId: (configs?.restaurantId ?? restaurantStore?.restaurantId)!,
+      language: (configs?.language ?? restaurantStore?.language)!,
     },
     { enabled: dataOutdated, refetchOnWindowFocus: false }
   )
@@ -51,7 +45,7 @@ export default function useDishService(configs?: LanguageAndRestaurantId) {
   const visibleDishes = menuStore?.visibleDishes
 
   useEffect(() => {
-    refetchDishes()
+    if (dataOutdated) refetchDishes()
   }, [dataOutdated, refetchDishes])
 
   useEffect(() => {

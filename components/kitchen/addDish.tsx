@@ -6,7 +6,7 @@ import Dialog from '@/ui/dialog'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { TextField } from '@mui/material'
-import { ChangeEvent, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import useStore from '@/hooks/useStore'
 import { useMenuStore } from '@/store/menuStore'
 import { TextareaAutosize } from '@mui/base'
@@ -17,6 +17,7 @@ import FormMultiSelectionChips from './form/formMultiSelectionChips'
 import useStorageUploader from '@/hooks/useStorageUploader'
 import { trpc } from '@/trpc/trpc'
 import { initialDBDish } from '@/types/db/dish.initial.db'
+import useTypeTransformer from '@/hooks/useTypeTranformer'
 
 type AddDishProps = {
   open: boolean
@@ -33,6 +34,7 @@ export default function AddDish({ open, editingDish, onClose }: AddDishProps) {
   const imageStoragePath = useRef<string | null>(null)
   const addDishMutation = trpc.addDish.useMutation()
   const updateDishMutation = trpc.updateDish.useMutation()
+  const { dishToDBDish } = useTypeTransformer()
 
   useEffect(() => {
     const categories = menuStore?.allDishes.map((dbc) => dbc.category)
@@ -48,8 +50,9 @@ export default function AddDish({ open, editingDish, onClose }: AddDishProps) {
     setError,
     setValue,
     getValues,
+    watch,
   } = useForm<DBDish>({
-    defaultValues: initialDBDish,
+    defaultValues: editingDish ? dishToDBDish(editingDish) : initialDBDish,
     resolver: zodResolver(zDBDish),
   })
 
@@ -78,7 +81,10 @@ export default function AddDish({ open, editingDish, onClose }: AddDishProps) {
     fieldName: 'labels' | 'allergies' | 'ingredients.required' | 'ingredients.optional'
   ) => {
     let field = getValues(fieldName)
-    field = field?.filter((currentField) => currentField.de !== item.de)
+
+    if (field) {
+      field = field?.filter((currentField) => currentField.de !== item.de)
+    }
     setValue(fieldName, field, { shouldValidate: true })
   }
 
@@ -125,6 +131,11 @@ export default function AddDish({ open, editingDish, onClose }: AddDishProps) {
     }
   }
 
+  const watchAll = watch()
+  useEffect(() => {
+    console.log(getValues())
+  }, [watchAll])
+
   return (
     <Dialog
       sx={{ display: 'grid', gap: '12px', pb: 0, px: '20px', overflowY: 'unset' }}
@@ -168,13 +179,7 @@ export default function AddDish({ open, editingDish, onClose }: AddDishProps) {
         label='Preis'
         required
         type='number'
-        inputProps={{
-          min: 1,
-          max: 10000,
-        }}
-        onChange={(event: ChangeEvent<HTMLInputElement>) => {
-          setValue('price', event.target.valueAsNumber)
-        }}
+        {...register('price', { valueAsNumber: true, min: 1, max: 10000 })}
         error={!!errors.price}
         helperText={errors.price?.message}
         color='accent'
@@ -183,9 +188,10 @@ export default function AddDish({ open, editingDish, onClose }: AddDishProps) {
       {/* CategoryId */}
       <FormDropdown
         label='Kategorie'
-        register={{ ...register('categoryId') }}
         error={!!errors.categoryId}
         items={dishCategories}
+        onChange={(categoryId: number) => setValue('categoryId', categoryId, { shouldValidate: true })}
+        selectedValue={getValues('categoryId')}
       />
 
       {/* Labels */}
