@@ -12,7 +12,7 @@ export const zAdminUser = z
     name: z.string().min(2).max(20),
     email: z.string().email(),
   })
-  .merge(z.object({ roles: zRoles }))
+  .merge(z.object({ role: zRoles }))
 
 export const zRegisterCredentialsAdminUser = zAdminUser.merge(zPassword)
 
