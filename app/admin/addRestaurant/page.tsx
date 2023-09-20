@@ -1,12 +1,13 @@
 'use client'
 
-import { Box, TextField, Button } from '@mui/material'
+import { Box, TextField } from '@mui/material'
 import { zRegisterCredentials, RegisterCredentials } from '@/types/credentials.type'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { trpc } from '@/trpc/trpc'
 import { useState } from 'react'
 import { UserResponse } from '@supabase/supabase-js'
+import { LoadingButton } from '@mui/lab'
 
 export default function AddRestaurant() {
   const addRestaurantMutation = trpc.addRestaurant.useMutation()
@@ -14,8 +15,9 @@ export default function AddRestaurant() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitted },
     setError,
+    reset,
   } = useForm<RegisterCredentials>({
     defaultValues: {
       name: '',
@@ -42,6 +44,10 @@ export default function AddRestaurant() {
 
     if (data?.data.user) {
       setAddRestaurantSuccess(true)
+      setTimeout(() => {
+        setAddRestaurantSuccess(false)
+        reset()
+      }, 1000)
     }
   }
 
@@ -84,13 +90,14 @@ export default function AddRestaurant() {
 
         {addRestaurantSuccess && <p className='text-green-700'>Restaurant added successfully</p>}
 
-        <Button
+        <LoadingButton
           sx={{ borderRadius: '5px' }}
           variant='outlined'
           type='submit'
+          loading={isSubmitted}
         >
           Neues Restaurant Anlegen
-        </Button>
+        </LoadingButton>
       </div>
     </Box>
   )
