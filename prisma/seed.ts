@@ -122,7 +122,7 @@ const main = async () => {
       price: 7.5,
       picture:
         'https://images.lecker.de/pizza-bianca-mit-pilzen,id=a5ed1fe9,b=lecker,w=710,ca=0,8.14,100,91.86,rm=sk.webp',
-      categoryId: 1,
+      categoryId: dishCategory1.id,
       ingredients: {
         required: [{ de: 'teig', en: 'dough', it: 'impasto' }],
         optional: [{ de: 'tomatensoße', en: 'tomatosauce', it: 'salsa di pomodoro' }],
