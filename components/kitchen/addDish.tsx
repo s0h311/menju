@@ -50,7 +50,6 @@ export default function AddDish({ open, editingDish, onClose }: AddDishProps) {
     setError,
     setValue,
     getValues,
-    watch,
   } = useForm<DBDish>({
     defaultValues: editingDish ? dishToDBDish(editingDish) : initialDBDish,
     resolver: zodResolver(zDBDish),
@@ -129,11 +128,6 @@ export default function AddDish({ open, editingDish, onClose }: AddDishProps) {
       })
     }
   }
-
-  const watchAll = watch()
-  useEffect(() => {
-    console.log(getValues())
-  }, [watchAll])
 
   return (
     <Dialog
