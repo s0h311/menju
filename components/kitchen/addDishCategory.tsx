@@ -15,6 +15,7 @@ import ImagePicker from './imagePicker'
 import { useEffect, useRef, useState } from 'react'
 import useStorageUploader from '@/hooks/useStorageUploader'
 import { useRestaurantStore } from '@/store/restaurantStore'
+import useTypeTransformer from '@/hooks/useTypeTranformer'
 
 type AddDishCategoryProps = {
   editingDishCategory?: DishCategory
@@ -30,7 +31,7 @@ export default function AddDishCategory({ editingDishCategory, onClose }: AddDis
   const [preview, setPreview] = useState<string | null>(null)
   const imageFile = useRef<File | null>(null)
   const imageStoragePath = useRef<string | null>(null)
-
+  const { dishCategoryToDBDishCategory } = useTypeTransformer()
   const {
     register,
     handleSubmit,
@@ -39,12 +40,14 @@ export default function AddDishCategory({ editingDishCategory, onClose }: AddDis
     setValue,
     getValues,
   } = useForm<DBDishCategory>({
-    defaultValues: {
-      id: editingDishCategory?.id || undefined,
-      name: { de: editingDishCategory?.name || '', en: '', it: '' },
-      picture: editingDishCategory?.picture || null,
-      restaurantId: restaurantStore?.restaurantId,
-    },
+    defaultValues: editingDishCategory
+      ? dishCategoryToDBDishCategory(editingDishCategory)
+      : {
+          id: undefined,
+          name: { de: '', en: '', it: '' },
+          picture: null,
+          restaurantId: restaurantStore?.restaurantId,
+        },
     resolver: zodResolver(zDBDishCategory),
   })
 
@@ -100,7 +103,7 @@ export default function AddDishCategory({ editingDishCategory, onClose }: AddDis
     imageFile.current = file
   }
 
-  const removeImage = () => {
+  const removeImage = (): void => {
     setPreview(null)
     imageFile.current = null
     setValue('picture', null, { shouldValidate: true }) // the second argument is to trigger a rerender
@@ -124,19 +127,7 @@ export default function AddDishCategory({ editingDishCategory, onClose }: AddDis
           />
         )}
         <CardContent sx={{ display: 'grid', gap: '10px' }}>
-          {!getValues().picture && !preview && (
-            <>
-              <ImagePicker onChange={onImageChange} />
-              <TextField
-                id='pictureUrl'
-                label='Bild Link'
-                {...register('picture')}
-                error={!!errors.picture}
-                helperText={errors.picture?.message}
-                color='accent'
-              />
-            </>
-          )}
+          {!getValues().picture && !preview && <ImagePicker onChange={onImageChange} />}
 
           <TextField
             id='name'

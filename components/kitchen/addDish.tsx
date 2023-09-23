@@ -10,7 +10,6 @@ import { useEffect, useRef, useState } from 'react'
 import useStore from '@/hooks/useStore'
 import { useMenuStore } from '@/store/menuStore'
 import { TextareaAutosize } from '@mui/base'
-import FormImage from './form/formImage'
 import FormDropdown from '@/components/kitchen/form/formDropdown'
 import FormListWithChips from './form/formListWithChips'
 import FormMultiSelectionChips from './form/formMultiSelectionChips'
@@ -18,6 +17,7 @@ import useStorageUploader from '@/hooks/useStorageUploader'
 import { trpc } from '@/trpc/trpc'
 import { initialDBDish } from '@/types/db/dish.initial.db'
 import useTypeTransformer from '@/hooks/useTypeTranformer'
+import ImagePicker from './imagePicker'
 
 type AddDishProps = {
   open: boolean
@@ -147,13 +147,7 @@ export default function AddDish({ open, editingDish, onClose }: AddDishProps) {
       loading={isSubmitSuccessful}
     >
       {/* Image */}
-      {!getValues().picture && !preview && (
-        <FormImage
-          onImageChange={onImageChange}
-          register={{ ...register('picture') }}
-          error={{ error: !!errors.picture, helperText: errors.picture?.message }}
-        />
-      )}
+      {!getValues().picture && !preview && <ImagePicker onChange={onImageChange} />}
 
       {/* Name */}
       <TextField

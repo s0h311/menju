@@ -1,5 +1,5 @@
-import { DBDish, DBMultiLanguageStringProperty } from '@/types/db/dish.db.type'
-import { Dish } from '@/types/dish.type'
+import { DBDish, DBDishCategory, DBMultiLanguageStringProperty } from '@/types/db/dish.db.type'
+import { Dish, DishCategory } from '@/types/dish.type'
 
 export default function useTypeTransformer() {
   // HELPERS //
@@ -25,7 +25,13 @@ export default function useTypeTransformer() {
     description: !dish.description ? null : stringToDBMultiLanguageString(dish.description),
   })
 
+  const dishCategoryToDBDishCategory = (dishCategory: DishCategory): DBDishCategory => ({
+    ...dishCategory,
+    name: stringToDBMultiLanguageString(dishCategory.name),
+  })
+
   return {
     dishToDBDish,
+    dishCategoryToDBDishCategory,
   }
 }
