@@ -12,6 +12,7 @@ import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import FormMultiSelectionChips from '@/components/kitchen/form/formMultiSelectionChips'
 import { TextareaAutosize } from '@mui/base'
+import { trpc } from '@/trpc/trpc'
 
 export default function CartDialog() {
   const [showDialog, setShowDialog] = useState<boolean>(false)
@@ -20,10 +21,24 @@ export default function CartDialog() {
 
   const [cart, setCart] = useState<Cart | null>(null)
 
-  const { register, getValues, watch, setValue } = useForm<Pick<Cart, 'note' | 'paymentMethod'>>({
-    defaultValues: { note: '', paymentMethod: 'CASH' },
+  const createOrderMutation = trpc.createOrder.useMutation()
+
+  const {
+    register,
+    getValues,
+    reset,
+    setValue,
+    handleSubmit,
+    formState: { isSubmitted },
+  } = useForm<Pick<Cart, 'note' | 'paymentMethod'>>({
+    defaultValues: { note: '', paymentMethod: 'CARD' },
     resolver: zodResolver(zCart.pick({ note: true, paymentMethod: true })),
   })
+
+  const updatePaymentMethod = (method: PaymentMethod) => {
+    setValue('paymentMethod', method, { shouldValidate: true })
+    cartStore?.updatePaymentMethod(method)
+  }
 
   useEffect(() => {
     if (cartStore) {
@@ -31,7 +46,19 @@ export default function CartDialog() {
     }
   }, [setCart, cartStore])
 
-  const createOrder = () => {}
+  const createOrder = (cart: Pick<Cart, 'note' | 'paymentMethod'>) => {
+    if (!cartStore) return
+    createOrderMutation.mutateAsync(
+      {
+        ...cartStore?.cart,
+        paymentMethod: cart.paymentMethod,
+        note: cart.note,
+      },
+      { onSuccess: () => reset() }
+    )
+    setShowDialog(false)
+    cartStore.reset()
+  }
 
   const getIngredientsText = (position: OrderPosition): string => {
     const allIngredients = [...position.dish.ingredients.optional, ...position.dish.ingredients.required]
@@ -64,14 +91,15 @@ export default function CartDialog() {
             open={showDialog}
             closeText='Abbrechen'
             proceedText='Bestellen'
-            onProceed={createOrder}
+            onProceed={handleSubmit(createOrder)}
             onClose={() => setShowDialog(false)}
+            loading={isSubmitted}
           >
             <div className='space-y-3'>
               {cart &&
                 cart.positions.map((position) => (
                   <div
-                    key={position.dish.id}
+                    key={position.dish.id + position.leftOutIngredients.join('')}
                     className='grid w-4/5 mx-auto'
                   >
                     {position.dish.picture && (
@@ -84,7 +112,10 @@ export default function CartDialog() {
                       />
                     )}
                     <div className='flex place-self-center justify-center items-center gap-2 -mt-6 bg-secondary rounded-xl'>
-                      <IconButton sx={{ p: '3px' }}>
+                      <IconButton
+                        sx={{ p: '3px' }}
+                        onClick={() => cartStore?.removePosition(position)}
+                      >
                         <RemoveCircle color='error' />
                       </IconButton>
                       <p>{position.quantity}</p>
@@ -107,13 +138,14 @@ export default function CartDialog() {
                 <FormMultiSelectionChips
                   items={paymentMethods}
                   activeItem={getValues('paymentMethod')}
-                  onClick={(paymentMethod) => setValue('paymentMethod', paymentMethod)} //TODO geht nicht
+                  onClick={updatePaymentMethod}
                 />
                 <TextareaAutosize
                   className='border mt-2 border-slate-500 shadow-sm rounded-l-lg rounded-tr-lg p-3 outline-none'
                   placeholder='Anmerkung'
-                  {...register('note')}
+                  {...register('note', { onChange: (event) => cartStore?.updateNote(event.target.value) })}
                 />
+                <p>Gesamtbetrag: {cartStore?.cart.netTotal.toFixed(2)}€</p>
               </div>
             </div>
           </Dialog>
