@@ -6,7 +6,8 @@ import { LoadingButton } from '@mui/lab'
 import { Check, Close } from '@mui/icons-material'
 import { useForm } from 'react-hook-form'
 import { theme } from '@/ui/theme'
-import { DishCategory, NewDishCategory, zNewDishCategory } from '@/types/dish.type'
+import { DishCategory } from '@/types/dish.type'
+import { DBDishCategory, zDBDishCategory } from '@/types/db/dish.db.type'
 import { trpc } from '@/trpc/trpc'
 import useStore from '@/hooks/useStore'
 import { useMenuStore } from '@/store/menuStore'
@@ -14,6 +15,7 @@ import ImagePicker from './imagePicker'
 import { useEffect, useRef, useState } from 'react'
 import useStorageUploader from '@/hooks/useStorageUploader'
 import { useRestaurantStore } from '@/store/restaurantStore'
+import useTypeTransformer from '@/hooks/useTypeTranformer'
 
 type AddDishCategoryProps = {
   editingDishCategory?: DishCategory
@@ -29,7 +31,7 @@ export default function AddDishCategory({ editingDishCategory, onClose }: AddDis
   const [preview, setPreview] = useState<string | null>(null)
   const imageFile = useRef<File | null>(null)
   const imageStoragePath = useRef<string | null>(null)
-
+  const { dishCategoryToDBDishCategory } = useTypeTransformer()
   const {
     register,
     handleSubmit,
@@ -37,14 +39,16 @@ export default function AddDishCategory({ editingDishCategory, onClose }: AddDis
     setError,
     setValue,
     getValues,
-  } = useForm<NewDishCategory>({
-    defaultValues: {
-      id: editingDishCategory?.id || undefined,
-      name: { de: editingDishCategory?.name || '', en: '', it: '' },
-      picture: editingDishCategory?.picture || null,
-      restaurantId: restaurantStore?.restaurantId,
-    },
-    resolver: zodResolver(zNewDishCategory),
+  } = useForm<DBDishCategory>({
+    defaultValues: editingDishCategory
+      ? dishCategoryToDBDishCategory(editingDishCategory)
+      : {
+          id: undefined,
+          name: { de: '', en: '', it: '' },
+          picture: null,
+          restaurantId: restaurantStore?.restaurantId,
+        },
+    resolver: zodResolver(zDBDishCategory),
   })
 
   useEffect(() => {
@@ -53,7 +57,7 @@ export default function AddDishCategory({ editingDishCategory, onClose }: AddDis
     }
   }, [restaurantStore?.restaurantId, setValue])
 
-  const onSubmit = async (dishCategory: NewDishCategory): Promise<void> => {
+  const onSubmit = async (dishCategory: DBDishCategory): Promise<void> => {
     if (imageFile.current) {
       await uploadImage(imageFile.current)
       if (imageStoragePath.current) {
@@ -99,7 +103,7 @@ export default function AddDishCategory({ editingDishCategory, onClose }: AddDis
     imageFile.current = file
   }
 
-  const removeImage = () => {
+  const removeImage = (): void => {
     setPreview(null)
     imageFile.current = null
     setValue('picture', null, { shouldValidate: true }) // the second argument is to trigger a rerender
@@ -123,19 +127,7 @@ export default function AddDishCategory({ editingDishCategory, onClose }: AddDis
           />
         )}
         <CardContent sx={{ display: 'grid', gap: '10px' }}>
-          {!getValues().picture && !preview && (
-            <>
-              <ImagePicker onChange={onImageChange} />
-              <TextField
-                id='pictureUrl'
-                label='Bild Link'
-                {...register('picture')}
-                error={!!errors.picture}
-                helperText={errors.picture?.message}
-                color='accent'
-              />
-            </>
-          )}
+          {!getValues().picture && !preview && <ImagePicker onChange={onImageChange} />}
 
           <TextField
             id='name'

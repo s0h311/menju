@@ -8,7 +8,10 @@ import FoodCategory from '@/components/guest/foodCategory'
 import { useState } from 'react'
 import DishDialog from '@/components/guest/dishDialog'
 import useDishService from '@/hooks/useDishService'
-import CartDialog from '../../components/guest/cartDialog'
+import FilterBarSkeleton from '@/components/guest/skelleton/filterBarSkeleton'
+import FoodCategorySkeleton from '@/components/guest/skelleton/foodCategorySkeleton'
+import React from 'react'
+import CartDialog from '@/components/guest/cartDialog'
 
 export default function Menu({ params }: { params: { restaurant: string } }) {
   const restaurantId: number = parseInt(params.restaurant)
@@ -33,14 +36,24 @@ export default function Menu({ params }: { params: { restaurant: string } }) {
 
   return (
     <Stack className='mb-4'>
-      <FilterBar chipData={filterChips} />
-      {visibleDishes?.map((category) => (
-        <FoodCategory
-          key={category.category.id}
-          category={category.category}
-          onCardClick={(dish) => setActiveDish(dish)}
-        />
-      ))}
+      {dishService.visibleDishes ? (
+        <>
+          <FilterBar chipData={filterChips} />
+          {visibleDishes?.map((category) => (
+            <FoodCategory
+              key={category.category.id}
+              category={category.category}
+              onCardClick={(dish) => setActiveDish(dish)}
+            />
+          ))}
+        </>
+      ) : (
+        <>
+          <FilterBarSkeleton />
+          <FoodCategorySkeleton />
+          <FoodCategorySkeleton />
+        </>
+      )}
       {activeDish && (
         <DishDialog
           dish={activeDish}

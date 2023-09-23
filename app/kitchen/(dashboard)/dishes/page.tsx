@@ -9,27 +9,45 @@ import Card from '@/components/kitchen/card'
 import AddDishCategory from '@/components/kitchen/addDishCategory'
 import Dialog from '@/ui/dialog'
 import { trpc } from '@/trpc/trpc'
+import AddDish from '@/components/kitchen/addDish'
+import useDishService from '@/hooks/useDishService'
 
 export default function KitchenDishes() {
   const [activeDishesCategory, setActiveDishesCategory] = useState<DishesByCategory | null>(null)
   const [editingDishCategory, setEditingDishCategory] = useState<DishCategory | null>(null)
   const [deletingDishCategory, setDeletingDishCategory] = useState<DishCategory | null>(null)
+  const [editingDish, setEditingDish] = useState<Dish | null>(null)
+  const [deletingDish, setDeletingDish] = useState<Dish | null>(null)
 
   const menuStore = useStore(useMenuStore, (state) => state)
+  const { dishesByCategory } = useDishService()
+
   const allDishes: Dish[] =
-    menuStore?.allDishes
+    dishesByCategory
       .filter((dishesByCategory: DishesByCategory) => dishesByCategory.dishes.length)
       .map((dishesByCategory: DishesByCategory) => dishesByCategory.dishes)
       .flat() || []
 
   const deleteDishCategoryMutation = trpc.deleteDishCategory.useMutation()
+  const deleteDishMutation = trpc.deleteDish.useMutation()
 
   const deleteDishCategory = (): void => {
     if (deletingDishCategory) {
-      deleteDishCategoryMutation.mutateAsync(deletingDishCategory?.id, {
+      deleteDishCategoryMutation.mutateAsync(deletingDishCategory.id, {
         onSuccess: () => {
-          menuStore?.removeDishCategory(deletingDishCategory?.id)
+          menuStore?.removeDishCategory(deletingDishCategory.id)
           setDeletingDishCategory(null)
+        },
+      })
+    }
+  }
+
+  const deleteDish = (): void => {
+    if (deletingDish) {
+      deleteDishMutation.mutateAsync(deletingDish.id, {
+        onSuccess: () => {
+          menuStore?.removeDish(deletingDish.categoryId, deletingDish.id)
+          setDeletingDish(null)
         },
       })
     }
@@ -41,7 +59,7 @@ export default function KitchenDishes() {
         title='Kategorien'
         contentType='dishCategory'
       >
-        {menuStore?.allDishes.map((card: DishesByCategory) => (
+        {dishesByCategory.map((card: DishesByCategory) => (
           <div key={card.category.id}>
             {!editingDishCategory || editingDishCategory.id !== card.category.id ? (
               <Card
@@ -74,11 +92,22 @@ export default function KitchenDishes() {
             key={card.id}
             title={card.name}
             image={card.picture || ''}
+            onClick={() => setEditingDish(card)}
+            onEdit={() => setEditingDish(card)}
+            onDelete={() => setDeletingDish(card)}
           >
-            {card.price}
+            Preis: {card.price.toFixed(2)} EUR
           </Card>
         ))}
       </CardGrid>
+
+      {editingDish && (
+        <AddDish
+          open={!!editingDish}
+          editingDish={editingDish}
+          onClose={() => setEditingDish(null)}
+        />
+      )}
 
       <Dialog
         sx={{ display: 'grid', placeItems: 'center', marginTop: '20px' }}
@@ -91,6 +120,19 @@ export default function KitchenDishes() {
         revertSuccessError
       >
         Möchtest du wirklich diese Kategorie löschen?
+      </Dialog>
+
+      <Dialog
+        sx={{ display: 'grid', placeItems: 'center', marginTop: '20px' }}
+        open={!!deletingDish}
+        closeText='Abbrechen'
+        proceedText='Löschen'
+        maxWidth='xs'
+        onClose={() => setDeletingDish(null)}
+        onProceed={deleteDish}
+        revertSuccessError
+      >
+        Möchtest du wirklich dieses Gericht löschen?
       </Dialog>
     </section>
   )

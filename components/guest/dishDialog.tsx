@@ -69,11 +69,11 @@ export default function DishDialog({ dish, setOpenDialog }: DishDialogProps) {
 
           <div className='grid gap-1'>
             <h3>Nährwerte pro 100g*</h3>
-            <div className='flex items-center gap-2'>
+            <div className='flex items-center gap-2 ml-2'>
               <p className='text-sm'>Kalorien:</p>
               <p className='rounded-xl px-2 py-1 bg-secondary text-sm'>{dish.nutritions?.energy} kcal</p>
             </div>
-            <div className='flex items-center gap-2'>
+            <div className='flex items-center gap-2 ml-2'>
               <p className='text-sm'>Protein:</p>
               <p className='rounded-xl px-2 py-1 bg-secondary text-sm'>{dish.nutritions?.protein} g</p>
             </div>
@@ -88,6 +88,7 @@ export default function DishDialog({ dish, setOpenDialog }: DishDialogProps) {
                   key={ingredient}
                 >
                   <Checkbox
+                    sx={{ paddingLeft: '8px' }}
                     color='primary'
                     size='small'
                     defaultChecked
@@ -106,6 +107,7 @@ export default function DishDialog({ dish, setOpenDialog }: DishDialogProps) {
                   onClick={() => onIngredientCheckboxChange(ingredient)}
                 >
                   <Checkbox
+                    sx={{ paddingLeft: '8px' }}
                     color='primary'
                     size='small'
                     checked={!order.leftOutIngredients.includes(ingredient)}
@@ -115,6 +117,22 @@ export default function DishDialog({ dish, setOpenDialog }: DishDialogProps) {
               ))}
             </ul>
           </div>
+
+          {dish.allergies.length > 0 && (
+            <div>
+              <h3>Allergene</h3>
+              <ul className='ml-2 grid grid-cols-2'>
+                {dish.allergies.map((allergy) => (
+                  <li
+                    className='text-sm flex'
+                    key={allergy}
+                  >
+                    {allergy}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
 
           <p className='text-sm'>{dish.description}</p>
 

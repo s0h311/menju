@@ -1,19 +1,20 @@
 import { Select, InputLabel, MenuItem, FormControl, SelectChangeEvent } from '@mui/material'
-import { ChangeEvent, Ref } from 'react'
 
-type FormDropdownProps = {
+type FormDropdownProps<T> = {
   label: string
-  register: {
-    onChange: (event: SelectChangeEvent) => void
-    onBlur: (event: ChangeEvent) => void
-    ref: Ref<HTMLInputElement>
-    name: string
-  }
+  onChange: (value: T) => void
   error: boolean
-  items: { id: string | number; name: string | number }[]
+  items: { id: string | number; name: string }[] | []
+  selectedValue?: T
 }
 
-export default function FormDropdown({ label, register, error, items }: FormDropdownProps) {
+export default function FormDropdown<T extends string | number>({
+  label,
+  onChange,
+  error,
+  items,
+  selectedValue,
+}: FormDropdownProps<T>) {
   return (
     <FormControl>
       <InputLabel id={`${label}-selection-label`}>{label}</InputLabel>
@@ -22,8 +23,12 @@ export default function FormDropdown({ label, register, error, items }: FormDrop
         id={`${label}-selection`}
         label={label}
         required
-        {...register}
+        onChange={(event: SelectChangeEvent) => {
+          const value = typeof selectedValue === 'number' ? parseInt(event.target.value) : event.target.value
+          onChange(value as T)
+        }}
         error={error}
+        value={String(selectedValue)}
       >
         {items.map((item) => (
           <MenuItem

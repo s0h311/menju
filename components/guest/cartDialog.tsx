@@ -107,10 +107,10 @@ export default function CartDialog() {
                 <FormMultiSelectionChips
                   items={paymentMethods}
                   activeItem={getValues('paymentMethod')}
-                  onClick={(paymentMethod) => setValue('paymentMethod', paymentMethod)}
+                  onClick={(paymentMethod) => setValue('paymentMethod', paymentMethod)} //TODO geht nicht
                 />
                 <TextareaAutosize
-                  className='border border-slate-500 shadow-sm rounded-l-lg rounded-tr-lg p-3 outline-none'
+                  className='border mt-2 border-slate-500 shadow-sm rounded-l-lg rounded-tr-lg p-3 outline-none'
                   placeholder='Anmerkung'
                   {...register('note')}
                 />

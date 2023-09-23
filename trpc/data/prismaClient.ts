@@ -1,8 +1,9 @@
 import { PrismaClient, Restaurant } from '@prisma/client'
-import { DishCategory, DishesByCategory, NewDish, NewDishCategory } from '@/types/dish.type'
+import { DishCategory, DishesByCategory } from '@/types/dish.type'
+import { DBDish, DBDishCategory } from '@/types/db/dish.db.type'
 import { Cart, Language, RestaurantId } from '@/types/order.type'
-
 import { capitalize, getMultiLanguageStringProperty, mapDish } from '@/trpc/helpers/dishHelpers'
+import { JsonObject } from '@prisma/client/runtime/library'
 
 const prismaClient = new PrismaClient()
 
@@ -38,7 +39,7 @@ export async function createOrder(input: Cart) {
 
 // DISH CATEGORY CRUD //
 
-export async function createDishCategory(input: NewDishCategory) {
+export async function createDishCategory(input: DBDishCategory) {
   return prismaClient.dishCategory.create({
     data: {
       ...input,
@@ -46,7 +47,7 @@ export async function createDishCategory(input: NewDishCategory) {
   })
 }
 
-export async function updateDishCategory(input: NewDishCategory): Promise<DishCategory> {
+export async function updateDishCategory(input: DBDishCategory): Promise<DishCategory> {
   const updatedDishCategory = await prismaClient.dishCategory.update({
     where: {
       id: input.id,
@@ -71,22 +72,30 @@ export async function deleteDishCategory(dishCategoryId: number) {
 
 // DISH CRUD //
 
-export async function createDish(newDish: NewDish) {
+export async function createDish(dbDish: DBDish) {
   const dish = await prismaClient.dish.create({
     data: {
-      ...newDish,
+      ...dbDish,
+      labels: dbDish.labels as unknown as JsonObject,
+      allergies: dbDish.allergies as unknown as JsonObject,
+      nutritions: dbDish.nutritions as JsonObject,
+      description: dbDish.description as JsonObject,
     },
   })
   return mapDish(dish, 'de')
 }
 
-export async function updateDish(newDish: NewDish) {
+export async function updateDish(dbDish: DBDish) {
   const dish = await prismaClient.dish.update({
     where: {
-      id: newDish.id,
+      id: dbDish.id,
     },
     data: {
-      ...newDish,
+      ...dbDish,
+      labels: dbDish.labels as unknown as JsonObject,
+      allergies: dbDish.allergies as unknown as JsonObject,
+      nutritions: dbDish.nutritions as JsonObject,
+      description: dbDish.description as JsonObject,
     },
   })
   return mapDish(dish, 'de')

@@ -1,12 +1,12 @@
 import { initTRPC } from '@trpc/server'
 import superjson from 'superjson'
-import { zNewDish, zNewDishCategory } from '@/types/dish.type'
+import { zDBDish, zDBDishCategory } from '@/types/db/dish.db.type'
 import { zCart, zLanguageAndRestaurantId } from '@/types/order.type'
 import { zRegisterCredentials } from '@/types/credentials.type'
 import { UserResponse } from '@supabase/supabase-js'
 import { capitalize, getMultiLanguageStringProperty } from '@/trpc/helpers/dishHelpers'
 import { z } from 'zod'
-import { createUser } from '@/trpc/data/supabaseAdminClient'
+import { createAdminUser, createUser, getAdminUsers } from '@/trpc/data/supabaseAdminClient'
 import {
   createDish,
   createDishCategory,
@@ -19,6 +19,7 @@ import {
   updateDishCategory,
 } from '@/trpc/data/prismaClient'
 import { Restaurant } from '@prisma/client'
+import { zRegisterCredentialsAdminUser } from '@/types/adminUser.type'
 
 const t = initTRPC.create({
   transformer: superjson,
@@ -37,15 +38,9 @@ export const appRouter = t.router({
     return await createOrder(input)
   }),
 
-  addRestaurant: t.procedure.input(zRegisterCredentials).mutation(async (req): Promise<UserResponse> => {
-    const { input } = req
-    const restaurant: Restaurant = await createRestaurant(input.name)
-    return await createUser(input, restaurant)
-  }),
-
   // DISH CATEGORY CRUD //
 
-  addDishCategory: t.procedure.input(zNewDishCategory).mutation(async (req) => {
+  addDishCategory: t.procedure.input(zDBDishCategory).mutation(async (req) => {
     const { input } = req
     const dishCategory = await createDishCategory(input)
     return {
@@ -54,7 +49,7 @@ export const appRouter = t.router({
     }
   }),
 
-  updateDishCategory: t.procedure.input(zNewDishCategory).mutation(async (req) => {
+  updateDishCategory: t.procedure.input(zDBDishCategory).mutation(async (req) => {
     const { input } = req
     return await updateDishCategory(input)
   }),
@@ -66,12 +61,12 @@ export const appRouter = t.router({
 
   // DISH CRUD //
 
-  addDish: t.procedure.input(zNewDish).mutation(async (req) => {
+  addDish: t.procedure.input(zDBDish).mutation(async (req) => {
     const { input } = req
     return await createDish(input)
   }),
 
-  updateDish: t.procedure.input(zNewDish).mutation(async (req) => {
+  updateDish: t.procedure.input(zDBDish).mutation(async (req) => {
     const { input } = req
     return await updateDish(input)
   }),
@@ -79,6 +74,21 @@ export const appRouter = t.router({
   deleteDish: t.procedure.input(z.number()).mutation(async (req) => {
     const { input: id } = req
     await deleteDish(id)
+  }),
+
+  // ADMIN CRUD //
+
+  addRestaurant: t.procedure.input(zRegisterCredentials).mutation(async (req): Promise<UserResponse> => {
+    const { input } = req
+    const restaurant: Restaurant = await createRestaurant(input.name)
+    return await createUser(input, restaurant)
+  }),
+
+  adminUsers: t.procedure.query(async () => await getAdminUsers()),
+
+  addAdminUser: t.procedure.input(zRegisterCredentialsAdminUser).mutation(async (req): Promise<UserResponse> => {
+    const { input } = req
+    return await createAdminUser(input)
   }),
 })
 

@@ -9,7 +9,7 @@ import {
   SxProps,
 } from '@mui/material'
 import { theme } from './theme'
-import { ReactNode } from 'react'
+import { KeyboardEvent, ReactNode } from 'react'
 import Image from 'next/image'
 import { StaticImport } from 'next/dist/shared/lib/get-img-props'
 import { LoadingButton } from '@mui/lab'
@@ -53,7 +53,10 @@ export default function Dialog({
     <>
       <ThemeProvider theme={theme}>
         <MatDialog
-          PaperProps={{ sx: { borderRadius: '16px', maxHeight: '75dvh' } }}
+          PaperProps={{
+            sx: { borderRadius: '16px', maxHeight: '75dvh', overflowY: 'scroll' },
+            className: 'no-scrollbar',
+          }}
           onClose={onClose}
           open={open}
           fullWidth
@@ -74,7 +77,7 @@ export default function Dialog({
             />
           )}
           <Content
-            className='no-scrollbar h-full'
+            className='no-scrollbar'
             sx={sx}
           >
             {children}
