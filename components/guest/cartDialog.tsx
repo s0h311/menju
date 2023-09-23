@@ -16,28 +16,25 @@ import { trpc } from '@/trpc/trpc'
 
 export default function CartDialog() {
   const [showDialog, setShowDialog] = useState<boolean>(false)
-
   const cartStore = useStore(useCartStore, (state) => state)
-
   const [cart, setCart] = useState<Cart | null>(null)
-
   const createOrderMutation = trpc.createOrder.useMutation()
 
   const {
     register,
     getValues,
-    reset,
     setValue,
     handleSubmit,
     formState: { isSubmitted },
+    reset,
   } = useForm<Pick<Cart, 'note' | 'paymentMethod'>>({
     defaultValues: { note: '', paymentMethod: 'CARD' },
     resolver: zodResolver(zCart.pick({ note: true, paymentMethod: true })),
   })
 
-  const updatePaymentMethod = (method: PaymentMethod) => {
-    setValue('paymentMethod', method, { shouldValidate: true })
-    cartStore?.updatePaymentMethod(method)
+  const updatePaymentMethod = (paymentMethod: PaymentMethod) => {
+    setValue('paymentMethod', paymentMethod, { shouldValidate: true })
+    cartStore?.updatePaymentMethod(paymentMethod)
   }
 
   useEffect(() => {
@@ -87,6 +84,7 @@ export default function CartDialog() {
       ) : (
         <div>
           <Dialog
+            sx={{ pb: 0 }}
             title='Bestellung'
             open={showDialog}
             closeText='Abbrechen'
@@ -95,19 +93,21 @@ export default function CartDialog() {
             onClose={() => setShowDialog(false)}
             loading={isSubmitted}
           >
-            <div className='space-y-3'>
-              {cart &&
-                cart.positions.map((position) => (
+            {!cart?.positions.length ? (
+              <h3>Such dir doch etwas aus :)</h3>
+            ) : (
+              <div className='space-y-3'>
+                {cart.positions.map((position) => (
                   <div
                     key={position.dish.id + position.leftOutIngredients.join('')}
-                    className='grid w-4/5 mx-auto'
+                    className='grid w-11/12 mx-auto'
                   >
                     {position.dish.picture && (
                       <Image
                         className='rounded-lg'
                         src={position.dish.picture}
-                        width={300}
-                        height={200}
+                        width={400}
+                        height={300}
                         alt=''
                       />
                     )}
@@ -133,21 +133,22 @@ export default function CartDialog() {
                     <p className='truncate text-sm text-gray-500'>{getIngredientsText(position)}</p>
                   </div>
                 ))}
-              <hr />
-              <div className='mx-auto'>
-                <FormMultiSelectionChips
-                  items={paymentMethods}
-                  activeItem={getValues('paymentMethod')}
-                  onClick={updatePaymentMethod}
-                />
-                <TextareaAutosize
-                  className='border mt-2 border-slate-500 shadow-sm rounded-l-lg rounded-tr-lg p-3 outline-none'
-                  placeholder='Anmerkung'
-                  {...register('note', { onChange: (event) => cartStore?.updateNote(event.target.value) })}
-                />
-                <p>Gesamtbetrag: {cartStore?.cart.netTotal.toFixed(2)}€</p>
+                <hr />
+                <div className='space-y-2'>
+                  <FormMultiSelectionChips
+                    items={paymentMethods}
+                    activeItem={getValues('paymentMethod')}
+                    onClick={updatePaymentMethod}
+                  />
+                  <TextareaAutosize
+                    className='border border-slate-500 shadow-sm rounded-l-lg rounded-tr-lg p-3 outline-none w-full'
+                    placeholder='Anmerkung'
+                    {...register('note', { onChange: (event) => cartStore?.updateNote(event.target.value) })}
+                  />
+                  <p>Gesamtbetrag: {cartStore?.cart.netTotal.toFixed(2)}€</p>
+                </div>
               </div>
-            </div>
+            )}
           </Dialog>
         </div>
       )}
