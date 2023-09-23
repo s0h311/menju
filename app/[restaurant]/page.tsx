@@ -11,6 +11,7 @@ import useDishService from '@/hooks/useDishService'
 import FilterBarSkeleton from '@/components/guest/skelleton/filterBarSkeleton'
 import FoodCategorySkeleton from '@/components/guest/skelleton/foodCategorySkeleton'
 import React from 'react'
+import CartDialog from '@/components/guest/cartDialog'
 
 export default function Menu({ params }: { params: { restaurant: string } }) {
   const restaurantId: number = parseInt(params.restaurant)
@@ -59,6 +60,8 @@ export default function Menu({ params }: { params: { restaurant: string } }) {
           setOpenDialog={setActiveDish}
         />
       )}
+
+      <CartDialog />
     </Stack>
   )
 }
