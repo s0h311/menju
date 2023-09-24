@@ -1,14 +1,13 @@
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 import { Cart, OrderPosition, PaymentMethod } from '@/types/order.type'
-import { useRestaurantStore } from './restaurantStore'
 import { addPosition, removePosition, updateNote, updatePaymentMethod } from './cartStore/cart.store'
 
-export type CartState = {
-  cart: Cart
+type CartState = {
+  cart: Omit<Cart, 'restaurantId'>
 }
 
-export type CartActions = {
+type CartActions = {
   setCart: (cart: Cart) => void
   addPosition: (position: OrderPosition) => void
   removePosition: (position: OrderPosition) => void
@@ -17,8 +16,6 @@ export type CartActions = {
   reset: () => void
 }
 
-const restaurantId = useRestaurantStore.getState().restaurantId
-
 const initialState: CartState = {
   cart: {
     table: '',
@@ -26,7 +23,6 @@ const initialState: CartState = {
     paymentMethod: 'CARD',
     isPayed: false,
     netTotal: 0,
-    restaurantId,
     vat: null,
     note: null,
   },

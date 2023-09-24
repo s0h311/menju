@@ -13,12 +13,14 @@ import { useForm } from 'react-hook-form'
 import FormMultiSelectionChips from '@/components/kitchen/form/formMultiSelectionChips'
 import { TextareaAutosize } from '@mui/base'
 import { trpc } from '@/trpc/trpc'
+import { useRestaurantStore } from '@/store/restaurantStore'
 
 export default function CartDialog() {
   const [showDialog, setShowDialog] = useState<boolean>(false)
   const cartStore = useStore(useCartStore, (state) => state)
-  const [cart, setCart] = useState<Cart | null>(null)
+  const [cart, setCart] = useState<Omit<Cart, 'restaurantId'> | null>(null)
   const createOrderMutation = trpc.createOrder.useMutation()
+  const restaurantStore = useStore(useRestaurantStore, (state) => state)
 
   const {
     register,
@@ -45,11 +47,13 @@ export default function CartDialog() {
 
   const createOrder = (cart: Pick<Cart, 'note' | 'paymentMethod'>) => {
     if (!cartStore) return
+
     createOrderMutation.mutateAsync(
       {
         ...cartStore?.cart,
         paymentMethod: cart.paymentMethod,
         note: cart.note,
+        restaurantId: restaurantStore?.restaurantId ?? 0,
       },
       { onSuccess: () => reset() }
     )
