@@ -3,11 +3,11 @@ import { createJSONStorage, persist } from 'zustand/middleware'
 import { Cart, OrderPosition, PaymentMethod } from '@/types/order.type'
 import { addPosition, removePosition, updateNote, updatePaymentMethod } from './cartStore/cart.store'
 
-type CartState = {
+export type CartState = {
   cart: Omit<Cart, 'restaurantId'>
 }
 
-type CartActions = {
+export type CartActions = {
   setCart: (cart: Cart) => void
   addPosition: (position: OrderPosition) => void
   removePosition: (position: OrderPosition) => void
