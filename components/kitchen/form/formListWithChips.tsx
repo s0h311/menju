@@ -45,6 +45,7 @@ export default function FormListWithChips({
       <button
         className={`rounded-r-xl px-2 ${addButttonColor}`}
         type='button'
+        tabIndex={-1}
         onClick={addItem}
       >
         +
@@ -53,6 +54,7 @@ export default function FormListWithChips({
         <button
           className={`rounded-xl px-2 py-1 text-white text-sm cursor-pointer ${chipColor}`}
           key={item.de}
+          tabIndex={-1}
           onClick={() => onItemRemove(item)}
         >
           {item.de}
