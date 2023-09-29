@@ -7,18 +7,17 @@ import FilterBar from '@/components/guest/filterBar'
 import FoodCategory from '@/components/guest/foodCategory'
 import { useState } from 'react'
 import DishDialog from '@/components/guest/dishDialog'
-import useDishService from '@/hooks/useDishService'
 import FilterBarSkeleton from '@/components/guest/skelleton/filterBarSkeleton'
 import FoodCategorySkeleton from '@/components/guest/skelleton/foodCategorySkeleton'
 import React from 'react'
 import CartDialog from '@/components/guest/cartDialog'
+import useDish from '@/hooks/useDish'
 
 export default function Menu({ params }: { params: { restaurant: string } }) {
   const restaurantId: number = parseInt(params.restaurant)
-  const dishService = useDishService({ restaurantId, language: 'de' })
+  const { dishesByCategory, visibleDishes } = useDish({ restaurantId, language: 'de' })
 
   const [activeDish, setActiveDish] = useState<Dish | null>(null)
-  const { dishesByCategory, visibleDishes } = dishService
 
   const filterChips: FilterChipModel[] = getFilterChips(dishesByCategory)
 
@@ -36,7 +35,7 @@ export default function Menu({ params }: { params: { restaurant: string } }) {
 
   return (
     <Stack className='mb-4'>
-      {dishService.visibleDishes ? (
+      {visibleDishes ? (
         <>
           <FilterBar chipData={filterChips} />
           {visibleDishes?.map((category) => (

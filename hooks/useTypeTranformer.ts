@@ -1,9 +1,8 @@
 import { DBDish, DBDishCategory, DBMultiLanguageStringProperty } from '@/types/db/dish.db.type'
 import { Dish, DishCategory } from '@/types/dish.type'
+import { Language } from '@/types/order.type'
 
 export default function useTypeTransformer() {
-  // HELPERS //
-
   const stringToDBMultiLanguageString = (str: string): DBMultiLanguageStringProperty => ({
     de: str,
     en: '',
@@ -25,13 +24,27 @@ export default function useTypeTransformer() {
     description: !dish.description ? null : stringToDBMultiLanguageString(dish.description),
   })
 
+  const dBdishToDish = (dish: DBDish, language: Language): Dish => ({
+    ...dish,
+    id: dish.id ?? 0,
+    name: dish.name[language],
+    ingredients: {
+      required: dish.ingredients.required.map((ingredient) => ingredient[language]),
+      optional: dish.ingredients.optional.map((ingredient) => ingredient[language]),
+    },
+    labels: !dish.labels ? [] : dish.labels.map((label) => label[language]),
+    allergies: !dish.allergies ? [] : dish.allergies.map((allergy) => allergy[language]),
+    description: !dish.description ? null : dish.description[language],
+  })
+
   const dishCategoryToDBDishCategory = (dishCategory: DishCategory): DBDishCategory => ({
     ...dishCategory,
     name: stringToDBMultiLanguageString(dishCategory.name),
   })
 
   return {
-    dishToDBDish,
     dishCategoryToDBDishCategory,
+    dishToDBDish,
+    dBdishToDish,
   }
 }
