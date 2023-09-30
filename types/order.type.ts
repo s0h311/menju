@@ -32,5 +32,6 @@ export type Language = z.infer<typeof zLanguage>
 export type RestaurantId = z.infer<typeof zRestaurantId>
 export type OrderPosition = z.infer<typeof zOrderPosition>
 export type Cart = z.infer<typeof zCart>
+export type Order = Cart & { id: number }
 export type LanguageAndRestaurantId = z.infer<typeof zLanguageAndRestaurantId>
 export type PaymentMethod = z.infer<typeof zPaymentMethod>
