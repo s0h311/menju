@@ -2,7 +2,8 @@
 
 import Image from 'next/image'
 import image from '@/public/images/login-food.jpg'
-import { Box, TextField, ThemeProvider } from '@mui/material'
+import { Box, TextField } from '@mui/material'
+import ThemeProvider from '@mui/material/styles/ThemeProvider'
 import { LoadingButton } from '@mui/lab'
 import { theme } from '@/ui/theme'
 import { zLoginCredentials, LoginCredentials } from '@/types/credentials.type'
@@ -63,9 +64,9 @@ export default function Login() {
         <Image
           className='rounded-[40px] max-h-full w-auto'
           src={image}
-          alt=''
-          quality={75}
+          quality={70}
           placeholder='blur'
+          alt=''
         />
       )}
 

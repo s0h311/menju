@@ -4,12 +4,12 @@ import {
   DialogActions as Actions,
   DialogContent as Content,
   Button,
-  ThemeProvider,
   Breakpoint,
   SxProps,
 } from '@mui/material'
+import ThemeProvider from '@mui/material/styles/ThemeProvider'
 import { theme } from './theme'
-import { KeyboardEvent, ReactNode } from 'react'
+import { ReactNode } from 'react'
 import Image from 'next/image'
 import { StaticImport } from 'next/dist/shared/lib/get-img-props'
 import { LoadingButton } from '@mui/lab'
@@ -68,10 +68,11 @@ export default function Dialog({
           {imageData?.src && (
             <Image
               className={`rounded-t-2xl mb-2 ${imageData.onClick ? 'cursor-pointer' : ''}`}
+              style={{ aspectRatio: '16/9' }}
               src={imageData.src}
-              width={500}
-              height={400}
-              quality={80}
+              width={350}
+              height={240}
+              quality={70}
               alt={imageData.alt}
               onClick={imageData.onClick}
             />

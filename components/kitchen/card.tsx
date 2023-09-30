@@ -5,10 +5,10 @@ import {
   CardActions,
   CardMedia,
   Typography,
-  ThemeProvider,
   IconButton,
   CardActionArea,
 } from '@mui/material'
+import ThemeProvider from '@mui/material/styles/ThemeProvider'
 import { EditRounded, DeleteForeverRounded } from '@mui/icons-material'
 import { theme } from '@/ui/theme'
 

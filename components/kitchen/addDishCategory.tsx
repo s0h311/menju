@@ -1,7 +1,8 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { TextField, ThemeProvider, Card as MCard, Button, CardContent, CardActions, CardMedia } from '@mui/material'
+import { TextField, Card as MCard, Button, CardContent, CardActions, CardMedia } from '@mui/material'
+import ThemeProvider from '@mui/material/styles/ThemeProvider'
 import { LoadingButton } from '@mui/lab'
 import { Check, Close } from '@mui/icons-material'
 import { useForm } from 'react-hook-form'

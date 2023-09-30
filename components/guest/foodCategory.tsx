@@ -1,4 +1,5 @@
-import { Box, Divider, Stack, ThemeProvider } from '@mui/material'
+import { Box, Divider, Stack } from '@mui/material'
+import ThemeProvider from '@mui/material/styles/ThemeProvider'
 import React from 'react'
 import FoodItem from './foodItem'
 import { Dish, DishCategory } from '@/types/dish.type'

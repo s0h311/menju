@@ -109,9 +109,11 @@ export default function CartDialog() {
                     {position.dish.picture && (
                       <Image
                         className='rounded-lg'
+                        style={{ aspectRatio: '16/9' }}
                         src={position.dish.picture}
-                        width={400}
-                        height={300}
+                        width={350}
+                        height={240}
+                        quality={70}
                         alt=''
                       />
                     )}
@@ -132,7 +134,7 @@ export default function CartDialog() {
                     </div>
                     <div className='flex place-content-between'>
                       <h3>{position.dish.name}</h3>
-                      <p>{position.dish.price + '€'}</p>
+                      <p>{position.dish.price.toFixed(2) + '€'}</p>
                     </div>
                     <p className='truncate text-sm text-gray-500'>{getIngredientsText(position)}</p>
                   </div>
