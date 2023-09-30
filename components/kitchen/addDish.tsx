@@ -32,8 +32,8 @@ export default function AddDish({ open, editingDish, onClose }: AddDishProps) {
   const menuStore = useStore(useMenuStore, (state) => state)
   const [dishCategories, setDishCategories] = useState<DishCategory[]>([])
   const imageStoragePath = useRef<string | null>(null)
-  const addDishMutation = trpc.addDish.useMutation()
-  const updateDishMutation = trpc.updateDish.useMutation()
+  const { mutateAsync: addDishMutation } = trpc.addDish.useMutation()
+  const { mutateAsync: updateDishMutation } = trpc.updateDish.useMutation()
   const { dishToDBDish } = useTypeTransformer()
 
   useEffect(() => {
@@ -89,6 +89,7 @@ export default function AddDish({ open, editingDish, onClose }: AddDishProps) {
   const dietTypes: DietType[] = ['VEGAN', 'VEGETARIAN', 'PESCATARIAN', 'OMNIVORE']
 
   const onSubmit = async (dish: DBDish): Promise<void> => {
+    // TODO mutateDishOptimistic(dBdish, preview, editingDish)
     if (imageFile.current) {
       await uploadImage(imageFile.current)
       if (imageStoragePath.current) {
@@ -97,7 +98,7 @@ export default function AddDish({ open, editingDish, onClose }: AddDishProps) {
     }
 
     if (editingDish) {
-      updateDishMutation.mutateAsync(dish, {
+      updateDishMutation(dish, {
         onSuccess: async (dish: Dish) => {
           if (editingDish.picture && editingDish.picture !== getValues().picture) {
             await storageUploader.removeImage([editingDish.picture])
@@ -107,8 +108,8 @@ export default function AddDish({ open, editingDish, onClose }: AddDishProps) {
         },
       })
     } else {
-      addDishMutation.mutateAsync(dish, {
-        onSuccess: async (dish: Dish) => {
+      addDishMutation(dish, {
+        onSuccess: (dish: Dish) => {
           menuStore?.addDish(dish)
           onClose()
         },
