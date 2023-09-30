@@ -32,6 +32,7 @@ export default function AddDishCategory({ editingDishCategory, onClose }: AddDis
   const imageFile = useRef<File | null>(null)
   const imageStoragePath = useRef<string | null>(null)
   const { dishCategoryToDBDishCategory } = useTypeTransformer()
+
   const {
     register,
     handleSubmit,
@@ -58,6 +59,8 @@ export default function AddDishCategory({ editingDishCategory, onClose }: AddDis
   }, [restaurantStore?.restaurantId, setValue])
 
   const onSubmit = async (dishCategory: DBDishCategory): Promise<void> => {
+    // TODO mutateDishCategoryOptimistic(dishCategory, preview, editingDishCategory)
+
     if (imageFile.current) {
       await uploadImage(imageFile.current)
       if (imageStoragePath.current) {
