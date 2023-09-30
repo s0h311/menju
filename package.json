@@ -38,7 +38,7 @@
     "@types/react": "18.2.21",
     "@types/react-dom": "18.2.7",
     "autoprefixer": "10.4.15",
-    "next": "13.4.19",
+    "next": "13.5.3",
     "next-superjson-plugin": "^0.5.9",
     "postcss": "8.4.29",
     "react": "0.0.0-experimental-f81c0f1ed-20230927",
