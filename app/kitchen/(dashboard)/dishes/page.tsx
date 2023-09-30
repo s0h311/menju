@@ -10,7 +10,7 @@ import AddDishCategory from '@/components/kitchen/addDishCategory'
 import Dialog from '@/ui/dialog'
 import { trpc } from '@/trpc/trpc'
 import AddDish from '@/components/kitchen/addDish'
-import useDishService from '@/hooks/useDishService'
+import useDish from '@/hooks/useDish'
 
 export default function KitchenDishes() {
   const [activeDishesCategory, setActiveDishesCategory] = useState<DishesByCategory | null>(null)
@@ -20,7 +20,7 @@ export default function KitchenDishes() {
   const [deletingDish, setDeletingDish] = useState<Dish | null>(null)
 
   const menuStore = useStore(useMenuStore, (state) => state)
-  const { dishesByCategory } = useDishService()
+  const { dishesByCategory } = useDish()
 
   const allDishes: Dish[] =
     dishesByCategory
