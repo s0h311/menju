@@ -1,17 +1,25 @@
 'use client'
 
+import useTypeTransformer from '@/hooks/useTypeTranformer'
+import { DBOrder } from '@/types/db/order.db.type'
 import { Order } from '@/types/order.type'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { useEffect, useState } from 'react'
 
 type OrderListProps = {
-  initialOrders: Order[]
+  initialOrders: DBOrder[]
 }
 
 export default function OrderList({ initialOrders }: OrderListProps) {
   const supabaseClient = createClientComponentClient()
+  const { dbOrderToOrder } = useTypeTransformer()
 
-  const [orders, setOrders] = useState<Order[]>(initialOrders)
+  const [orders, setOrders] = useState<Order[]>([])
+
+  useEffect(() => {
+    const currentOrders = initialOrders.map((dbOrder) => dbOrderToOrder(dbOrder))
+    setOrders(currentOrders)
+  }, [setOrders, initialOrders, dbOrderToOrder])
 
   useEffect(() => {
     const ordersChannel = supabaseClient
@@ -23,24 +31,36 @@ export default function OrderList({ initialOrders }: OrderListProps) {
           schema: 'public',
           table: 'order',
         },
-        (payload) => setOrders((orders) => [...orders, payload.new as Order])
+        (payload) => setOrders((orders) => [...orders, dbOrderToOrder(payload.new as DBOrder)])
       )
       .subscribe()
 
     return () => {
       supabaseClient.removeChannel(ordersChannel)
     }
-  }, [supabaseClient, setOrders])
+  }, [supabaseClient, setOrders, dbOrderToOrder])
 
   return (
     <ul className='grid grid-cols-3 gap-5'>
       {orders.map((order) => (
         <li
           key={order.id}
-          className='space-y-5 border p-5 rounded-lg shadow'
+          className='grid gap-5 border p-5 rounded-lg shadow h-fit'
         >
-          {/* Table */}
-          <p className='bg-yellow-400 rounded px-2'>{order.table}</p>
+          <div className='flex gap-4 relative'>
+            <p className='bg-yellow-400 rounded px-2 w-fit '>{order.id}</p>
+
+            {/* Zahlungeingang */}
+            <p className={`rounded px-2 w-fit ${order.isPayed ? 'bg-green-300' : 'bg-red-300'}`}>
+              {order.isPayed ? 'BEZAHLT' : 'NICHT BEZAHLT'}
+            </p>
+
+            {/* Zahlungsmethode */}
+            <p>{order.paymentMethod}</p>
+
+            {/* Table */}
+            {order.table && <p className='absolute right-0'>TISCH {order.table}</p>}
+          </div>
 
           {/* Positions */}
           {order.positions.map((position) => (
@@ -59,21 +79,12 @@ export default function OrderList({ initialOrders }: OrderListProps) {
             </div>
           ))}
 
-          {/* Additional Info */}
-          <div className='flex gap-24 items-center'>
+          {order.note && (
             <div>
-              <p className='text-slate-500'>Zahlung</p>
-              <p className='text-slate-500'>Zahlungsmethode</p>
-              <p className='text-slate-500'>Bemerkung</p>
-              <p className='text-slate-500'>ID</p>
+              <h3>Anmerkung</h3>
+              <p className='text-slate-500'>{order.note}</p>
             </div>
-            <div>
-              <p>{order.isPayed}</p>
-              <p>{order.paymentMethod}</p>
-              <p>{order.note}</p>
-              <p>{order.id}</p>
-            </div>
-          </div>
+          )}
         </li>
       ))}
     </ul>

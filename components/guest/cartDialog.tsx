@@ -54,6 +54,7 @@ export default function CartDialog() {
         paymentMethod: cart.paymentMethod,
         note: cart.note,
         restaurantId: restaurantStore?.restaurantId ?? 0,
+        table: restaurantStore?.tableId ?? '',
       },
       { onSuccess: () => reset() }
     )
