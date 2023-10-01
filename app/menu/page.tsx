@@ -12,10 +12,14 @@ import FoodCategorySkeleton from '@/components/guest/skelleton/foodCategorySkele
 import React from 'react'
 import CartDialog from '@/components/guest/cartDialog'
 import useDish from '@/hooks/useDish'
+import { useSearchParams } from 'next/navigation'
 
-export default function Menu({ params }: { params: { restaurant: string } }) {
-  const restaurantId: number = parseInt(params.restaurant)
-  const { dishesByCategory, visibleDishes } = useDish({ restaurantId, language: 'de' })
+export default function Menu() {
+  const queryParams = useSearchParams()
+  const restaurantId: number = parseInt(queryParams.get('r') ?? '')
+  const tableId: string = queryParams.get('t') ?? 'unknown'
+
+  const { dishesByCategory, visibleDishes } = useDish({ restaurantId, language: 'de', tableId })
 
   const [activeDish, setActiveDish] = useState<Dish | null>(null)
 

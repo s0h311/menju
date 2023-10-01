@@ -22,6 +22,11 @@ export default function AdminDashboardLayout({ children }: KitchenDashboardLayou
       label: 'Kategorien & Gerichte',
       path: '/kitchen/dishes',
     },
+    {
+      id: 3,
+      label: 'Bestellungen',
+      path: '/kitchen/orders',
+    },
   ]
 
   return <Dashboard sidebarMenus={dashboardMenus}>{children}</Dashboard>

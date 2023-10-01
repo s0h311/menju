@@ -10,7 +10,7 @@ export default function Home() {
 
       <Link
         className='rounded-xl border border-accent px-3 py-1 text-xl active:border-none active:bg-accent active:text-primary'
-        href='/1'
+        href='/menu?r=1&t=15'
       >
         Go to Demo
       </Link>

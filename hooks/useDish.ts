@@ -1,4 +1,3 @@
-import { LanguageAndRestaurantId } from '@/types/order.type'
 import useStore from './useStore'
 import { useEffect, experimental_useOptimistic as useOptimistic } from 'react'
 import { Dish, DishCategory, DishesByCategory } from '@/types/dish.type'
@@ -7,8 +6,11 @@ import { useMenuStore } from '@/store/menuStore'
 import { DBDish, DBDishCategory } from '@/types/db/dish.db.type'
 import { useRestaurantStore } from '@/store/restaurantStore'
 import useTypeTransformer from './useTypeTranformer'
+import { LanguageAndRestaurantId } from '@/types/order.type'
 
-const useDish = (configs?: LanguageAndRestaurantId) => {
+type UseDishConfigs = LanguageAndRestaurantId & { tableId: string }
+
+const useDish = (configs?: UseDishConfigs) => {
   const restaurantStore = useStore(useRestaurantStore, (state) => state, true)
   const menuStore = useStore(useMenuStore, (state) => state, true)
   const visibleDishes = menuStore?.visibleDishes
@@ -36,6 +38,7 @@ const useDish = (configs?: LanguageAndRestaurantId) => {
     if (configs) {
       restaurantStore.setRestaurantId(configs.restaurantId)
       restaurantStore.setLanguage(configs.language)
+      restaurantStore.setTableId(configs.tableId)
     }
 
     if (!menuStore?.allDishes.length) refetch()

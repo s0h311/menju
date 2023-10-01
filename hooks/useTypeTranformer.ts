@@ -1,6 +1,7 @@
 import { DBDish, DBDishCategory, DBMultiLanguageStringProperty } from '@/types/db/dish.db.type'
+import { DBOrder } from '@/types/db/order.db.type'
 import { Dish, DishCategory } from '@/types/dish.type'
-import { Language } from '@/types/order.type'
+import { Language, Order } from '@/types/order.type'
 
 export default function useTypeTransformer() {
   const stringToDBMultiLanguageString = (str: string): DBMultiLanguageStringProperty => ({
@@ -42,9 +43,18 @@ export default function useTypeTransformer() {
     name: stringToDBMultiLanguageString(dishCategory.name),
   })
 
+  const dbOrderToOrder = (dbOrder: DBOrder): Order => ({
+    ...dbOrder,
+    paymentMethod: dbOrder.payment_method,
+    isPayed: dbOrder.is_payed,
+    netTotal: dbOrder.net_total,
+    restaurantId: dbOrder.restaurant_id,
+  })
+
   return {
     dishCategoryToDBDishCategory,
     dishToDBDish,
     dBdishToDish,
+    dbOrderToOrder,
   }
 }
