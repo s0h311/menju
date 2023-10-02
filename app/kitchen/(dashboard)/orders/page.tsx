@@ -6,7 +6,9 @@ export const dynamic = 'force-dynamic'
 
 export default async function Orders() {
   const superbaseClient = createServerComponentClient({ cookies })
-  const { data } = await superbaseClient.from('order').select()
+  const { data, error } = await superbaseClient.from('order').select()
+
+  console.error(error)
 
   return <OrderList initialOrders={data ?? []} />
 }
