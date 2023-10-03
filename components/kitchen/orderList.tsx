@@ -2,9 +2,11 @@
 
 import useTypeTransformer from '@/hooks/useTypeTranformer'
 import { DBOrder } from '@/types/db/order.db.type'
-import { Order } from '@/types/order.type'
+import { Order, OrderStatus } from '@/types/order.type'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { useEffect, useState } from 'react'
+import { CheckCircleOutlined } from '@mui/icons-material'
+import { IconButton } from '@mui/material'
 
 type OrderListProps = {
   initialOrders: DBOrder[]
@@ -30,6 +32,7 @@ export default function OrderList({ initialOrders }: OrderListProps) {
           event: 'INSERT',
           schema: 'public',
           table: 'order',
+          filter: 'order_status=eq.RECEIVED',
         },
         (payload) => setOrders((orders) => [...orders, dbOrderToOrder(payload.new as DBOrder)])
       )
@@ -40,14 +43,24 @@ export default function OrderList({ initialOrders }: OrderListProps) {
     }
   }, [supabaseClient, setOrders, dbOrderToOrder])
 
+  const updateStatus = async (orderId: string, status: Omit<OrderStatus, 'RECEIVED'>) => {
+    const { error } = await supabaseClient.from('order').update({ order_status: status }).eq('id', orderId)
+    if (error) {
+      // TODO handle Error
+      return
+    }
+    setOrders((orders) => orders.filter((order) => order.id !== orderId))
+  }
+
   return (
     <ul className='grid grid-cols-3 gap-5'>
       {orders.map((order) => (
         <li
           key={order.id}
-          className='grid gap-5 border p-5 rounded-lg shadow h-fit'
+          className='grid gap-5 border p-5 rounded-lg shadow h-fit relative'
         >
-          <div className='flex gap-4 relative'>
+          <div className='flex gap-2 relative'>
+            {/* OrderId */}
             <p className='bg-yellow-400 rounded px-2 w-fit'>{order.id}</p>
 
             {/* Zahlungeingang */}
@@ -58,8 +71,22 @@ export default function OrderList({ initialOrders }: OrderListProps) {
             {/* Zahlungsmethode */}
             <p>{order.paymentMethod}</p>
 
-            {/* Table */}
-            {order.tableId && <p className='absolute right-0'>TISCH {order.tableId}</p>}
+            <div className='flex gap-2 absolute right-0'>
+              {/* TableId */}
+              {order.tableId && <p>TISCH {order.tableId}</p>}
+
+              {
+                /* Status Ändern */
+                //TODO remove '!'
+              }
+              <IconButton
+                sx={{ p: 0 }}
+                color='success'
+                onClick={() => updateStatus(order.id!, 'DONE')}
+              >
+                <CheckCircleOutlined />
+              </IconButton>
+            </div>
           </div>
 
           {/* Positions */}
@@ -79,6 +106,7 @@ export default function OrderList({ initialOrders }: OrderListProps) {
             </div>
           ))}
 
+          {/* Bemerkung */}
           {order.note && (
             <div>
               <h3>Anmerkung</h3>

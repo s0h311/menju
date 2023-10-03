@@ -58,4 +58,4 @@ export async function getAdminUsers(): Promise<AdminUser[]> {
   )
 }
 
-export const createOrder = async (order: DBOrder) => supabaseClientAdmin.rpc('create_order', order)
+export const createOrder = async (order: DBOrder) => supabaseClientAdmin.rpc('create_order', order) // DATABASE FUNCTION

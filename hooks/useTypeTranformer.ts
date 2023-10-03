@@ -56,8 +56,9 @@ export default function useTypeTransformer() {
   const dbOrderToOrder = useCallback(
     (dbOrder: DBOrder): Order => ({
       ...dbOrder,
-      id: dbOrder.id!,
+      id: dbOrder.id,
       tableId: dbOrder.table_id,
+      orderStatus: dbOrder.order_status,
       paymentMethod: dbOrder.payment_method,
       isPayed: dbOrder.is_payed,
       netTotal: dbOrder.net_total,
@@ -70,6 +71,7 @@ export default function useTypeTransformer() {
     (order: Order): DBOrder => ({
       ...order,
       table_id: order.tableId,
+      order_status: order.orderStatus,
       payment_method: order.paymentMethod,
       is_payed: order.isPayed,
       net_total: order.netTotal,

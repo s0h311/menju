@@ -11,10 +11,12 @@ export const zOrderPosition = z.object({
 })
 
 export const zPaymentMethod = z.enum(['CARD', 'CASH', 'COUPON'])
+export const zOrderStatus = z.enum(['RECEIVED', 'DONE', 'REJECTED'])
 
 export const zCart = z.object({
   tableId: z.string(),
   positions: z.array(zOrderPosition),
+  orderStatus: zOrderStatus,
   paymentMethod: zPaymentMethod,
   isPayed: z.boolean().nullable(),
   netTotal: z.number(),
@@ -31,6 +33,7 @@ export const zLanguageAndRestaurantId = z.object({
 export type Language = z.infer<typeof zLanguage>
 export type RestaurantId = z.infer<typeof zRestaurantId>
 export type OrderPosition = z.infer<typeof zOrderPosition>
+export type OrderStatus = z.infer<typeof zOrderStatus>
 export type Cart = z.infer<typeof zCart>
 export type Order = Cart & { id?: string }
 export type LanguageAndRestaurantId = z.infer<typeof zLanguageAndRestaurantId>

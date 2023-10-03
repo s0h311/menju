@@ -20,6 +20,7 @@ const initialState: CartState = {
   cart: {
     tableId: '',
     positions: [],
+    orderStatus: 'RECEIVED',
     paymentMethod: 'CARD',
     isPayed: false,
     netTotal: 0,

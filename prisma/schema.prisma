@@ -9,12 +9,10 @@ datasource db {
   schemas  = ["public"]
 }
 
-// === TABLES === //
-
 model Restaurant {
   id           Int            @id @default(autoincrement())
   name         String
-  abbreviation String
+  abbreviation String         @unique
   categories   DishCategory[]
   orders       Order[]
 
@@ -25,9 +23,9 @@ model Restaurant {
 model DishCategory {
   id           Int        @id @default(autoincrement())
   name         Json
-  dishes       Dish[]
-  picture      String? // URL of the picture
+  picture      String?
   restaurantId Int        @map("restaurant_id")
+  dishes       Dish[]
   restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
 
   @@map("dish_category")
@@ -38,9 +36,8 @@ model Dish {
   id            Int          @id @default(autoincrement())
   name          Json
   price         Float
-  picture       String? // URL of the picture
+  picture       String?
   categoryId    Int          @map("category_id")
-  category      DishCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   ingredients   Json
   labels        Json?
   allergies     Json?
@@ -50,20 +47,11 @@ model Dish {
   saleStartDate DateTime?    @map("sale_start_date")
   saleEndDate   DateTime?    @map("sale_end_date")
   salePrice     Float?       @map("sale_price")
-  saleDays      Int[]        @map("sale_days") // 1..7, 1 = monday, 2 = tuesday...
+  saleDays      Int[]        @map("sale_days")
+  category      DishCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 
-  @@index([categoryId], type: BTree)
+  @@index([categoryId])
   @@map("dish")
-  @@schema("public")
-}
-
-enum DietType {
-  VEGAN
-  VEGETARIAN
-  PESCATARIAN
-  OMNIVORE
-
-  @@map("dish_type")
   @@schema("public")
 }
 
@@ -78,28 +66,39 @@ model Allergy {
 
 model Nutrition {
   id      Int    @id @default(autoincrement())
-  dish    String @unique // Unique dishes, not related to entity Dish
-  energy  Int // Unit: kcal
-  protein Int // Unit: grams
+  dish    String @unique
+  energy  Int
+  protein Int
 
   @@map("nutrition")
   @@schema("public")
 }
 
 model Order {
-  id            String        @id
+  id            String        @id @default(dbgenerated("gen_random_uuid()"))
   tableId       String        @map("table_id")
   positions     Json
+  orderStatus   OrderStatus   @map("order_status") @default(RECEIVED)
   paymentMethod PaymentMethod @map("payment_method")
   isPayed       Boolean?      @map("is_payed")
   netTotal      Float         @map("net_total")
   vat           Float?
   note          String?
   restaurantId  Int           @map("restaurant_id")
+  orderDate     DateTime?     @default(now()) @map("order_date") @db.Timestamp(6)
   retaurant     Restaurant    @relation(fields: [restaurantId], references: [id])
-  orderDate     DateTime?     @default(now()) @map("order_date") @db.Timestamp() // UTC
 
   @@map("order")
+  @@schema("public")
+}
+
+enum DietType {
+  VEGAN
+  VEGETARIAN
+  PESCATARIAN
+  OMNIVORE
+
+  @@map("dish_type")
   @@schema("public")
 }
 
@@ -109,5 +108,14 @@ enum PaymentMethod {
   COUPON
 
   @@map("payment_method")
+  @@schema("public")
+}
+
+enum OrderStatus {
+  RECEIVED
+  DONE
+  REJECTED
+
+  @@map("order_status")
   @@schema("public")
 }
