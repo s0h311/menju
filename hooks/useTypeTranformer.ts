@@ -56,10 +56,24 @@ export default function useTypeTransformer() {
   const dbOrderToOrder = useCallback(
     (dbOrder: DBOrder): Order => ({
       ...dbOrder,
+      id: dbOrder.id!,
+      tableId: dbOrder.table_id,
       paymentMethod: dbOrder.payment_method,
       isPayed: dbOrder.is_payed,
       netTotal: dbOrder.net_total,
       restaurantId: dbOrder.restaurant_id,
+    }),
+    []
+  )
+
+  const orderToDBOrder = useCallback(
+    (order: Order): DBOrder => ({
+      ...order,
+      table_id: order.tableId,
+      payment_method: order.paymentMethod,
+      is_payed: order.isPayed,
+      net_total: order.netTotal,
+      restaurant_id: order.restaurantId,
     }),
     []
   )
@@ -69,5 +83,6 @@ export default function useTypeTransformer() {
     dishToDBDish,
     dBdishToDish,
     dbOrderToOrder,
+    orderToDBOrder,
   }
 }

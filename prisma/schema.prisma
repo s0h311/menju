@@ -12,10 +12,11 @@ datasource db {
 // === TABLES === //
 
 model Restaurant {
-  id         Int            @id @default(autoincrement())
-  name       String
-  categories DishCategory[]
-  orders     Order[]
+  id           Int            @id @default(autoincrement())
+  name         String
+  abbreviation String
+  categories   DishCategory[]
+  orders       Order[]
 
   @@map("restaurant")
   @@schema("public")
@@ -86,8 +87,8 @@ model Nutrition {
 }
 
 model Order {
-  id            Int           @id @default(autoincrement())
-  table         String
+  id            String        @id
+  tableId       String        @map("table_id")
   positions     Json
   paymentMethod PaymentMethod @map("payment_method")
   isPayed       Boolean?      @map("is_payed")

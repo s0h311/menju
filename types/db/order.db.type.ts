@@ -1,13 +1,17 @@
-import { OrderPosition, PaymentMethod, RestaurantId } from '../order.type'
+import { z } from 'zod'
+import { zOrderPosition, zPaymentMethod } from '../order.type'
+import { zRestaurantId } from '../dish.type'
 
-export type DBOrder = {
-  id: number
-  table: string
-  positions: OrderPosition[]
-  payment_method: PaymentMethod
-  is_payed: boolean | null
-  net_total: number
-  vat: number | null
-  note: string | null
-  restaurant_id: RestaurantId
-}
+export const zDBOrder = z.object({
+  id: z.string().optional(),
+  table_id: z.string(),
+  positions: z.array(zOrderPosition),
+  payment_method: zPaymentMethod,
+  is_payed: z.boolean().nullable(),
+  net_total: z.number(),
+  vat: z.number().nullable(),
+  note: z.string().nullable(),
+  restaurant_id: zRestaurantId,
+})
+
+export type DBOrder = z.infer<typeof zDBOrder>

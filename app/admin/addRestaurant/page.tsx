@@ -22,6 +22,7 @@ export default function AddRestaurant() {
     defaultValues: {
       name: '',
       email: '',
+      abbreviation: '',
       password: '',
       restaurantId: 0,
     },
@@ -51,6 +52,25 @@ export default function AddRestaurant() {
     }
   }
 
+  const fields = [
+    {
+      name: 'name',
+      label: 'Name',
+    },
+    {
+      name: 'email',
+      label: 'E-Mail',
+    },
+    {
+      name: 'abbreviation',
+      label: 'Abkürzung',
+    },
+    {
+      name: 'password',
+      label: 'Passwort',
+    },
+  ]
+
   return (
     <Box
       component='form'
@@ -61,32 +81,17 @@ export default function AddRestaurant() {
       <div className='grid gap-4 w-1/3 xl:w-1/4'>
         <h1 className='text-lg'>Restaurant Anlegen</h1>
 
-        <TextField
-          required
-          id='name'
-          label='Name'
-          {...register('name')}
-          error={!!errors.name}
-          helperText={errors.name?.message}
-        />
-
-        <TextField
-          required
-          id='email'
-          label='E-Mail'
-          {...register('email')}
-          error={!!errors.email}
-          helperText={errors.email?.message}
-        />
-
-        <TextField
-          required
-          id='password'
-          label='Passwort'
-          {...register('password')}
-          error={!!errors.password}
-          helperText={errors.password?.message}
-        />
+        {fields.map((field) => (
+          <TextField
+            key={field.name}
+            required
+            id={field.name}
+            label={field.label}
+            {...register(field.name)}
+            error={!!errors[field.name]}
+            helperText={errors[field.name]?.message}
+          />
+        ))}
 
         {addRestaurantSuccess && <p className='text-green-700'>Restaurant added successfully</p>}
 

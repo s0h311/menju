@@ -23,7 +23,7 @@ export default function AdminDashboardLayout({ children }: AdminDashboardLayoutP
       path: '/admin/addRestaurant',
     },
     {
-      id: 2,
+      id: 3,
       label: 'Benutzer',
       path: '/admin/userManagement',
     },

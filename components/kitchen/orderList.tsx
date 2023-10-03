@@ -48,7 +48,7 @@ export default function OrderList({ initialOrders }: OrderListProps) {
           className='grid gap-5 border p-5 rounded-lg shadow h-fit'
         >
           <div className='flex gap-4 relative'>
-            <p className='bg-yellow-400 rounded px-2 w-fit '>{order.id}</p>
+            <p className='bg-yellow-400 rounded px-2 w-fit'>{order.id}</p>
 
             {/* Zahlungeingang */}
             <p className={`rounded px-2 w-fit ${order.isPayed ? 'bg-green-300' : 'bg-red-300'}`}>
@@ -59,7 +59,7 @@ export default function OrderList({ initialOrders }: OrderListProps) {
             <p>{order.paymentMethod}</p>
 
             {/* Table */}
-            {order.table && <p className='absolute right-0'>TISCH {order.table}</p>}
+            {order.tableId && <p className='absolute right-0'>TISCH {order.tableId}</p>}
           </div>
 
           {/* Positions */}

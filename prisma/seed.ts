@@ -6,6 +6,7 @@ const main = async () => {
   const restaurant = await prisma.restaurant.create({
     data: {
       name: 'Batman',
+      abbreviation: 'BTM',
     },
   })
 

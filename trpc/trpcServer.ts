@@ -1,16 +1,15 @@
 import { initTRPC } from '@trpc/server'
 import superjson from 'superjson'
 import { zDBDish, zDBDishCategory } from '@/types/db/dish.db.type'
-import { zCart, zLanguageAndRestaurantId } from '@/types/order.type'
+import { zLanguageAndRestaurantId } from '@/types/order.type'
 import { zRegisterCredentials } from '@/types/credentials.type'
 import { UserResponse } from '@supabase/supabase-js'
 import { capitalize, getMultiLanguageStringProperty } from '@/trpc/helpers/dishHelpers'
 import { z } from 'zod'
-import { createAdminUser, createUser, getAdminUsers } from '@/trpc/data/supabaseAdminClient'
+import { createAdminUser, createUser, getAdminUsers, createOrder } from '@/trpc/data/supabaseAdminClient'
 import {
   createDish,
   createDishCategory,
-  createOrder,
   createRestaurant,
   deleteDish,
   deleteDishCategory,
@@ -20,6 +19,7 @@ import {
 } from '@/trpc/data/prismaClient'
 import { Restaurant } from '@prisma/client'
 import { zRegisterCredentialsAdminUser } from '@/types/adminUser.type'
+import { zDBOrder } from '@/types/db/order.db.type'
 
 const t = initTRPC.create({
   transformer: superjson,
@@ -33,7 +33,7 @@ export const appRouter = t.router({
     return await getDishesByCategoryFromRestaurant(restaurantId, language)
   }),
 
-  createOrder: t.procedure.input(zCart).mutation(async (req) => {
+  createOrder: t.procedure.input(zDBOrder).mutation(async (req) => {
     const { input } = req
     return await createOrder(input)
   }),
@@ -80,7 +80,10 @@ export const appRouter = t.router({
 
   addRestaurant: t.procedure.input(zRegisterCredentials).mutation(async (req): Promise<UserResponse> => {
     const { input } = req
-    const restaurant: Restaurant = await createRestaurant(input.name)
+    const restaurant: Restaurant = await createRestaurant({
+      name: input.name,
+      abbreviation: input.abbreviation,
+    })
     return await createUser(input, restaurant)
   }),
 

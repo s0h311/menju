@@ -14,6 +14,7 @@ import FormMultiSelectionChips from '@/components/kitchen/form/formMultiSelectio
 import { TextareaAutosize } from '@mui/base'
 import { trpc } from '@/trpc/trpc'
 import { useRestaurantStore } from '@/store/restaurantStore'
+import useTypeTransformer from '@/hooks/useTypeTranformer'
 
 export default function CartDialog() {
   const [showDialog, setShowDialog] = useState<boolean>(false)
@@ -21,6 +22,7 @@ export default function CartDialog() {
   const [cart, setCart] = useState<Omit<Cart, 'restaurantId'> | null>(null)
   const createOrderMutation = trpc.createOrder.useMutation()
   const restaurantStore = useStore(useRestaurantStore, (state) => state)
+  const { orderToDBOrder } = useTypeTransformer()
 
   const {
     register,
@@ -49,13 +51,13 @@ export default function CartDialog() {
     if (!cartStore) return
 
     createOrderMutation.mutateAsync(
-      {
+      orderToDBOrder({
         ...cartStore?.cart,
         paymentMethod: cart.paymentMethod,
         note: cart.note,
         restaurantId: restaurantStore?.restaurantId ?? 0,
-        table: restaurantStore?.tableId ?? '',
-      },
+        tableId: restaurantStore?.tableId ?? '',
+      }),
       { onSuccess: () => reset() }
     )
     setShowDialog(false)

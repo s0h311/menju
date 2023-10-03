@@ -18,7 +18,7 @@ export type CartActions = {
 
 const initialState: CartState = {
   cart: {
-    table: '',
+    tableId: '',
     positions: [],
     paymentMethod: 'CARD',
     isPayed: false,

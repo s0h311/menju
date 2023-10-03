@@ -2,6 +2,7 @@ import { createClient } from '@supabase/supabase-js'
 import { RegisterCredentials } from '@/types/credentials.type'
 import { Restaurant } from '@prisma/client'
 import { AdminUser, RegisterCredentialsAdminUser } from '@/types/adminUser.type'
+import { DBOrder } from '@/types/db/order.db.type'
 
 const supabaseClientAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL || '',
@@ -56,3 +57,5 @@ export async function getAdminUsers(): Promise<AdminUser[]> {
     })) || []
   )
 }
+
+export const createOrder = async (order: DBOrder) => supabaseClientAdmin.rpc('create_order', order)
