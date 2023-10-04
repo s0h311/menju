@@ -2,6 +2,7 @@ import './globals.css'
 import type { Metadata } from 'next'
 import { Kanit } from 'next/font/google'
 import { TrpcProvider } from '@/trpc/trpcProvider'
+import { Analytics } from '@vercel/analytics/react'
 
 const kanit = Kanit({
   weight: '400',
@@ -22,7 +23,10 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <TrpcProvider>
       <html lang='en'>
-        <body className={`${kanit.className}`}>{children}</body>
+        <body className={`${kanit.className}`}>
+          {children}
+          <Analytics />
+        </body>
       </html>
     </TrpcProvider>
   )
