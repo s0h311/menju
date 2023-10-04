@@ -20,6 +20,7 @@ const useDish = (configs?: UseDishConfigs) => {
     data: trueDishesByCategory,
     isSuccess,
     refetch,
+    isFetched,
   } = trpc.dishesByCategory.useQuery(
     {
       restaurantId: configs?.restaurantId ?? restaurantStore?.restaurantId ?? 0,
@@ -41,8 +42,10 @@ const useDish = (configs?: UseDishConfigs) => {
       restaurantStore.setTableId(configs.tableId)
     }
 
-    if (!menuStore?.allDishes.length) refetch()
-  }, [restaurantStore, menuStore, configs, refetch])
+    if (menuStore?.allDishes.length === 0 && !isFetched) {
+      refetch()
+    }
+  }, [restaurantStore, menuStore, configs, isFetched, refetch])
 
   useEffect(() => {
     if (menuStore && isSuccess) {

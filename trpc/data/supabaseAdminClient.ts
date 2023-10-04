@@ -1,14 +1,8 @@
-import { createClient } from '@supabase/supabase-js'
 import { RegisterCredentials } from '@/types/credentials.type'
 import { Restaurant } from '@prisma/client'
 import { AdminUser, RegisterCredentialsAdminUser } from '@/types/adminUser.type'
 import { DBOrder } from '@/types/db/order.db.type'
-
-const supabaseClientAdmin = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL || '',
-  process.env.SUPABASE_SERVICE_ROLE || '',
-  { auth: { persistSession: false } }
-)
+import { supabaseClientAdmin } from '../trpcServer'
 
 export async function createUser(credentials: RegisterCredentials, restaurant: Restaurant) {
   return supabaseClientAdmin.auth.admin.createUser({

@@ -3,7 +3,7 @@ import superjson from 'superjson'
 import { zDBDish, zDBDishCategory } from '@/types/db/dish.db.type'
 import { zLanguageAndRestaurantId } from '@/types/order.type'
 import { zRegisterCredentials } from '@/types/credentials.type'
-import { UserResponse } from '@supabase/supabase-js'
+import { UserResponse, createClient } from '@supabase/supabase-js'
 import { capitalize, getMultiLanguageStringProperty } from '@/trpc/helpers/dishHelpers'
 import { z } from 'zod'
 import { createAdminUser, createUser, getAdminUsers, createOrder } from '@/trpc/data/supabaseAdminClient'
@@ -17,13 +17,21 @@ import {
   updateDish,
   updateDishCategory,
 } from '@/trpc/data/prismaClient'
-import { Restaurant } from '@prisma/client'
+import { PrismaClient, Restaurant } from '@prisma/client'
 import { zRegisterCredentialsAdminUser } from '@/types/adminUser.type'
 import { zDBOrder } from '@/types/db/order.db.type'
 
 const t = initTRPC.create({
   transformer: superjson,
 })
+
+export const prismaClient = new PrismaClient()
+
+export const supabaseClientAdmin = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL || '',
+  process.env.SUPABASE_SERVICE_ROLE || '',
+  { auth: { persistSession: false } }
+)
 
 export const appRouter = t.router({
   dishesByCategory: t.procedure.input(zLanguageAndRestaurantId).query(async (req) => {

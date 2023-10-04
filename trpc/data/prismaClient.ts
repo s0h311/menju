@@ -1,12 +1,11 @@
-import { PrismaClient, Restaurant } from '@prisma/client'
+import { Restaurant } from '@prisma/client'
 import { DishCategory, DishesByCategory } from '@/types/dish.type'
 import { DBDish, DBDishCategory } from '@/types/db/dish.db.type'
-import { Cart, Language, RestaurantId } from '@/types/order.type'
+import { Language, RestaurantId } from '@/types/order.type'
 import { capitalize, getMultiLanguageStringProperty, mapDish } from '@/trpc/helpers/dishHelpers'
 import { JsonObject } from '@prisma/client/runtime/library'
 import { RegisterCredentials } from '@/types/credentials.type'
-
-const prismaClient = new PrismaClient()
+import { prismaClient } from '../trpcServer'
 
 export async function getDishesByCategoryFromRestaurant(restaurantId: RestaurantId, language: Language) {
   const categories = await getCategoriesByRestaurant(restaurantId)
