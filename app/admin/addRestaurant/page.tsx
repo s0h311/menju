@@ -1,12 +1,13 @@
 'use client'
 
-import { Box, TextField, Button } from '@mui/material'
+import { Box, TextField } from '@mui/material'
 import { zRegisterCredentials, RegisterCredentials } from '@/types/credentials.type'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { trpc } from '@/trpc/trpc'
 import { useState } from 'react'
 import { UserResponse } from '@supabase/supabase-js'
+import { LoadingButton } from '@mui/lab'
 
 export default function AddRestaurant() {
   const addRestaurantMutation = trpc.addRestaurant.useMutation()
@@ -14,12 +15,14 @@ export default function AddRestaurant() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitted },
     setError,
+    reset,
   } = useForm<RegisterCredentials>({
     defaultValues: {
       name: '',
       email: '',
+      abbreviation: '',
       password: '',
       restaurantId: 0,
     },
@@ -42,8 +45,31 @@ export default function AddRestaurant() {
 
     if (data?.data.user) {
       setAddRestaurantSuccess(true)
+      setTimeout(() => {
+        setAddRestaurantSuccess(false)
+        reset()
+      }, 1000)
     }
   }
+
+  const fields = [
+    {
+      name: 'name',
+      label: 'Name',
+    },
+    {
+      name: 'email',
+      label: 'E-Mail',
+    },
+    {
+      name: 'abbreviation',
+      label: 'Abkürzung',
+    },
+    {
+      name: 'password',
+      label: 'Passwort',
+    },
+  ]
 
   return (
     <Box
@@ -55,42 +81,28 @@ export default function AddRestaurant() {
       <div className='grid gap-4 w-1/3 xl:w-1/4'>
         <h1 className='text-lg'>Restaurant Anlegen</h1>
 
-        <TextField
-          required
-          id='name'
-          label='Name'
-          {...register('name')}
-          error={!!errors.name}
-          helperText={errors.name?.message}
-        />
-
-        <TextField
-          required
-          id='email'
-          label='E-Mail'
-          {...register('email')}
-          error={!!errors.email}
-          helperText={errors.email?.message}
-        />
-
-        <TextField
-          required
-          id='password'
-          label='Passwort'
-          {...register('password')}
-          error={!!errors.password}
-          helperText={errors.password?.message}
-        />
+        {fields.map((field) => (
+          <TextField
+            key={field.name}
+            required
+            id={field.name}
+            label={field.label}
+            {...register(field.name)}
+            error={!!errors[field.name]}
+            helperText={errors[field.name]?.message}
+          />
+        ))}
 
         {addRestaurantSuccess && <p className='text-green-700'>Restaurant added successfully</p>}
 
-        <Button
+        <LoadingButton
           sx={{ borderRadius: '5px' }}
           variant='outlined'
           type='submit'
+          loading={isSubmitted}
         >
           Neues Restaurant Anlegen
-        </Button>
+        </LoadingButton>
       </div>
     </Box>
   )

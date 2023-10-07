@@ -1,5 +1,6 @@
 import { Card, CardContent, CardMedia, Divider, Stack } from '@mui/material'
 import { Dish } from '@/types/dish.type'
+import Image from 'next/image'
 
 type FoodItemProps = {
   dish: Dish
@@ -15,16 +16,21 @@ export default function FoodItem({ dish, onClick }: FoodItemProps) {
       key={dish.id}
     >
       {dish.picture && (
-        <CardMedia
-          sx={{ height: 150 }}
-          image={dish.picture}
-          title={dish.name}
-        />
+        <CardMedia sx={{ height: 150 }}>
+          <Image
+            style={{ aspectRatio: '16/9' }}
+            src={dish.picture}
+            width={350}
+            height={240}
+            quality={70}
+            alt={dish.name}
+          />
+        </CardMedia>
       )}
       <CardContent>
         <div className='grid grid-flow-col'>
           <h1 className='text-lg'>{dish.name}</h1>
-          <p className='place-self-end'>{dish.price}€</p>
+          <p className='place-self-end'>{dish.price.toFixed(2)}€</p>
         </div>
 
         <Stack

@@ -3,8 +3,6 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
-import useStore from '@/hooks/useStore'
-import { useRestaurantStore } from '@/store/restaurantStore'
 
 type SidebarProps = {
   menus: SidebarMenu[]
@@ -15,11 +13,9 @@ export default function Sidebar({ menus }: SidebarProps) {
   const path = usePathname()
   const supabase = createClientComponentClient()
   const router = useRouter()
-  const restaurantStore = useStore(useRestaurantStore, (state) => state)
-  const restaurantId: number | string = restaurantStore?.restaurantId || ''
   const signOut = async () => {
     await supabase.auth.signOut()
-    router.push('/' + restaurantId)
+    router.push('/')
   }
 
   return (

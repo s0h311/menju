@@ -1,18 +1,23 @@
 import { z } from 'zod'
+import { zDish } from './dish.type'
 
 export const zLanguage = z.enum(['en', 'de', 'it'])
 export const zRestaurantId = z.number().int().positive().finite()
 
-const zOrderPosition = z.object({
-  dishId: z.number(),
+export const zOrderPosition = z.object({
+  dish: zDish,
   quantity: z.number(),
   leftOutIngredients: z.string().array(),
 })
 
+export const zPaymentMethod = z.enum(['CARD', 'CASH', 'COUPON'])
+export const zOrderStatus = z.enum(['RECEIVED', 'DONE', 'REJECTED'])
+
 export const zCart = z.object({
-  table: z.string(),
+  tableId: z.string(),
   positions: z.array(zOrderPosition),
-  paymentMethod: z.enum(['CARD', 'CASH', 'COUPON']),
+  orderStatus: zOrderStatus,
+  paymentMethod: zPaymentMethod,
   isPayed: z.boolean().nullable(),
   netTotal: z.number(),
   vat: z.number().nullable(),
@@ -28,5 +33,8 @@ export const zLanguageAndRestaurantId = z.object({
 export type Language = z.infer<typeof zLanguage>
 export type RestaurantId = z.infer<typeof zRestaurantId>
 export type OrderPosition = z.infer<typeof zOrderPosition>
+export type OrderStatus = z.infer<typeof zOrderStatus>
 export type Cart = z.infer<typeof zCart>
+export type Order = Cart & { id?: string }
 export type LanguageAndRestaurantId = z.infer<typeof zLanguageAndRestaurantId>
+export type PaymentMethod = z.infer<typeof zPaymentMethod>

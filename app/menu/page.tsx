@@ -7,17 +7,22 @@ import FilterBar from '@/components/guest/filterBar'
 import FoodCategory from '@/components/guest/foodCategory'
 import { useState } from 'react'
 import DishDialog from '@/components/guest/dishDialog'
-import useDishService from '@/hooks/useDishService'
-import FilterBarSkeleton from '@/components/guest/skeleton/filterBarSkeleton'
-import FoodCategorySkeleton from '@/components/guest/skeleton/foodCategorySkeleton'
+import FilterBarSkeleton from '@/components/guest/skelleton/filterBarSkeleton'
+import FoodCategorySkeleton from '@/components/guest/skelleton/foodCategorySkeleton'
 import React from 'react'
+import CartDialog from '@/components/guest/cartDialog'
+import useDish from '@/hooks/useDish'
+import { useSearchParams } from 'next/navigation'
+import { QUERY_PARAM } from '@/types/queryParams.type'
 
-export default function Menu({ params }: { params: { restaurant: string } }) {
-  const restaurantId: number = parseInt(params.restaurant)
-  const dishService = useDishService({ restaurantId, language: 'de' })
+export default function Menu() {
+  const queryParams = useSearchParams()
+  const restaurantId: number = parseInt(queryParams.get(QUERY_PARAM.restaurandId) ?? '')
+  const tableId: string = queryParams.get(QUERY_PARAM.tableId) ?? 'unknown'
+
+  const { dishesByCategory, visibleDishes } = useDish({ restaurantId, language: 'de', tableId })
 
   const [activeDish, setActiveDish] = useState<Dish | null>(null)
-  const { dishesByCategory, visibleDishes } = dishService
 
   const filterChips: FilterChipModel[] = getFilterChips(dishesByCategory)
 
@@ -35,18 +40,16 @@ export default function Menu({ params }: { params: { restaurant: string } }) {
 
   return (
     <Stack className='mb-4'>
-      {dishService.visibleDishes ? (
+      {visibleDishes ? (
         <>
           <FilterBar chipData={filterChips} />
-          {visibleDishes
-            ?.sort((a, b) => b.category.priority - a.category.priority)
-            .map((category) => (
-              <FoodCategory
-                key={category.category.id}
-                category={category.category}
-                onCardClick={(dish) => setActiveDish(dish)}
-              />
-            ))}
+          {visibleDishes?.map((category) => (
+            <FoodCategory
+              key={category.category.id}
+              category={category.category}
+              onCardClick={(dish) => setActiveDish(dish)}
+            />
+          ))}
         </>
       ) : (
         <>
@@ -61,6 +64,8 @@ export default function Menu({ params }: { params: { restaurant: string } }) {
           setOpenDialog={setActiveDish}
         />
       )}
+
+      <CartDialog />
     </Stack>
   )
 }

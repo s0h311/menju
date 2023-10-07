@@ -1,7 +1,8 @@
 'use client'
 
 import { ReactNode, useState } from 'react'
-import { Button, IconButton, ThemeProvider } from '@mui/material'
+import { Button, IconButton } from '@mui/material'
+import ThemeProvider from '@mui/material/styles/ThemeProvider'
 import { Add, ReplayRounded } from '@mui/icons-material'
 import { theme } from '@/ui/theme'
 import AddDishCategory from './addDishCategory'

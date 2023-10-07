@@ -1,40 +1,50 @@
 import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
-import { Cart, OrderPosition } from '@/types/order.type'
-import { useRestaurantStore } from './restaurantStore'
+import { createJSONStorage, persist } from 'zustand/middleware'
+import { Cart, OrderPosition, PaymentMethod } from '@/types/order.type'
+import { addPosition, removePosition, updateNote, updatePaymentMethod } from './cartStore/cart.store'
 
-type CartState = {
-  cart: Cart
-  setCart: (cart: Cart) => void
-  addPosition: (position: OrderPosition) => void
+export type CartState = {
+  cart: Omit<Cart, 'restaurantId'>
 }
 
-const restaurantId = useRestaurantStore.getState().restaurantId
+export type CartActions = {
+  setCart: (cart: Cart) => void
+  addPosition: (position: OrderPosition) => void
+  removePosition: (position: OrderPosition) => void
+  updatePaymentMethod: (paymentMethod: PaymentMethod) => void
+  updateNote: (note: string) => void
+  reset: () => void
+}
+
+const initialState: CartState = {
+  cart: {
+    tableId: '',
+    positions: [],
+    orderStatus: 'RECEIVED',
+    paymentMethod: 'CARD',
+    isPayed: false,
+    netTotal: 0,
+    vat: null,
+    note: null,
+  },
+}
 
 export const useCartStore = create(
-  persist<CartState>(
+  persist<CartState & CartActions>(
     (set, get) => ({
-      cart: {
-        table: '',
-        positions: [],
-        paymentMethod: 'CARD',
-        isPayed: false,
-        netTotal: 0,
-        restaurantId,
-        vat: null,
-        note: null,
+      cart: initialState.cart,
+      setCart: (cart: Cart) => set({ cart }),
+      removePosition: (position: OrderPosition) => removePosition(get, set, position),
+      addPosition: (position: OrderPosition) => addPosition(get, set, position),
+      updatePaymentMethod: (paymentMethod: PaymentMethod) => updatePaymentMethod(get, set, paymentMethod),
+      updateNote: (note: string) => updateNote(get, set, note),
+      reset: () => {
+        set(initialState)
       },
-      setCart: (cart: Cart) => set(() => ({ cart: cart })),
-      addPosition: (position: OrderPosition) =>
-        set(() => ({
-          cart: {
-            ...get().cart,
-            positions: [...get().cart.positions, position],
-          },
-        })),
     }),
     {
       name: 'cart',
+      storage: createJSONStorage(() => sessionStorage),
     }
   )
 )

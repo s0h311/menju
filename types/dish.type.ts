@@ -1,5 +1,7 @@
 import { z } from 'zod'
 
+export const zRestaurantId = z.number().int().positive().finite() //TODO auch duplicate in order.type vorhanden
+
 export const zAllergy = z.object({
   id: z.number(),
   name: z.string(),

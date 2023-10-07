@@ -10,7 +10,6 @@ import { useEffect, useRef, useState } from 'react'
 import useStore from '@/hooks/useStore'
 import { useMenuStore } from '@/store/menuStore'
 import { TextareaAutosize } from '@mui/base'
-import FormImage from './form/formImage'
 import FormDropdown from '@/components/kitchen/form/formDropdown'
 import FormListWithChips from './form/formListWithChips'
 import FormMultiSelectionChips from './form/formMultiSelectionChips'
@@ -18,6 +17,7 @@ import useStorageUploader from '@/hooks/useStorageUploader'
 import { trpc } from '@/trpc/trpc'
 import { initialDBDish } from '@/types/db/dish.initial.db'
 import useTypeTransformer from '@/hooks/useTypeTranformer'
+import ImagePicker from './imagePicker'
 
 type AddDishProps = {
   open: boolean
@@ -32,8 +32,8 @@ export default function AddDish({ open, editingDish, onClose }: AddDishProps) {
   const menuStore = useStore(useMenuStore, (state) => state)
   const [dishCategories, setDishCategories] = useState<DishCategory[]>([])
   const imageStoragePath = useRef<string | null>(null)
-  const addDishMutation = trpc.addDish.useMutation()
-  const updateDishMutation = trpc.updateDish.useMutation()
+  const { mutateAsync: addDishMutation } = trpc.addDish.useMutation()
+  const { mutateAsync: updateDishMutation } = trpc.updateDish.useMutation()
   const { dishToDBDish } = useTypeTransformer()
 
   useEffect(() => {
@@ -50,7 +50,6 @@ export default function AddDish({ open, editingDish, onClose }: AddDishProps) {
     setError,
     setValue,
     getValues,
-    watch,
   } = useForm<DBDish>({
     defaultValues: editingDish ? dishToDBDish(editingDish) : initialDBDish,
     resolver: zodResolver(zDBDish),
@@ -90,6 +89,7 @@ export default function AddDish({ open, editingDish, onClose }: AddDishProps) {
   const dietTypes: DietType[] = ['VEGAN', 'VEGETARIAN', 'PESCATARIAN', 'OMNIVORE']
 
   const onSubmit = async (dish: DBDish): Promise<void> => {
+    // TODO mutateDishOptimistic(dBdish, preview, editingDish)
     if (imageFile.current) {
       await uploadImage(imageFile.current)
       if (imageStoragePath.current) {
@@ -98,7 +98,7 @@ export default function AddDish({ open, editingDish, onClose }: AddDishProps) {
     }
 
     if (editingDish) {
-      updateDishMutation.mutateAsync(dish, {
+      updateDishMutation(dish, {
         onSuccess: async (dish: Dish) => {
           if (editingDish.picture && editingDish.picture !== getValues().picture) {
             await storageUploader.removeImage([editingDish.picture])
@@ -108,8 +108,8 @@ export default function AddDish({ open, editingDish, onClose }: AddDishProps) {
         },
       })
     } else {
-      addDishMutation.mutateAsync(dish, {
-        onSuccess: async (dish: Dish) => {
+      addDishMutation(dish, {
+        onSuccess: (dish: Dish) => {
           menuStore?.addDish(dish)
           onClose()
         },
@@ -130,11 +130,6 @@ export default function AddDish({ open, editingDish, onClose }: AddDishProps) {
     }
   }
 
-  const watchAll = watch()
-  useEffect(() => {
-    console.log(getValues())
-  }, [watchAll])
-
   return (
     <Dialog
       sx={{ display: 'grid', gap: '12px', pb: 0, px: '20px', overflowY: 'unset' }}
@@ -153,13 +148,7 @@ export default function AddDish({ open, editingDish, onClose }: AddDishProps) {
       loading={isSubmitSuccessful}
     >
       {/* Image */}
-      {!getValues().picture && !preview && (
-        <FormImage
-          onImageChange={onImageChange}
-          register={{ ...register('picture') }}
-          error={{ error: !!errors.picture, helperText: errors.picture?.message }}
-        />
-      )}
+      {!getValues().picture && !preview && <ImagePicker onChange={onImageChange} />}
 
       {/* Name */}
       <TextField

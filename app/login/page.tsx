@@ -2,7 +2,8 @@
 
 import Image from 'next/image'
 import image from '@/public/images/login-food.jpg'
-import { Box, TextField, ThemeProvider } from '@mui/material'
+import { Box, TextField } from '@mui/material'
+import ThemeProvider from '@mui/material/styles/ThemeProvider'
 import { LoadingButton } from '@mui/lab'
 import { theme } from '@/ui/theme'
 import { zLoginCredentials, LoginCredentials } from '@/types/credentials.type'
@@ -11,13 +12,14 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import useDeviceType from '@/hooks/useDeviceType'
 import { useRouter } from 'next/navigation'
-import useDishService from '@/hooks/useDishService'
+import useStore from '@/hooks/useStore'
+import { useRestaurantStore } from '@/store/restaurantStore'
 
 export default function Login() {
   const supabase = createClientComponentClient()
   const router = useRouter()
 
-  const { setRestaurantId } = useDishService()
+  const restaurantStore = useStore(useRestaurantStore, (state) => state)
   const { isMobile } = useDeviceType()
 
   const {
@@ -51,7 +53,7 @@ export default function Login() {
     }
 
     if (data.user) {
-      setRestaurantId(data.user.user_metadata['restaurantId'])
+      restaurantStore?.setRestaurantId(data.user.user_metadata['restaurantId'])
       router.push('/kitchen')
     }
   }
@@ -62,9 +64,9 @@ export default function Login() {
         <Image
           className='rounded-[40px] max-h-full w-auto'
           src={image}
-          alt=''
-          quality={75}
+          quality={70}
           placeholder='blur'
+          alt=''
         />
       )}
 

@@ -6,6 +6,7 @@ const main = async () => {
   const restaurant = await prisma.restaurant.create({
     data: {
       name: 'Batman',
+      abbreviation: 'BTM',
     },
   })
 
@@ -13,7 +14,8 @@ const main = async () => {
     data: {
       priority: 0,
       name: { en: 'lunch', de: 'mittagessen', it: 'pranzo' },
-      picture: 'https://lenamerz.de/wp-content/uploads/2021/03/schnelle-mittagessen-fuers-homeoffice.jpg',
+      picture:
+        'https://xtapuuiutmkpsjijkgfw.supabase.co/storage/v1/object/public/pictures/examples/schnelles-mittagessen.jpg',
       restaurantId: restaurant.id,
     },
   })
@@ -23,7 +25,8 @@ const main = async () => {
       priority: 0,
       name: { en: 'Doner kebab', de: 'Döner', it: 'Kebab' },
       price: 6.5,
-      picture: 'https://www.blog.vegan-masterclass.de/wp-content/uploads/2021/09/Doener_mit_gegrillter_Paprika.jpg',
+      picture:
+        'https://xtapuuiutmkpsjijkgfw.supabase.co/storage/v1/object/public/pictures/examples/doener.jpg?t=2023-09-22T03%3A52%3A14.870Z',
       ingredients: {
         required: [{ de: 'Bread', en: 'Brot', it: 'pane' }],
         optional: [
@@ -53,7 +56,7 @@ const main = async () => {
     data: {
       priority: 1,
       name: { en: 'dinner', de: 'abendessen', it: 'cena' },
-      picture: 'https://images.lecker.de/leichtes-abendessen-b15jpg,id=ef48bb96,b=lecker,w=1600,rm=sk.jpeg',
+      picture: 'https://xtapuuiutmkpsjijkgfw.supabase.co/storage/v1/object/public/pictures/examples/zucchini.jpeg',
       restaurantId: restaurant.id,
     },
   })
@@ -63,8 +66,7 @@ const main = async () => {
       priority: 0,
       name: { en: 'Pasta', de: 'Nudeln', it: 'Pasta' },
       price: 9.3,
-      picture:
-        'https://www.eatbetter.de/sites/eatbetter.de/files/styles/facebook/public/2021-07/nudeln_mit_kichererbsen_1.jpg?h=4521fff0&itok=C9tS61Im',
+      picture: 'https://xtapuuiutmkpsjijkgfw.supabase.co/storage/v1/object/public/pictures/examples/nudeln.webp',
       ingredients: {
         required: [{ de: 'Nudeln', en: 'Pasta', it: 'Pasta' }],
         optional: [
@@ -95,8 +97,7 @@ const main = async () => {
       priority: 0,
       name: { en: 'Pizza', de: 'Pizza', it: 'Pizza' },
       price: 11.8,
-      picture:
-        'https://www.hamburg.de/image/15536634/kingTeaser/990/420/d4e83a1a6365d5c6804a9bf2ccef7fbc/RS/symbolbild-pizza-bild.jpg',
+      picture: 'https://xtapuuiutmkpsjijkgfw.supabase.co/storage/v1/object/public/pictures/examples/pizza.jpg',
       ingredients: {
         required: [{ de: 'teig', en: 'dough', it: 'impasto' }],
         optional: [
@@ -126,9 +127,8 @@ const main = async () => {
       priority: 0,
       name: { de: 'Pizza', en: 'Pizza', it: 'Pizza' },
       price: 7.5,
-      picture:
-        'https://images.lecker.de/pizza-bianca-mit-pilzen,id=a5ed1fe9,b=lecker,w=710,ca=0,8.14,100,91.86,rm=sk.webp',
-      categoryId: 1,
+      picture: 'https://xtapuuiutmkpsjijkgfw.supabase.co/storage/v1/object/public/pictures/examples/flammenkuchen.jpg',
+      categoryId: dishCategory1.id,
       ingredients: {
         required: [{ de: 'teig', en: 'dough', it: 'impasto' }],
         optional: [{ de: 'tomatensoße', en: 'tomatosauce', it: 'salsa di pomodoro' }],

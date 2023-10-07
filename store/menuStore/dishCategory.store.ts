@@ -1,8 +1,8 @@
 import { MenuState } from '@/store/menuStore'
 import { DishCategory } from '@/types/dish.type'
 
-export type getState = () => MenuState
-export type setState = (
+type getState = () => MenuState
+type setState = (
   partial: MenuState | Partial<MenuState> | ((state: MenuState) => MenuState | Partial<MenuState>),
   replace?: boolean | undefined
 ) => void

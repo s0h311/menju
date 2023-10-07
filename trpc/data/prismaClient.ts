@@ -1,11 +1,11 @@
-import { PrismaClient, Restaurant } from '@prisma/client'
+import { Restaurant } from '@prisma/client'
 import { DishCategory, DishesByCategory } from '@/types/dish.type'
 import { DBDish, DBDishCategory } from '@/types/db/dish.db.type'
-import { Cart, Language, RestaurantId } from '@/types/order.type'
+import { Language, RestaurantId } from '@/types/order.type'
 import { capitalize, getMultiLanguageStringProperty, mapDish } from '@/trpc/helpers/dishHelpers'
 import { JsonObject } from '@prisma/client/runtime/library'
-
-const prismaClient = new PrismaClient()
+import { RegisterCredentials } from '@/types/credentials.type'
+import { prismaClient } from '../trpcServer'
 
 export async function getDishesByCategoryFromRestaurant(restaurantId: RestaurantId, language: Language) {
   const categories = await getCategoriesByRestaurant(restaurantId)
@@ -29,12 +29,12 @@ export async function getDishesByCategories(categories: number[]) {
   return prismaClient.dish.findMany({ where: { categoryId: { in: categories } } })
 }
 
-export async function createRestaurant(restaurantName: string): Promise<Restaurant> {
-  return prismaClient.restaurant.create({ data: { name: restaurantName } })
-}
-
-export async function createOrder(input: Cart) {
-  return prismaClient.order.create({ data: { ...input } })
+export async function createRestaurant(
+  registerCredentials: Pick<RegisterCredentials, 'name' | 'abbreviation'>
+): Promise<Restaurant> {
+  return prismaClient.restaurant.create({
+    data: { name: registerCredentials.name, abbreviation: registerCredentials.abbreviation },
+  })
 }
 
 // DISH CATEGORY CRUD //

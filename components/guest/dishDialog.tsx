@@ -1,5 +1,6 @@
 import Dialog from '@/ui/dialog'
-import { Checkbox, ThemeProvider } from '@mui/material'
+import { Checkbox } from '@mui/material'
+import ThemeProvider from '@mui/material/styles/ThemeProvider'
 import { Dish } from '@/types/dish.type'
 import { useState } from 'react'
 import { OrderPosition } from '@/types/order.type'
@@ -16,7 +17,7 @@ export default function DishDialog({ dish, setOpenDialog }: DishDialogProps) {
   const cartStore = useStore(useCartStore, (state) => state)
 
   const [order, setOrder] = useState<OrderPosition>({
-    dishId: dish.id,
+    dish,
     quantity: 1,
     leftOutIngredients: [],
   })
@@ -53,7 +54,7 @@ export default function DishDialog({ dish, setOpenDialog }: DishDialogProps) {
         <div className='grid gap-3 px-5'>
           <div className='grid grid-flow-col'>
             <h1 className='text-lg'>{dish.name}</h1>
-            <p className='place-self-end'>{dish.price}€</p>
+            <p className='place-self-end'>{dish.price.toFixed(2)}€</p>
           </div>
 
           <div className='flex space-x-2 whitespace-nowrap overflow-x-scroll no-scrollbar cursor-pointer'>
