@@ -8,8 +8,8 @@ import FoodCategory from '@/components/guest/foodCategory'
 import { useState } from 'react'
 import DishDialog from '@/components/guest/dishDialog'
 import useDishService from '@/hooks/useDishService'
-import FilterBarSkeleton from '@/components/guest/skelleton/filterBarSkeleton'
-import FoodCategorySkeleton from '@/components/guest/skelleton/foodCategorySkeleton'
+import FilterBarSkeleton from '@/components/guest/skeleton/filterBarSkeleton'
+import FoodCategorySkeleton from '@/components/guest/skeleton/foodCategorySkeleton'
 import React from 'react'
 
 export default function Menu({ params }: { params: { restaurant: string } }) {
@@ -38,13 +38,15 @@ export default function Menu({ params }: { params: { restaurant: string } }) {
       {dishService.visibleDishes ? (
         <>
           <FilterBar chipData={filterChips} />
-          {visibleDishes?.map((category) => (
-            <FoodCategory
-              key={category.category.id}
-              category={category.category}
-              onCardClick={(dish) => setActiveDish(dish)}
-            />
-          ))}
+          {visibleDishes
+            ?.sort((a, b) => b.category.priority - a.category.priority)
+            .map((category) => (
+              <FoodCategory
+                key={category.category.id}
+                category={category.category}
+                onCardClick={(dish) => setActiveDish(dish)}
+              />
+            ))}
         </>
       ) : (
         <>

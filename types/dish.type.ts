@@ -20,6 +20,7 @@ export const zDietType = z.enum(['VEGAN', 'VEGETARIAN', 'PESCATARIAN', 'OMNIVORE
 
 export const zDish = z.object({
   id: z.number(),
+  priority: z.number(),
   name: z.string(),
   price: z.number(),
   picture: z.string().url().nullable(),
@@ -38,6 +39,7 @@ export const zDish = z.object({
 
 export const zDishCategory = z.object({
   id: z.number(),
+  priority: z.number(),
   name: z.string(),
   picture: z.string().url().nullable(),
   restaurantId: z.number(),

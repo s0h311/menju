@@ -15,6 +15,7 @@ const zDBIngredients = z.object({
 
 export const zDBDishCategory = z.object({
   id: z.number().optional(),
+  priority: z.number(),
   name: zDBMultiLanguageStringProperty,
   picture: z.string().url().nullable(),
   restaurantId: zRestaurantId,
@@ -22,6 +23,7 @@ export const zDBDishCategory = z.object({
 
 export const zDBDish = z.object({
   id: z.number().optional(),
+  priority: z.number(),
   name: zDBMultiLanguageStringProperty,
   price: z.number(),
   picture: z.string().url().nullable(),

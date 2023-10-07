@@ -41,6 +41,7 @@ export default function AddDishCategory({ editingDishCategory, onClose }: AddDis
   } = useForm<DBDishCategory>({
     defaultValues: {
       id: editingDishCategory?.id || undefined,
+      priority: 0,
       name: { de: editingDishCategory?.name || '', en: '', it: '' },
       picture: editingDishCategory?.picture || null,
       restaurantId: restaurantStore?.restaurantId,
