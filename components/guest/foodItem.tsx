@@ -4,10 +4,11 @@ import Image from 'next/image'
 
 type FoodItemProps = {
   dish: Dish
+  priority: boolean
   onClick: () => void
 }
 
-export default function FoodItem({ dish, onClick }: FoodItemProps) {
+export default function FoodItem({ dish, priority, onClick }: FoodItemProps) {
   return (
     <Card
       sx={{ minWidth: 250 }}
@@ -16,13 +17,14 @@ export default function FoodItem({ dish, onClick }: FoodItemProps) {
       key={dish.id}
     >
       {dish.picture && (
-        <CardMedia sx={{ height: 150 }}>
+        <CardMedia sx={{ height: 150, position: 'relative' }}>
           <Image
-            style={{ aspectRatio: '16/9' }}
+            style={{ aspectRatio: '16/9', objectFit: 'cover' }}
             src={dish.picture}
-            width={350}
-            height={240}
+            fill
+            sizes='(max-width: 414px) 60vw, (max-width: 768px) 45vw, 20vw'
             quality={70}
+            priority={priority}
             alt={dish.name}
           />
         </CardMedia>

@@ -66,19 +66,21 @@ export default function Dialog({
         >
           {title && <Title id='dialog-title'>{title}</Title>}
           {imageData?.src && (
-            <Image
-              className={`rounded-t-2xl mb-2 ${imageData.onClick ? 'cursor-pointer' : ''}`}
-              style={{ aspectRatio: '16/9' }}
-              src={imageData.src}
-              width={350}
-              height={240}
-              quality={70}
-              alt={imageData.alt}
-              onClick={imageData.onClick}
-            />
+            <div className='relative h-60'>
+              <Image
+                className={`rounded-t-2xl ${imageData.onClick ? 'cursor-pointer' : ''}`}
+                style={{ objectFit: 'cover' }}
+                src={imageData.src}
+                fill
+                sizes='(max-width: 414px) 80vw, (max-width: 768px) 60vw, 20vw'
+                quality={70}
+                alt={imageData.alt}
+                onClick={imageData.onClick}
+              />
+            </div>
           )}
           <Content
-            className='no-scrollbar'
+            className='no-scrollbar mt-2'
             sx={sx}
           >
             {children}
