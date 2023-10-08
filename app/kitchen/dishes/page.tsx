@@ -3,7 +3,7 @@
 import { useMenuStore } from '@/store/menuStore'
 import useStore from '@/hooks/useStore'
 import { Dish, DishCategory, DishesByCategory } from '@/types/dish.type'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import CardGrid from '@/components/kitchen/cardGrid'
 import Card from '@/components/kitchen/card'
 import AddDishCategory from '@/components/kitchen/addDishCategory'
@@ -11,13 +11,33 @@ import Dialog from '@/ui/dialog'
 import { trpc } from '@/trpc/trpc'
 import AddDish from '@/components/kitchen/addDish'
 import useDish from '@/hooks/useDish'
+import ReorderDialog from '@/components/kitchen/reorderDialog'
+import { styled } from '@mui/system'
 
+const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+  '& .MuiDialogContent-root': {
+    padding: theme.spacing(2),
+  },
+  '& .MuiDialogActions-root': {
+    padding: theme.spacing(1),
+  },
+}))
 export default function KitchenDishes() {
   const [activeDishesCategory, setActiveDishesCategory] = useState<DishesByCategory | null>(null)
+  const [itemsToOrder, setItemsToOrder] = useState<Dish[] | DishCategory[] | null>(null)
   const [editingDishCategory, setEditingDishCategory] = useState<DishCategory | null>(null)
   const [deletingDishCategory, setDeletingDishCategory] = useState<DishCategory | null>(null)
   const [editingDish, setEditingDish] = useState<Dish | null>(null)
   const [deletingDish, setDeletingDish] = useState<Dish | null>(null)
+  const [open, setOpen] = React.useState(false)
+
+  const handleClickOpen = () => {
+    console.log('ds')
+    setOpen(true)
+  }
+  const handleClose = () => {
+    setOpen(false)
+  }
 
   const menuStore = useStore(useMenuStore, (state) => state)
   const { dishesByCategory } = useDish()
@@ -58,6 +78,11 @@ export default function KitchenDishes() {
       <CardGrid
         title='Kategorien'
         contentType='dishCategory'
+        onReorder={() => {
+          const allCategories = dishesByCategory.map((category) => category.category)
+          const items = activeDishesCategory ? activeDishesCategory.dishes : allCategories
+          setItemsToOrder(items)
+        }}
       >
         {dishesByCategory.map((card: DishesByCategory) => (
           <div key={card.category.id}>
@@ -85,6 +110,9 @@ export default function KitchenDishes() {
         title={activeDishesCategory ? `Gerichte - ${activeDishesCategory.category.name}` : 'Alle Gerichte'}
         contentType='dish'
         withReset
+        onReorder={() => {
+          activeDishesCategory ? setItemsToOrder(activeDishesCategory.dishes) : handleClickOpen()
+        }}
         onReset={() => setActiveDishesCategory(null)}
       >
         {(activeDishesCategory?.dishes || allDishes).map((card: Dish) => (
@@ -107,6 +135,13 @@ export default function KitchenDishes() {
           editingDish={editingDish}
           onClose={() => setEditingDish(null)}
         />
+      )}
+
+      {itemsToOrder && (
+        <ReorderDialog
+          items={itemsToOrder}
+          setOpenDialog={setItemsToOrder}
+        ></ReorderDialog>
       )}
 
       <Dialog
@@ -133,6 +168,16 @@ export default function KitchenDishes() {
         revertSuccessError
       >
         Möchtest du wirklich dieses Gericht löschen?
+      </Dialog>
+
+      <Dialog
+        sx={{ display: 'grid', placeItems: 'center', marginTop: '20px' }}
+        open={open}
+        closeText='Kategorie wählen'
+        maxWidth='xs'
+        onClose={handleClose}
+      >
+        Wähle zunächst eine Kategorie aus um die Gerichte neu anzuordnen.
       </Dialog>
     </section>
   )

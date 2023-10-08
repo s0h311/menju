@@ -20,6 +20,9 @@
     "db:seed": "dotenv -e .env.development -- prisma db push --force-reset && prisma db seed"
   },
   "dependencies": {
+    "@dnd-kit/core": "^6.0.8",
+    "@dnd-kit/sortable": "^7.0.2",
+    "@dnd-kit/utilities": "^3.2.1",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@hookform/resolvers": "^3.3.1",
@@ -27,6 +30,7 @@
     "@mui/icons-material": "^5.14.9",
     "@mui/lab": "5.0.0-alpha.144",
     "@mui/material": "5.14.9",
+    "@mui/x-data-grid": "^6.16.1",
     "@prisma/client": "^5.3.1",
     "@supabase/auth-helpers-nextjs": "^0.8.1",
     "@supabase/supabase-js": "2.33.2",
@@ -44,6 +48,7 @@
     "next-superjson-plugin": "^0.5.9",
     "postcss": "8.4.29",
     "react": "0.0.0-experimental-f81c0f1ed-20230927",
+    "react-beautiful-dnd": "11.0.3",
     "react-dom": "0.0.0-experimental-f81c0f1ed-20230927",
     "react-hook-form": "^7.46.1",
     "superjson": "^1.13.1",
