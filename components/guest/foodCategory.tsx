@@ -3,17 +3,14 @@ import ThemeProvider from '@mui/material/styles/ThemeProvider'
 import React from 'react'
 import FoodItem from './foodItem'
 import { Dish, DishCategory } from '@/types/dish.type'
-import { useMenuStore } from '@/store/menuStore'
-import useStore from '@/hooks/useStore'
 import { theme } from '@/ui/theme'
 
 type FoodCategoryProps = {
   category: DishCategory
+  dishes: Dish[]
   onCardClick: (dish: Dish) => void
 }
-export default function FoodCategory({ category, onCardClick }: FoodCategoryProps) {
-  const menuStore = useStore(useMenuStore, (state) => state)
-
+export default function FoodCategory({ category, dishes, onCardClick }: FoodCategoryProps) {
   return (
     <ThemeProvider theme={theme}>
       <Box className='mt-4'>
@@ -29,18 +26,15 @@ export default function FoodCategory({ category, onCardClick }: FoodCategoryProp
           spacing={2}
           className='overflow-x-auto no-scrollbar p-1'
         >
-          {menuStore?.visibleDishes.length &&
-            menuStore.visibleDishes
-              .filter((cat) => category.id === cat.category.id)
-              .map((dish) =>
-                dish.dishes.map((dish) => (
-                  <FoodItem
-                    key={dish.id}
-                    dish={dish}
-                    onClick={() => onCardClick(dish)}
-                  />
-                ))
-              )}
+          {dishes.length > 0 &&
+            dishes.map((dish, index) => (
+              <FoodItem
+                key={dish.id}
+                dish={dish}
+                priority={index <= 2}
+                onClick={() => onCardClick(dish)}
+              />
+            ))}
         </Stack>
       </Box>
     </ThemeProvider>

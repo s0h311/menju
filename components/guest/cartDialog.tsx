@@ -84,6 +84,7 @@ export default function CartDialog() {
             borderRadius: '9999px',
             p: '12px',
           }}
+          aria-label='Warenkorb'
           onClick={() => setShowDialog(true)}
         >
           <ShoppingBagOutlined sx={{}} />
