@@ -15,6 +15,7 @@ import { TextareaAutosize } from '@mui/base'
 import { trpc } from '@/trpc/trpc'
 import { useRestaurantStore } from '@/store/restaurantStore'
 import useTypeTransformer from '@/hooks/useTypeTranformer'
+import useFeatures from '@/hooks/useFeatures'
 
 export default function CartDialog() {
   const [showDialog, setShowDialog] = useState<boolean>(false)
@@ -23,6 +24,7 @@ export default function CartDialog() {
   const createOrderMutation = trpc.createOrder.useMutation()
   const restaurantStore = useStore(useRestaurantStore, (state) => state)
   const { orderToDBOrder } = useTypeTransformer()
+  const { cartType, enabledPaymentMethods } = useFeatures()
 
   const {
     register,
@@ -48,7 +50,7 @@ export default function CartDialog() {
   }, [setCart, cartStore])
 
   const createOrder = (cart: Pick<Cart, 'note' | 'paymentMethod'>) => {
-    if (!cartStore) return
+    if (!cartStore || cartType === 'cannotOrder') return
 
     createOrderMutation.mutateAsync(
       orderToDBOrder({
@@ -70,8 +72,6 @@ export default function CartDialog() {
     return currentIngredients.join(', ')
   }
 
-  const paymentMethods: PaymentMethod[] = ['CARD', 'CASH', 'COUPON']
-
   return (
     <>
       {!showDialog ? (
@@ -82,7 +82,7 @@ export default function CartDialog() {
             right: '15px',
             backgroundColor: '#7eaa92 !important',
             borderRadius: '9999px',
-            p: '5px',
+            p: '12px',
           }}
           aria-label='Warenkorb'
           onClick={() => setShowDialog(true)}
@@ -95,9 +95,10 @@ export default function CartDialog() {
             sx={{ pb: 0 }}
             title='Bestellung'
             open={showDialog}
-            closeText='Abbrechen'
+            revertSuccessError={cartType === 'cannotOrder'}
+            closeText='Schliessen'
             proceedText='Bestellen'
-            onProceed={handleSubmit(createOrder)}
+            onProceed={cartType === 'cannotOrder' ? undefined : handleSubmit(createOrder)}
             onClose={() => setShowDialog(false)}
             loading={isSubmitted}
           >
@@ -105,6 +106,7 @@ export default function CartDialog() {
               <h3>Such dir doch etwas aus :)</h3>
             ) : (
               <div className='space-y-3'>
+                {/* Positionen */}
                 {cart.positions.map((position) => (
                   <div
                     key={position.dish.id + position.leftOutIngredients.join('')}
@@ -121,6 +123,8 @@ export default function CartDialog() {
                         alt=''
                       />
                     )}
+
+                    {/* Menge Buttons */}
                     <div className='flex place-self-center justify-center items-center gap-2 -mt-6 bg-secondary rounded-xl'>
                       <IconButton
                         sx={{ p: '3px' }}
@@ -136,6 +140,8 @@ export default function CartDialog() {
                         <AddCircle color='success' />
                       </IconButton>
                     </div>
+
+                    {/* Name + Preis */}
                     <div className='flex place-content-between'>
                       <h3>{position.dish.name}</h3>
                       <p>{position.dish.price.toFixed(2) + '€'}</p>
@@ -143,19 +149,31 @@ export default function CartDialog() {
                     <p className='truncate text-sm text-gray-500'>{getIngredientsText(position)}</p>
                   </div>
                 ))}
+
                 <hr />
+
+                {/* Zahlungsmethoden */}
                 <div className='space-y-2'>
                   <FormMultiSelectionChips
-                    items={paymentMethods}
+                    items={enabledPaymentMethods}
                     activeItem={getValues('paymentMethod')}
                     onClick={updatePaymentMethod}
                   />
+
+                  {/* Bemerkung */}
                   <TextareaAutosize
                     className='border border-slate-500 shadow-sm rounded-l-lg rounded-tr-lg p-3 outline-none w-full'
                     placeholder='Anmerkung'
                     {...register('note', { onChange: (event) => cartStore?.updateNote(event.target.value) })}
                   />
+
+                  {/* Gesamtbetrag */}
                   <p>Gesamtbetrag: {cartStore?.cart.netTotal.toFixed(2)}€</p>
+
+                  {/* Hinweis */}
+                  {cartType === 'cannotOrder' && (
+                    <p className='text-[#388e3c]'>Bitte bestellen Sie bei unserem Personal</p>
+                  )}
                 </div>
               </div>
             )}

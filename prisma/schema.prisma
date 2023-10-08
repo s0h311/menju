@@ -15,6 +15,7 @@ model Restaurant {
   abbreviation String         @unique
   categories   DishCategory[]
   orders       Order[]
+  features     Json           @default("{ \"isFilterBarEnabled\": true, \"cartType\": \"canOrder\", \"enabledPaymentMethods\": [\"CARD\", \"CASH\"] }")
 
   @@map("restaurant")
   @@schema("public")
@@ -78,7 +79,6 @@ model Order {
   id            String        @id @default(dbgenerated("gen_random_uuid()"))
   tableId       String        @map("table_id")
   positions     Json
-  orderStatus   OrderStatus   @map("order_status") @default(RECEIVED)
   paymentMethod PaymentMethod @map("payment_method")
   isPayed       Boolean?      @map("is_payed")
   netTotal      Float         @map("net_total")
@@ -86,6 +86,7 @@ model Order {
   note          String?
   restaurantId  Int           @map("restaurant_id")
   orderDate     DateTime?     @default(now()) @map("order_date") @db.Timestamp(6)
+  orderStatus   OrderStatus   @default(RECEIVED) @map("order_status")
   retaurant     Restaurant    @relation(fields: [restaurantId], references: [id])
 
   @@map("order")
