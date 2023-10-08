@@ -7,6 +7,7 @@ import { DBDish, DBDishCategory } from '@/types/db/dish.db.type'
 import { useRestaurantStore } from '@/store/restaurantStore'
 import useTypeTransformer from './useTypeTranformer'
 import { LanguageAndRestaurantId } from '@/types/order.type'
+import { Features } from '@/types/restaurant.type'
 
 type UseDishConfigs = LanguageAndRestaurantId & { tableId: string }
 
@@ -17,10 +18,21 @@ const useDish = (configs?: UseDishConfigs) => {
   const { dBdishToDish } = useTypeTransformer()
 
   const {
+    data: restaurantData,
+    isSuccess: isRestaurantQuerySuccess,
+    refetch: refetchRestaurantQuery,
+    isFetched: isFetchedRestaurantQuery,
+  } = trpc.restaurant.useQuery(configs?.restaurantId ?? restaurantStore?.restaurantId ?? 0, {
+    enabled: false,
+    refetchOnWindowFocus: false,
+    cacheTime: Infinity,
+  })
+
+  const {
     data: trueDishesByCategory,
-    isSuccess,
-    refetch,
-    isFetched,
+    isSuccess: isDishesByCategoryQuerySuccess,
+    refetch: refetchDishesByCategoryQuery,
+    isFetched: isFetchedDishesByCategoryQuery,
   } = trpc.dishesByCategory.useQuery(
     {
       restaurantId: configs?.restaurantId ?? restaurantStore?.restaurantId ?? 0,
@@ -42,16 +54,41 @@ const useDish = (configs?: UseDishConfigs) => {
       restaurantStore.setTableId(configs.tableId)
     }
 
-    if (menuStore?.allDishes.length === 0 && !isFetched) {
-      refetch()
+    if (!restaurantStore.features && !isFetchedRestaurantQuery) {
+      refetchRestaurantQuery()
     }
-  }, [restaurantStore, menuStore, configs, isFetched, refetch])
+
+    if (menuStore?.allDishes.length === 0 && !isFetchedDishesByCategoryQuery) {
+      refetchDishesByCategoryQuery()
+    }
+  }, [
+    restaurantStore,
+    menuStore,
+    configs,
+    isFetchedDishesByCategoryQuery,
+    refetchDishesByCategoryQuery,
+    isFetchedRestaurantQuery,
+    refetchRestaurantQuery,
+  ])
 
   useEffect(() => {
-    if (menuStore && isSuccess) {
-      menuStore?.setAllDishes(trueDishesByCategory)
+    if (menuStore && isDishesByCategoryQuerySuccess) {
+      menuStore.setAllDishes(trueDishesByCategory)
     }
-  }, [menuStore, trueDishesByCategory, isSuccess])
+
+    if (restaurantStore && isRestaurantQuerySuccess && restaurantData) {
+      restaurantStore.setName(restaurantData.name)
+      restaurantStore.setAbbreviation(restaurantData.abbreviation)
+      restaurantStore.setFeatures(restaurantData.features as Features)
+    }
+  }, [
+    menuStore,
+    restaurantStore,
+    trueDishesByCategory,
+    restaurantData,
+    isDishesByCategoryQuerySuccess,
+    isRestaurantQuerySuccess,
+  ])
 
   const [dishesByCategory, setDishesByCategory] = useOptimistic<DishesByCategory[]>(menuStore?.allDishes ?? [])
 
