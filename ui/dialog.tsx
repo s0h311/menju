@@ -92,15 +92,17 @@ export default function Dialog({
             >
               {closeText}
             </Button>
-            <LoadingButton
-              loading={loading}
-              sx={{ borderRadius: '16px' }}
-              variant='outlined'
-              color={revertSuccessError ? 'error' : 'success'}
-              onClick={onProceed}
-            >
-              {proceedText}
-            </LoadingButton>
+            {onProceed && (
+              <LoadingButton
+                loading={loading}
+                sx={{ borderRadius: '16px' }}
+                variant='outlined'
+                color={revertSuccessError ? 'error' : 'success'}
+                onClick={onProceed}
+              >
+                {proceedText}
+              </LoadingButton>
+            )}
           </Actions>
         </MatDialog>
       </ThemeProvider>
