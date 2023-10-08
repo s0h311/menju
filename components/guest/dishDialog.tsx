@@ -13,6 +13,7 @@ type DishDialogProps = {
   setOpenDialog: (value: Dish | null) => void
 }
 
+// TODO in mehrere Komponente aufteilen
 export default function DishDialog({ dish, setOpenDialog }: DishDialogProps) {
   const cartStore = useStore(useCartStore, (state) => state)
 
@@ -68,17 +69,20 @@ export default function DishDialog({ dish, setOpenDialog }: DishDialogProps) {
             ))}
           </div>
 
-          <div className='grid gap-1'>
-            <h3>Nährwerte pro 100g*</h3>
-            <div className='flex items-center gap-2 ml-2'>
-              <p className='text-sm'>Kalorien:</p>
-              <p className='rounded-xl px-2 py-1 bg-secondary text-sm'>{dish.nutritions?.energy} kcal</p>
+          {/* Nährwerte */}
+          {dish.nutritions && (
+            <div className='grid gap-1'>
+              <h3>Nährwerte pro 100g*</h3>
+              <div className='flex items-center gap-2 ml-2'>
+                <p className='text-sm'>Kalorien:</p>
+                <p className='rounded-xl px-2 py-1 bg-secondary text-sm'>{dish.nutritions.energy} kcal</p>
+              </div>
+              <div className='flex items-center gap-2 ml-2'>
+                <p className='text-sm'>Protein:</p>
+                <p className='rounded-xl px-2 py-1 bg-secondary text-sm'>{dish.nutritions.protein} g</p>
+              </div>
             </div>
-            <div className='flex items-center gap-2 ml-2'>
-              <p className='text-sm'>Protein:</p>
-              <p className='rounded-xl px-2 py-1 bg-secondary text-sm'>{dish.nutritions?.protein} g</p>
-            </div>
-          </div>
+          )}
 
           <div>
             <h3>Zutaten</h3>
@@ -137,7 +141,7 @@ export default function DishDialog({ dish, setOpenDialog }: DishDialogProps) {
 
           <p className='text-sm'>{dish.description}</p>
 
-          <p className='text-[10px]'>*Durchschnittswerte</p>
+          {dish.nutritions && <p className='text-[10px]'>*Durchschnittswerte</p>}
         </div>
       </Dialog>
     </ThemeProvider>
