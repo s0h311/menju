@@ -44,10 +44,11 @@ export default function Menu() {
       {visibleDishes ? (
         <>
           {filterChips.length > 0 && isFilterBarEnabled && <FilterBar chipData={filterChips} />}
-          {visibleDishes?.map((category) => (
+          {visibleDishes?.map((dishesByCategory) => (
             <FoodCategory
-              key={category.category.id}
-              category={category.category}
+              key={dishesByCategory.category.id}
+              category={dishesByCategory.category}
+              dishes={dishesByCategory.dishes}
               onCardClick={(dish) => setActiveDish(dish)}
             />
           ))}
