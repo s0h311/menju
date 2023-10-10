@@ -11,7 +11,7 @@ type FoodItemProps = {
 export default function FoodItem({ dish, priority, onClick }: FoodItemProps) {
   return (
     <Card
-      sx={{ minWidth: 250 }}
+      sx={{ minWidth: 250, maxWidth: 250, maxHeight: '40dvh' }}
       onClick={onClick}
       className='cursor-pointer border-solid border-2'
       key={dish.id}
@@ -35,40 +35,9 @@ export default function FoodItem({ dish, priority, onClick }: FoodItemProps) {
           <p className='place-self-end'>{dish.price.toFixed(2)}€</p>
         </div>
 
-        <Stack
-          mt={2}
-          direction='row'
-          justifyContent='center'
-          alignItems='center'
-          divider={
-            <Divider
-              orientation='vertical'
-              flexItem
-            />
-          }
-          spacing={2}
-        >
-          <ul className='list-none'>
-            {dish.ingredients.required.map((ingredient) => (
-              <li
-                className='text-sm flex items-center'
-                key={ingredient}
-              >
-                {ingredient}
-              </li>
-            ))}
-          </ul>
-          <ul className='list-none'>
-            {dish.ingredients.optional.map((ingredient) => (
-              <li
-                className='text-sm flex items-center'
-                key={ingredient}
-              >
-                {ingredient} (Optional)
-              </li>
-            ))}
-          </ul>
-        </Stack>
+        <p className='overflow-hidden text-ellipsis text-sm text-slate-600'>
+          {[...dish.ingredients.required, ...dish.ingredients.optional].join(', ')}
+        </p>
       </CardContent>
     </Card>
   )

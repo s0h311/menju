@@ -8,6 +8,12 @@ const zDBMultiLanguageStringProperty = z.object({
   it: z.string(),
 })
 
+const zDBMultiLanguageStringPropertyOptional = z.object({
+  de: z.string(),
+  en: z.string(),
+  it: z.string(),
+})
+
 const zDBIngredients = z.object({
   required: z.array(zDBMultiLanguageStringProperty),
   optional: z.array(zDBMultiLanguageStringProperty),
@@ -31,7 +37,7 @@ export const zDBDish = z.object({
   allergies: z.array(zDBMultiLanguageStringProperty).nullable(),
   nutritions: zNutritions.nullable(),
   dietType: zDietType.nullable(),
-  description: zDBMultiLanguageStringProperty.nullable(),
+  description: zDBMultiLanguageStringPropertyOptional.nullable(),
   saleStartDate: z.date().nullable(),
   saleEndDate: z.date().nullable(),
   salePrice: z.number().nullable(),
