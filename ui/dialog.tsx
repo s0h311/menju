@@ -66,7 +66,7 @@ export default function Dialog({
         >
           {title && <Title id='dialog-title'>{title}</Title>}
           {imageData?.src && (
-            <div className='relative h-60'>
+            <div className='relative min-h-[25dvh]'>
               <Image
                 className={`rounded-t-2xl ${imageData.onClick ? 'cursor-pointer' : ''}`}
                 style={{ objectFit: 'cover' }}

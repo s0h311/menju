@@ -35,7 +35,7 @@ export default function ImagePicker({ onChange }: ImagePickerProps) {
         ref={inputElement}
         className='hidden'
         type='file'
-        accept='image/*'
+        accept='image/*, image/avif'
         onChange={(e) => handleChange(e)}
       />
     </>
