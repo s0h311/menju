@@ -8,7 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { ShoppingBagOutlined, AddCircle, RemoveCircle } from '@mui/icons-material'
 import { IconButton } from '@mui/material'
 import Image from 'next/image'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import FormMultiSelectionChips from '@/components/kitchen/form/formMultiSelectionChips'
 import { TextareaAutosize } from '@mui/base'
@@ -16,6 +16,7 @@ import { trpc } from '@/trpc/trpc'
 import { useRestaurantStore } from '@/store/restaurantStore'
 import useTypeTransformer from '@/hooks/useTypeTranformer'
 import useFeatures from '@/hooks/useFeatures'
+import toast from '@/utils/toast'
 
 export default function CartDialog() {
   const [showDialog, setShowDialog] = useState<boolean>(false)
@@ -50,6 +51,8 @@ export default function CartDialog() {
   }, [setCart, cartStore])
 
   const createOrder = (cart: Pick<Cart, 'note' | 'paymentMethod'>) => {
+    toast.successMinimal('Bestellung eingegangen')
+
     if (!cartStore || cartType === 'cannotOrder') return
 
     createOrderMutation.mutateAsync(
@@ -66,11 +69,11 @@ export default function CartDialog() {
     cartStore.reset()
   }
 
-  const getIngredientsText = (position: OrderPosition): string => {
+  const getIngredientsText = useCallback((position: OrderPosition): string => {
     const allIngredients = [...position.dish.ingredients.optional, ...position.dish.ingredients.required]
     const currentIngredients = allIngredients.filter((ingredient) => !position.leftOutIngredients.includes(ingredient))
     return currentIngredients.join(', ')
-  }
+  }, [])
 
   return (
     <>
@@ -87,7 +90,14 @@ export default function CartDialog() {
           aria-label='Warenkorb'
           onClick={() => setShowDialog(true)}
         >
-          <ShoppingBagOutlined sx={{}} />
+          <>
+            {cartStore && cartStore.quantity > 0 && (
+              <div className='text-xs absolute right-2 top-2 bg-red-500 rounded-full w-4 h-4'>
+                <p className='text-white font-bold'>{cartStore.quantity}</p>
+              </div>
+            )}
+            <ShoppingBagOutlined style={{ transform: 'scale(1.3)', zIndex: '-1' }} />
+          </>
         </IconButton>
       ) : (
         <div>
