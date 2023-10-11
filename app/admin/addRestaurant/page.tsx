@@ -1,12 +1,13 @@
 'use client'
 
 import { Box, TextField } from '@mui/material'
-import { zRegisterCredentials, RegisterCredentials } from '@/types/credentials.type'
+import { zRegisterCredentials } from '@/types/credentials.type'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { trpc } from '@/trpc/trpc'
 import { useState } from 'react'
-import { UserResponse } from '@supabase/supabase-js'
+import type { UserResponse } from '@supabase/supabase-js'
+import type { RegisterCredentials } from '@/types/credentials.type'
 import { LoadingButton } from '@mui/lab'
 
 export default function AddRestaurant() {

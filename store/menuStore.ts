@@ -1,5 +1,5 @@
-import { Dish, DishCategory, DishesByCategory } from '@/types/dish.type'
-import { FilterChipModel } from '@/types/filterChip.type'
+import type { Dish, DishCategory, DishesByCategory } from '@/types/dish.type'
+import type { FilterChipModel } from '@/types/filterChip.type'
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 import { addDish, removeDish, updateDish } from '@/store/menuStore/dish.store'

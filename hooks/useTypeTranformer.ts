@@ -1,7 +1,7 @@
-import { DBDish, DBDishCategory, DBMultiLanguageStringProperty } from '@/types/db/dish.db.type'
-import { DBOrder } from '@/types/db/order.db.type'
-import { Dish, DishCategory } from '@/types/dish.type'
-import { Language, Order } from '@/types/order.type'
+import type { DBDish, DBDishCategory, DBMultiLanguageStringProperty } from '@/types/db/dish.db.type'
+import type { DBOrder } from '@/types/db/order.db.type'
+import type { Dish, DishCategory } from '@/types/dish.type'
+import type { Language, Order } from '@/types/order.type'
 import { useCallback } from 'react'
 
 export default function useTypeTransformer() {

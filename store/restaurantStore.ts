@@ -1,5 +1,5 @@
-import { Language } from '@/types/order.type'
-import { Features } from '@/types/restaurant.type'
+import type { Language } from '@/types/order.type'
+import type { Features } from '@/types/restaurant.type'
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 

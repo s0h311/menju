@@ -1,6 +1,6 @@
 import { ToggleButtonGroup, ToggleButton as MToggleButton } from '@mui/material'
-import { Key } from 'react'
-import { MouseEvent } from 'react'
+import type { Key } from 'react'
+import type { MouseEvent } from 'react'
 
 type ToggleButtonProps<T> = {
   value: T | T[]

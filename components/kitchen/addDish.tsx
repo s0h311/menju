@@ -1,5 +1,6 @@
-import { DietType, Dish, DishCategory } from '@/types/dish.type'
-import { DBMultiLanguageStringProperty, DBDish, zDBDish } from '@/types/db/dish.db.type'
+import type { DietType, Dish, DishCategory } from '@/types/dish.type'
+import type { DBMultiLanguageStringProperty, DBDish } from '@/types/db/dish.db.type'
+import { zDBDish } from '@/types/db/dish.db.type'
 import Dialog from '@/ui/dialog'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'

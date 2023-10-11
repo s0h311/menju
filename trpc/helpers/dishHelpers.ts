@@ -1,8 +1,8 @@
-import { JSONValue } from 'superjson/dist/types'
-import { Language } from '@/types/order.type'
-import { Dish, Ingredients, Nutritions } from '@/types/dish.type'
-import { DBMultiLanguageStringProperty } from '@/types/db/dish.db.type'
-import { Dish as pDish } from '@prisma/client'
+import type { JSONValue } from 'superjson/dist/types'
+import type { Language } from '@/types/order.type'
+import type { Dish, Ingredients, Nutritions } from '@/types/dish.type'
+import type { DBMultiLanguageStringProperty } from '@/types/db/dish.db.type'
+import type { Dish as pDish } from '@prisma/client'
 
 export const capitalize = (text: string): string => text.charAt(0).toUpperCase() + text.slice(1)
 

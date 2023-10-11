@@ -4,14 +4,13 @@ import {
   DialogActions as Actions,
   DialogContent as Content,
   Button,
-  Breakpoint,
-  SxProps,
 } from '@mui/material'
+import type { Breakpoint, SxProps } from '@mui/material'
 import ThemeProvider from '@mui/material/styles/ThemeProvider'
 import { theme } from './theme'
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 import Image from 'next/image'
-import { StaticImport } from 'next/dist/shared/lib/get-img-props'
+import type { StaticImport } from 'next/dist/shared/lib/get-img-props'
 import { LoadingButton } from '@mui/lab'
 
 type DialogProps = {

@@ -1,5 +1,5 @@
 import { Card, CardContent, CardMedia } from '@mui/material'
-import { Dish } from '@/types/dish.type'
+import type { Dish } from '@/types/dish.type'
 import Image from 'next/image'
 
 type FoodItemProps = {

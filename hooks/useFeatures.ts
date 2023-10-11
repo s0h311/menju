@@ -1,7 +1,8 @@
 import { useRestaurantStore } from '@/store/restaurantStore'
 import useStore from './useStore'
-import { PaymentMethod } from '@/types/order.type'
-import { CartType, defaultFeatures } from '@/types/restaurant.type'
+import type { PaymentMethod } from '@/types/order.type'
+import type { CartType } from '@/types/restaurant.type'
+import { defaultFeatures } from '@/types/restaurant.type'
 
 const useFeatures = () => {
   const restaurantStore = useStore(useRestaurantStore, (state) => state, true)

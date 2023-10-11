@@ -1,7 +1,6 @@
 import { Accordion, AccordionDetails, AccordionSummary, Chip } from '@mui/material'
 import ThemeProvider from '@mui/material/styles/ThemeProvider'
-import React from 'react'
-import { FilterChipModel } from '@/types/filterChip.type'
+import type { FilterChipModel } from '@/types/filterChip.type'
 import { useMenuStore } from '@/store/menuStore'
 import useStore from '@/hooks/useStore'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'

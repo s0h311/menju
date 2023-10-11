@@ -4,7 +4,7 @@ import { Kanit } from 'next/font/google'
 import { TrpcProvider } from '@/trpc/trpcProvider'
 import { Analytics } from '@vercel/analytics/react'
 import { Toaster } from 'sonner'
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
 const kanit = Kanit({
   weight: '400',

@@ -1,5 +1,4 @@
 import { Card, CardContent, Divider, Skeleton, Stack } from '@mui/material'
-import React from 'react'
 
 export default function FoodItemSkeleton() {
   return (

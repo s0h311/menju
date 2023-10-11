@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
-import { Cart, OrderPosition, PaymentMethod } from '@/types/order.type'
+import type { Cart, OrderPosition, PaymentMethod } from '@/types/order.type'
 import { addPosition, removePosition, updateNote, updatePaymentMethod } from './cartStore/cart.store'
 
 export type CartState = {

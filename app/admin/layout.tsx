@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Dashboard from '@/components/shared/dashboard'
-import { SidebarMenu } from '@/types/dashboard.type'
-import { ReactNode } from 'react'
+import type { SidebarMenu } from '@/types/dashboard.type'
+import type { ReactNode } from 'react'
 
 export const metadata: Metadata = {
   title: 'Admin Dashboard | Menju',

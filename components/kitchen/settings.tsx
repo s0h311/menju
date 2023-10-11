@@ -1,10 +1,11 @@
 'use client'
 
-import { CartType, Features, Restaurant, zFeatures } from '@/types/restaurant.type'
+import type { CartType, Features, Restaurant } from '@/types/restaurant.type'
+import { zFeatures } from '@/types/restaurant.type'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import ToggleButton from './form/toggleButton'
-import { PaymentMethod } from '@/types/order.type'
+import type { PaymentMethod } from '@/types/order.type'
 import { LoadingButton } from '@mui/lab'
 import { trpc } from '@/trpc/trpc'
 import toast from '@/utils/toast'
