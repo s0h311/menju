@@ -6,6 +6,7 @@ import { HexColorPicker } from 'react-colorful'
 
 export default function Home() {
   const updateColors = () => {
+    if (typeof window === 'undefined') return
     ;['primary', 'secondary', 'accent', 'text', 'bg'].forEach((color) => {
       const key = color === 'bg' ? '--bg-color' : '--' + color
       document.documentElement.style.setProperty(key, palette[color]!)
@@ -13,6 +14,7 @@ export default function Home() {
   }
 
   const getColor = (color: keyof Colors): string => {
+    if (typeof window === 'undefined') return ''
     const variable = color === 'bg' ? '--bg-color' : '--' + color
     return document.documentElement.style.getPropertyValue(variable)
   }
