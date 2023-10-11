@@ -1,5 +1,3 @@
-'use client'
-
 import { zodResolver } from '@hookform/resolvers/zod'
 import { TextField, Card as MCard, Button, CardContent, CardActions, CardMedia } from '@mui/material'
 import ThemeProvider from '@mui/material/styles/ThemeProvider'
@@ -70,7 +68,7 @@ export default function AddDishCategory({ editingDishCategory, onClose }: AddDis
     }
 
     if (editingDishCategory) {
-      updateDishCategoryMutation.mutateAsync(dishCategory, {
+      await updateDishCategoryMutation.mutateAsync(dishCategory, {
         onSuccess: async (category: DishCategory) => {
           if (editingDishCategory.picture && editingDishCategory.picture !== getValues().picture) {
             await storageUploader.removeImage([editingDishCategory.picture])
@@ -80,7 +78,7 @@ export default function AddDishCategory({ editingDishCategory, onClose }: AddDis
         },
       })
     } else {
-      addDishCategoryMutation.mutateAsync(dishCategory, {
+      await addDishCategoryMutation.mutateAsync(dishCategory, {
         onSuccess: async (category: DishCategory) => {
           menuStore?.addDishCategory(category)
           onClose()

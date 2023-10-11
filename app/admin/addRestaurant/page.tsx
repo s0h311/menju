@@ -30,7 +30,7 @@ export default function AddRestaurant() {
   })
 
   const registerUser = async (credentials: RegisterCredentials) => {
-    addRestaurantMutation.mutateAsync(credentials, {
+    await addRestaurantMutation.mutateAsync(credentials, {
       onSuccess: (data) => displayErrorOrSuccess(data),
     })
   }

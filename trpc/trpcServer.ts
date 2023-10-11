@@ -22,7 +22,7 @@ import {
 import { PrismaClient, Restaurant } from '@prisma/client'
 import { zRegisterCredentialsAdminUser } from '@/types/adminUser.type'
 import { zDBOrder } from '@/types/db/order.db.type'
-import { zRestaurantId } from '@/types/dish.type'
+import { zRestaurantId } from '@/types/restaurant.type'
 import { zFeatures } from '@/types/restaurant.type'
 
 const t = initTRPC.create({
@@ -59,9 +59,9 @@ export const appRouter = t.router({
     return await getDishesByCategoryFromRestaurant(restaurantId, language)
   }),
 
-  createOrder: t.procedure.input(zDBOrder).mutation(async (req) => {
+  createOrder: t.procedure.input(zDBOrder).mutation((req) => {
     const { input } = req
-    return await createOrder(input)
+    return createOrder(input)
   }),
 
   // DISH CATEGORY CRUD //

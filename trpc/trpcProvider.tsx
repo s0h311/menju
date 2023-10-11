@@ -2,13 +2,14 @@
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { httpBatchLink } from '@trpc/client'
-import { useState } from 'react'
+import { ReactNode, useState } from 'react'
 import { trpc } from '@/trpc/trpc'
 import superjson from 'superjson'
+import { FC } from 'react'
 
 const getBaseUrl = () => (typeof window !== 'undefined' ? '' : process.env.URL)
 
-export const TrpcProvider: React.FC<{ children: React.ReactNode }> = (p) => {
+export const TrpcProvider: FC<{ children: ReactNode }> = (p) => {
   const [queryClient] = useState(() => new QueryClient())
   const [trpcClient] = useState(() =>
     trpc.createClient({

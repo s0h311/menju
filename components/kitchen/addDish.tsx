@@ -1,5 +1,3 @@
-'use client'
-
 import { DietType, Dish, DishCategory } from '@/types/dish.type'
 import { DBMultiLanguageStringProperty, DBDish, zDBDish } from '@/types/db/dish.db.type'
 import Dialog from '@/ui/dialog'

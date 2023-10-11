@@ -11,8 +11,10 @@ export default function useTypeTransformer() {
     it: '',
   })
 
-  const stringArrayToDBMultiLanguageStringArray = (arr: string[]): DBMultiLanguageStringProperty[] =>
-    arr.map((element) => stringToDBMultiLanguageString(element))
+  const stringArrayToDBMultiLanguageStringArray = useCallback(
+    (arr: string[]): DBMultiLanguageStringProperty[] => arr.map((element) => stringToDBMultiLanguageString(element)),
+    []
+  )
 
   const dishToDBDish = useCallback(
     (dish: Dish): DBDish => ({
@@ -26,7 +28,7 @@ export default function useTypeTransformer() {
       allergies: !dish.allergies ? null : stringArrayToDBMultiLanguageStringArray(dish.allergies),
       description: !dish.description ? null : stringToDBMultiLanguageString(dish.description),
     }),
-    []
+    [stringArrayToDBMultiLanguageStringArray]
   )
 
   const dBdishToDish = useCallback(

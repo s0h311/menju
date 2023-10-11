@@ -1,6 +1,6 @@
 import { z } from 'zod'
-import { zOrderPosition, zOrderStatus, zPaymentMethod } from '../order.type'
-import { zRestaurantId } from '../dish.type'
+import { zOrderPosition, zOrderStatus } from '../order.type'
+import { zRestaurantId, zPaymentMethod } from '../restaurant.type'
 
 export const zDBOrder = z.object({
   id: z.string().optional(),
