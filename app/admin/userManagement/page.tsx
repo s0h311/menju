@@ -39,7 +39,7 @@ export default function UserManagement() {
     resolver: zodResolver(zRegisterCredentialsAdminUser),
   })
 
-  const displayErrorOrSuccess = (data: UserResponse) => {
+  const displayErrorOrSuccess = (data: UserResponse): void => {
     if (data?.error) {
       setError('role', {
         type: 'supabaseError',
