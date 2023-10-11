@@ -7,6 +7,7 @@ import { OrderPosition } from '@/types/order.type'
 import { useCartStore } from '@/store/cartStore'
 import { theme } from '@/ui/theme'
 import useStore from '@/hooks/useStore'
+import toast from '@/utils/toast'
 
 type DishDialogProps = {
   dish: Dish
@@ -24,6 +25,7 @@ export default function DishDialog({ dish, setOpenDialog }: DishDialogProps) {
   })
 
   const addToBasket = () => {
+    toast.successMinimal('Dem Warenkorb hinzugefügt')
     cartStore?.addPosition(order)
     setOpenDialog(null)
   }
