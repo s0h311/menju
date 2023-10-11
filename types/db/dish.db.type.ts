@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { zRestaurantId } from '@/types/order.type'
+import { zRestaurantId } from '@/types/restaurant.type'
 import { zDietType, zNutritions } from '@/types/dish.type'
 
 const zDBMultiLanguageStringProperty = z.object({
@@ -47,4 +47,3 @@ export const zDBDish = z.object({
 export type DBDish = z.infer<typeof zDBDish>
 export type DBDishCategory = z.infer<typeof zDBDishCategory>
 export type DBMultiLanguageStringProperty = z.infer<typeof zDBMultiLanguageStringProperty>
-export type DBIngredients = z.infer<typeof zDBIngredients>

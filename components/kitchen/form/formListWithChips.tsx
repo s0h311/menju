@@ -1,5 +1,6 @@
-import { DBMultiLanguageStringProperty } from '@/types/db/dish.db.type'
-import { useRef, KeyboardEvent } from 'react'
+import type { DBMultiLanguageStringProperty } from '@/types/db/dish.db.type'
+import { useRef } from 'react'
+import type { KeyboardEvent } from 'react'
 
 type FormListWithChipsProps = {
   onItemAdd: (item: DBMultiLanguageStringProperty) => void

@@ -1,6 +1,7 @@
 import { z } from 'zod'
-import { zPaymentMethod, zRestaurantId } from './order.type'
 
+export const zPaymentMethod = z.enum(['CARD', 'CASH', 'COUPON'])
+export const zRestaurantId = z.number().int().positive().finite()
 const zCartType = z.enum(['cannotOrder', 'canOrder'])
 
 export const zFeatures = z.object({

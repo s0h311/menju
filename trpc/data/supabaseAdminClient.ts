@@ -1,7 +1,7 @@
-import { RegisterCredentials } from '@/types/credentials.type'
-import { Restaurant } from '@prisma/client'
-import { AdminUser, RegisterCredentialsAdminUser } from '@/types/adminUser.type'
-import { DBOrder } from '@/types/db/order.db.type'
+import type { RegisterCredentials } from '@/types/credentials.type'
+import type { Restaurant } from '@prisma/client'
+import type { AdminUser, RegisterCredentialsAdminUser } from '@/types/adminUser.type'
+import type { DBOrder } from '@/types/db/order.db.type'
 import { supabaseClientAdmin } from '../trpcServer'
 
 export async function createUser(credentials: RegisterCredentials, restaurant: Restaurant) {

@@ -1,5 +1,3 @@
-'use client'
-
 import { zodResolver } from '@hookform/resolvers/zod'
 import { TextField, Card as MCard, Button, CardContent, CardActions, CardMedia } from '@mui/material'
 import ThemeProvider from '@mui/material/styles/ThemeProvider'
@@ -7,8 +5,9 @@ import { LoadingButton } from '@mui/lab'
 import { Check, Close } from '@mui/icons-material'
 import { useForm } from 'react-hook-form'
 import { theme } from '@/ui/theme'
-import { DishCategory } from '@/types/dish.type'
-import { DBDishCategory, zDBDishCategory } from '@/types/db/dish.db.type'
+import type { DishCategory } from '@/types/dish.type'
+import type { DBDishCategory } from '@/types/db/dish.db.type'
+import { zDBDishCategory } from '@/types/db/dish.db.type'
 import { trpc } from '@/trpc/trpc'
 import useStore from '@/hooks/useStore'
 import { useMenuStore } from '@/store/menuStore'
@@ -70,7 +69,7 @@ export default function AddDishCategory({ editingDishCategory, onClose }: AddDis
     }
 
     if (editingDishCategory) {
-      updateDishCategoryMutation.mutateAsync(dishCategory, {
+      await updateDishCategoryMutation.mutateAsync(dishCategory, {
         onSuccess: async (category: DishCategory) => {
           if (editingDishCategory.picture && editingDishCategory.picture !== getValues().picture) {
             await storageUploader.removeImage([editingDishCategory.picture])
@@ -80,7 +79,7 @@ export default function AddDishCategory({ editingDishCategory, onClose }: AddDis
         },
       })
     } else {
-      addDishCategoryMutation.mutateAsync(dishCategory, {
+      await addDishCategoryMutation.mutateAsync(dishCategory, {
         onSuccess: async (category: DishCategory) => {
           menuStore?.addDishCategory(category)
           onClose()

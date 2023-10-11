@@ -1,5 +1,4 @@
 import { Box, Divider, Skeleton, Stack } from '@mui/material'
-import React from 'react'
 import FoodItemSkeleton from '@/components/guest/skelleton/foodItemSkeleton'
 
 export default function FoodCategorySkeleton() {

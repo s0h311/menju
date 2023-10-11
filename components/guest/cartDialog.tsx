@@ -2,7 +2,8 @@
 
 import useStore from '@/hooks/useStore'
 import { useCartStore } from '@/store/cartStore'
-import { Cart, OrderPosition, PaymentMethod, zCart } from '@/types/order.type'
+import type { Cart, OrderPosition, PaymentMethod } from '@/types/order.type'
+import { zCart } from '@/types/order.type'
 import Dialog from '@/ui/dialog'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ShoppingBagOutlined, AddCircle, RemoveCircle } from '@mui/icons-material'

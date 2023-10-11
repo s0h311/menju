@@ -1,5 +1,6 @@
 import { ToggleButtonGroup, ToggleButton as MToggleButton } from '@mui/material'
-import { Key } from 'react'
+import type { Key } from 'react'
+import type { MouseEvent } from 'react'
 
 type ToggleButtonProps<T> = {
   value: T | T[]
@@ -15,7 +16,7 @@ export default function ToggleButton<T>({ value, onChange, items, isMultiSelect 
       size='medium'
       color='success'
       value={value}
-      onChange={(_event: React.MouseEvent<HTMLElement>, newValue: T | null) => {
+      onChange={(_event: MouseEvent<HTMLElement>, newValue: T | null) => {
         if (newValue !== null) onChange(newValue)
       }}
     >

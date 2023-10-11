@@ -1,12 +1,12 @@
-import { Restaurant as PRestaurant } from '@prisma/client'
-import { DishCategory, DishesByCategory } from '@/types/dish.type'
-import { DBDish, DBDishCategory } from '@/types/db/dish.db.type'
-import { Language, RestaurantId } from '@/types/order.type'
+import type { Restaurant as PRestaurant } from '@prisma/client'
+import type { DishCategory, DishesByCategory } from '@/types/dish.type'
+import type { DBDish, DBDishCategory } from '@/types/db/dish.db.type'
+import type { Language, RestaurantId } from '@/types/order.type'
 import { capitalize, getMultiLanguageStringProperty, mapDish } from '@/trpc/helpers/dishHelpers'
-import { JsonObject } from '@prisma/client/runtime/library'
-import { RegisterCredentials } from '@/types/credentials.type'
+import type { JsonObject } from '@prisma/client/runtime/library'
+import type { RegisterCredentials } from '@/types/credentials.type'
 import { prismaClient } from '../trpcServer'
-import { Features } from '@/types/restaurant.type'
+import type { Features } from '@/types/restaurant.type'
 
 export async function getRestaurant(restaurantId: RestaurantId) {
   return prismaClient.restaurant.findFirst({ where: { id: restaurantId } })

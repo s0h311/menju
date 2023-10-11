@@ -1,13 +1,15 @@
 'use client'
 
-import { CartType, Features, Restaurant, zFeatures } from '@/types/restaurant.type'
+import type { CartType, Features, Restaurant } from '@/types/restaurant.type'
+import { zFeatures } from '@/types/restaurant.type'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import { useEffect, useState } from 'react'
 import ToggleButton from './form/toggleButton'
-import { PaymentMethod } from '@/types/order.type'
+import type { PaymentMethod } from '@/types/order.type'
 import { LoadingButton } from '@mui/lab'
 import { trpc } from '@/trpc/trpc'
+import toast from '@/utils/toast'
+import { useEffect } from 'react'
 
 type SettingsListProps = {
   restaurant: Restaurant
@@ -17,7 +19,6 @@ export default function KitchenSettingsList({
   restaurant: { id: restaurantId, name, abbreviation, features },
 }: SettingsListProps) {
   const { mutateAsync: updateFeaturesMutation } = trpc.updateFeatures.useMutation()
-  const [savedSuccessfully, setSavedSuccessfully] = useState<boolean>(false)
 
   const {
     handleSubmit,
@@ -31,7 +32,7 @@ export default function KitchenSettingsList({
     resolver: zodResolver(zFeatures),
   })
 
-  const addPaymenMethod = (paymentMethod: PaymentMethod): void => {
+  const addPaymentMethod = (paymentMethod: PaymentMethod): void => {
     let currentPaymentMethods = getValues('enabledPaymentMethods')
 
     if (currentPaymentMethods.includes(paymentMethod)) {
@@ -46,20 +47,19 @@ export default function KitchenSettingsList({
 
   const save = async (newFeatures: Features): Promise<void> => {
     updateFeaturesMutation(
-      { restaurantId, features: newFeatures },
+      {
+        restaurantId,
+        features: newFeatures,
+      },
       {
         onSuccess: displayErrorOrSuccess,
       }
     )
   }
 
-  const displayErrorOrSuccess = () => {
-    if (savedSuccessfully) throw 69 + 420 // TODO use for toast
-    setSavedSuccessfully(true)
-    setTimeout(() => {
-      setSavedSuccessfully(false)
-      reset({}, { keepValues: true })
-    }, 1000)
+  const displayErrorOrSuccess = (): void => {
+    toast.success('Erfolgreich gespeichert')
+    reset({}, { keepValues: true })
   }
 
   const watchAll = watch()
@@ -89,7 +89,7 @@ export default function KitchenSettingsList({
 
         <label className='-mb-4'>Filtern</label>
         <ToggleButton
-          value={getValues('isFilterBarEnabled')}
+          value={getValues().isFilterBarEnabled}
           onChange={(value: boolean) => setValue('isFilterBarEnabled', value, { shouldValidate: true })}
           items={[
             { value: true, name: 'An' },
@@ -99,7 +99,7 @@ export default function KitchenSettingsList({
 
         <label className='-mb-4'>Bestellen</label>
         <ToggleButton
-          value={getValues('cartType')}
+          value={getValues().cartType}
           onChange={(value: CartType) => setValue('cartType', value, { shouldValidate: true })}
           items={[
             { value: 'canOrder', name: 'An' },
@@ -109,8 +109,8 @@ export default function KitchenSettingsList({
 
         <label className='-mb-4'>Zahlungsmethoden</label>
         <ToggleButton
-          value={getValues('enabledPaymentMethods')}
-          onChange={addPaymenMethod}
+          value={getValues().enabledPaymentMethods}
+          onChange={addPaymentMethod}
           items={[
             { value: 'CARD', name: 'Karte' },
             { value: 'CASH', name: 'Bar' },

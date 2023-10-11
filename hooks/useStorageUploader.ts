@@ -1,5 +1,5 @@
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
-import { StorageUploadResponse } from '@/types/utility.type'
+import type { StorageUploadResponse } from '@/types/utility.type'
 
 const supabaseClient = createClientComponentClient()
 

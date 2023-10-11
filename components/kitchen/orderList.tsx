@@ -1,8 +1,8 @@
 'use client'
 
 import useTypeTransformer from '@/hooks/useTypeTranformer'
-import { DBOrder } from '@/types/db/order.db.type'
-import { Order, OrderStatus } from '@/types/order.type'
+import type { DBOrder } from '@/types/db/order.db.type'
+import type { Order, OrderStatus } from '@/types/order.type'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { useEffect, useState } from 'react'
 import { CheckCircleOutlined } from '@mui/icons-material'

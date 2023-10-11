@@ -1,8 +1,14 @@
 import { TextField } from '@mui/material'
 import FormDropdown from '../kitchen/form/formDropdown'
 import { LoadingButton } from '@mui/lab'
-import { FieldErrors, UseFormGetValues, UseFormHandleSubmit, UseFormRegister, UseFormSetValue } from 'react-hook-form'
-import { RegisterCredentialsAdminUser } from '@/types/adminUser.type'
+import type {
+  FieldErrors,
+  UseFormGetValues,
+  UseFormHandleSubmit,
+  UseFormRegister,
+  UseFormSetValue,
+} from 'react-hook-form'
+import type { RegisterCredentialsAdminUser } from '@/types/adminUser.type'
 
 type AddUserFormProps = {
   onSubmit: (credentials: RegisterCredentialsAdminUser) => void

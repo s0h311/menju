@@ -1,13 +1,13 @@
 import useStore from './useStore'
 import { useEffect, experimental_useOptimistic as useOptimistic } from 'react'
-import { Dish, DishCategory, DishesByCategory } from '@/types/dish.type'
+import type { Dish, DishCategory, DishesByCategory } from '@/types/dish.type'
 import { trpc } from '@/trpc/trpc'
 import { useMenuStore } from '@/store/menuStore'
-import { DBDish, DBDishCategory } from '@/types/db/dish.db.type'
+import type { DBDish, DBDishCategory } from '@/types/db/dish.db.type'
 import { useRestaurantStore } from '@/store/restaurantStore'
 import useTypeTransformer from './useTypeTranformer'
-import { LanguageAndRestaurantId } from '@/types/order.type'
-import { Features } from '@/types/restaurant.type'
+import type { LanguageAndRestaurantId } from '@/types/order.type'
+import type { Features } from '@/types/restaurant.type'
 
 type UseDishConfigs = LanguageAndRestaurantId & { tableId: string }
 

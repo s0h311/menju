@@ -2,7 +2,7 @@
 
 import { useMenuStore } from '@/store/menuStore'
 import useStore from '@/hooks/useStore'
-import { Dish, DishCategory, DishesByCategory } from '@/types/dish.type'
+import type { Dish, DishCategory, DishesByCategory } from '@/types/dish.type'
 import { useState } from 'react'
 import CardGrid from '@/components/kitchen/cardGrid'
 import Card from '@/components/kitchen/card'
