@@ -8,7 +8,6 @@ import { TextField } from '@mui/material'
 import { useEffect, useRef, useState } from 'react'
 import useStore from '@/hooks/useStore'
 import { useMenuStore } from '@/store/menuStore'
-import { TextareaAutosize } from '@mui/base'
 import FormDropdown from '@/components/kitchen/form/formDropdown'
 import FormListWithChips from './form/formListWithChips'
 import FormMultiSelectionChips from './form/formMultiSelectionChips'
@@ -229,10 +228,13 @@ export default function AddDish({ open, editingDish, onClose }: AddDishProps) {
       />
 
       {/* Description */}
-      <TextareaAutosize
-        className='border border-slate-500 shadow-sm rounded-l-lg rounded-tr-lg p-3 outline-none'
+      <TextField
+        className='multiline-textfield'
         placeholder='Beschreibung'
+        multiline
         {...register('description.de')}
+        error={!!errors.description?.de}
+        helperText={errors.description?.de?.message}
       />
     </Dialog>
   )
