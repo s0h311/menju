@@ -1,5 +1,5 @@
-import { OrderPosition, PaymentMethod } from '@/types/order.type'
-import { CartActions, CartState } from '../cartStore'
+import type { OrderPosition, PaymentMethod } from '@/types/order.type'
+import type { CartActions, CartState } from '../cartStore'
 
 type State = CartState & CartActions
 type getState = () => State

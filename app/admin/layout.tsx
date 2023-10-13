@@ -1,13 +1,14 @@
 import type { Metadata } from 'next'
 import Dashboard from '@/components/shared/dashboard'
-import { SidebarMenu } from '@/types/dashboard.type'
+import type { SidebarMenu } from '@/types/dashboard.type'
+import type { ReactNode } from 'react'
 
 export const metadata: Metadata = {
   title: 'Admin Dashboard | Menju',
 }
 
 type AdminDashboardLayoutProps = {
-  children: React.ReactNode
+  children: ReactNode
 }
 
 export default function AdminDashboardLayout({ children }: AdminDashboardLayoutProps) {

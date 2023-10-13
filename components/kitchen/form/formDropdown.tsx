@@ -1,4 +1,5 @@
-import { Select, InputLabel, MenuItem, FormControl, SelectChangeEvent } from '@mui/material'
+import { Select, InputLabel, MenuItem, FormControl } from '@mui/material'
+import type { SelectChangeEvent } from '@mui/material'
 
 type FormDropdownProps<T> = {
   label: string

@@ -1,10 +1,11 @@
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
-import { Cart, OrderPosition, PaymentMethod } from '@/types/order.type'
+import type { Cart, OrderPosition, PaymentMethod } from '@/types/order.type'
 import { addPosition, removePosition, updateNote, updatePaymentMethod } from './cartStore/cart.store'
 
 export type CartState = {
   cart: Omit<Cart, 'restaurantId'>
+  quantity: number
 }
 
 export type CartActions = {
@@ -27,15 +28,23 @@ const initialState: CartState = {
     vat: null,
     note: null,
   },
+  quantity: 0,
 }
 
 export const useCartStore = create(
   persist<CartState & CartActions>(
     (set, get) => ({
       cart: initialState.cart,
+      quantity: initialState.quantity,
       setCart: (cart: Cart) => set({ cart }),
-      removePosition: (position: OrderPosition) => removePosition(get, set, position),
-      addPosition: (position: OrderPosition) => addPosition(get, set, position),
+      removePosition: (position: OrderPosition) => {
+        removePosition(get, set, position)
+        set({ quantity: get().quantity - 1 })
+      },
+      addPosition: (position: OrderPosition) => {
+        addPosition(get, set, position)
+        set({ quantity: get().quantity + 1 })
+      },
       updatePaymentMethod: (paymentMethod: PaymentMethod) => updatePaymentMethod(get, set, paymentMethod),
       updateNote: (note: string) => updateNote(get, set, note),
       reset: () => {

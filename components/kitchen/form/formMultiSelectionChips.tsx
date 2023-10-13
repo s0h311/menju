@@ -10,8 +10,8 @@ export default function FormMultiSelectionChips<T>({ items, activeItem, onClick 
       {items.map((item) => (
         <button
           key={String(item)}
-          className={`rounded-xl px-2 py-1 text-text text-sm cursor-pointer ${
-            activeItem === item ? 'bg-accent' : 'bg-slate-500'
+          className={`rounded-xl px-2 py-1 text-sm cursor-pointer ${
+            activeItem === item ? 'bg-accent' : 'bg-slate-500 text-gray-200'
           }`}
           type='button'
           onClick={() => onClick(item)}

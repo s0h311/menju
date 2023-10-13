@@ -1,7 +1,7 @@
 'use client'
 
-import { Dish, DishesByCategory } from '@/types/dish.type'
-import { FilterChipModel } from '@/types/filterChip.type'
+import type { Dish, DishesByCategory } from '@/types/dish.type'
+import type { FilterChipModel } from '@/types/filterChip.type'
 import { Stack } from '@mui/material'
 import FilterBar from '@/components/guest/filterBar'
 import FoodCategory from '@/components/guest/foodCategory'
@@ -14,6 +14,7 @@ import CartDialog from '@/components/guest/cartDialog'
 import useDish from '@/hooks/useDish'
 import { useSearchParams } from 'next/navigation'
 import { QUERY_PARAM } from '@/types/queryParams.type'
+import useFeatures from '@/hooks/useFeatures'
 
 export default function Menu() {
   const queryParams = useSearchParams()
@@ -21,7 +22,7 @@ export default function Menu() {
   const tableId: string = queryParams.get(QUERY_PARAM.tableId) ?? 'unknown'
 
   const { dishesByCategory, visibleDishes } = useDish({ restaurantId, language: 'de', tableId })
-
+  const { isFilterBarEnabled } = useFeatures()
   const [activeDish, setActiveDish] = useState<Dish | null>(null)
 
   const filterChips: FilterChipModel[] = getFilterChips(dishesByCategory)
@@ -42,20 +43,19 @@ export default function Menu() {
     <Stack className='mb-4'>
       {visibleDishes ? (
         <>
-          <FilterBar chipData={filterChips} />
-          {visibleDishes
-            ?.sort((category0, category1) => category0.category.priority - category1.category.priority)
-            .map((category) => (
-              <FoodCategory
-                key={category.category.id}
-                category={category.category}
-                onCardClick={(dish) => setActiveDish(dish)}
-              />
-            ))}
+          {filterChips.length > 0 && isFilterBarEnabled && <FilterBar chipData={filterChips} />}
+          {visibleDishes?.map((dishesByCategory) => (
+            <FoodCategory
+              key={dishesByCategory.category.id}
+              category={dishesByCategory.category}
+              dishes={dishesByCategory.dishes}
+              onCardClick={(dish) => setActiveDish(dish)}
+            />
+          ))}
         </>
       ) : (
         <>
-          <FilterBarSkeleton />
+          {filterChips.length > 0 && isFilterBarEnabled && <FilterBarSkeleton />}
           <FoodCategorySkeleton />
           <FoodCategorySkeleton />
         </>

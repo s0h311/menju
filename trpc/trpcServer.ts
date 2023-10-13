@@ -3,7 +3,8 @@ import superjson from 'superjson'
 import { zDBDish, zDBDishCategory } from '@/types/db/dish.db.type'
 import { zLanguageAndRestaurantId } from '@/types/order.type'
 import { zRegisterCredentials } from '@/types/credentials.type'
-import { UserResponse, createClient } from '@supabase/supabase-js'
+import type { UserResponse } from '@supabase/supabase-js'
+import { createClient } from '@supabase/supabase-js'
 import { capitalize, getMultiLanguageStringProperty } from '@/trpc/helpers/dishHelpers'
 import { z } from 'zod'
 import { createAdminUser, createUser, getAdminUsers, createOrder } from '@/trpc/data/supabaseAdminClient'
@@ -14,12 +15,17 @@ import {
   deleteDish,
   deleteDishCategory,
   getDishesByCategoryFromRestaurant,
+  getRestaurant,
   updateDish,
   updateDishCategory,
+  updateFeatures,
 } from '@/trpc/data/prismaClient'
-import { PrismaClient, Restaurant } from '@prisma/client'
+import type { Restaurant } from '@prisma/client'
+import { PrismaClient } from '@prisma/client'
 import { zRegisterCredentialsAdminUser } from '@/types/adminUser.type'
 import { zDBOrder } from '@/types/db/order.db.type'
+import { zRestaurantId } from '@/types/restaurant.type'
+import { zFeatures } from '@/types/restaurant.type'
 
 const t = initTRPC.create({
   transformer: superjson,
@@ -34,6 +40,20 @@ export const supabaseClientAdmin = createClient(
 )
 
 export const appRouter = t.router({
+  restaurant: t.procedure.input(zRestaurantId).query(async (req) => {
+    const { input: restaurantId } = req
+    return await getRestaurant(restaurantId)
+  }),
+
+  updateFeatures: t.procedure
+    .input(z.object({ restaurantId: zRestaurantId, features: zFeatures }))
+    .mutation(async (req) => {
+      const {
+        input: { restaurantId, features },
+      } = req
+      return await updateFeatures(restaurantId, features)
+    }),
+
   dishesByCategory: t.procedure.input(zLanguageAndRestaurantId).query(async (req) => {
     const {
       input: { restaurantId, language },
@@ -41,9 +61,9 @@ export const appRouter = t.router({
     return await getDishesByCategoryFromRestaurant(restaurantId, language)
   }),
 
-  createOrder: t.procedure.input(zDBOrder).mutation(async (req) => {
+  createOrder: t.procedure.input(zDBOrder).mutation((req) => {
     const { input } = req
-    return await createOrder(input)
+    return createOrder(input)
   }),
 
   // DISH CATEGORY CRUD //

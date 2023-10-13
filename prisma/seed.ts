@@ -49,6 +49,10 @@ const main = async () => {
         it: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.',
       },
       categoryId: dishCategory1.id,
+      saleStartDate: null,
+      saleEndDate: null,
+      salePrice: null,
+      saleDays: [],
     },
   })
 
@@ -89,6 +93,10 @@ const main = async () => {
         it: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.',
       },
       categoryId: dishCategory2.id,
+      saleStartDate: null,
+      saleEndDate: null,
+      salePrice: null,
+      saleDays: [],
     },
   })
 
@@ -119,6 +127,10 @@ const main = async () => {
         it: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.',
       },
       categoryId: dishCategory2.id,
+      saleStartDate: null,
+      saleEndDate: null,
+      salePrice: null,
+      saleDays: [],
     },
   })
 

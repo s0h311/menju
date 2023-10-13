@@ -495,7 +495,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mui/base@npm:5.0.0-beta.15, @mui/base@npm:^5.0.0-beta.15":
+"@mui/base@npm:5.0.0-beta.15":
   version: 5.0.0-beta.15
   resolution: "@mui/base@npm:5.0.0-beta.15"
   dependencies:
@@ -3881,7 +3881,6 @@ __metadata:
     "@emotion/react": ^11.11.1
     "@emotion/styled": ^11.11.0
     "@hookform/resolvers": ^3.3.1
-    "@mui/base": ^5.0.0-beta.15
     "@mui/icons-material": ^5.14.9
     "@mui/lab": 5.0.0-alpha.144
     "@mui/material": 5.14.9
@@ -3910,10 +3909,11 @@ __metadata:
     postcss: 8.4.29
     prettier: 3.0.3
     prisma: ^5.3.1
-    react: 0.0.0-experimental-f81c0f1ed-20230927
+    react: 18.2.0
     react-beautiful-dnd: 11.0.3
-    react-dom: 0.0.0-experimental-f81c0f1ed-20230927
+    react-dom: 18.2.0
     react-hook-form: ^7.46.1
+    sonner: ^1.0.3
     superjson: ^1.13.1
     tailwindcss: 3.3.3
     ts-node: ^10.9.1
@@ -4693,15 +4693,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-dom@npm:0.0.0-experimental-f81c0f1ed-20230927":
-  version: 0.0.0-experimental-f81c0f1ed-20230927
-  resolution: "react-dom@npm:0.0.0-experimental-f81c0f1ed-20230927"
+"react-dom@npm:18.2.0":
+  version: 18.2.0
+  resolution: "react-dom@npm:18.2.0"
   dependencies:
     loose-envify: ^1.1.0
-    scheduler: 0.0.0-experimental-f81c0f1ed-20230927
+    scheduler: ^0.23.0
   peerDependencies:
-    react: 0.0.0-experimental-f81c0f1ed-20230927
-  checksum: 72f7f33bbcb976866556e5d4844964296e015258b5c4b72fb37e9b8496f93f4061728c80a9709dd224c56bd496b7cc034ba3639a8afd71178ba589c50df6dd97
+    react: ^18.2.0
+  checksum: 7d323310bea3a91be2965f9468d552f201b1c27891e45ddc2d6b8f717680c95a75ae0bc1e3f5cf41472446a2589a75aed4483aee8169287909fcd59ad149e8cc
   languageName: node
   linkType: hard
 
@@ -4780,16 +4780,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react@npm:0.0.0-experimental-f81c0f1ed-20230927":
-  version: 0.0.0-experimental-f81c0f1ed-20230927
-  resolution: "react@npm:0.0.0-experimental-f81c0f1ed-20230927"
-  dependencies:
-    loose-envify: ^1.1.0
-  checksum: cd68c38f2af54827c2b3ea99284ef3dceb12326290d11f82afb393f43bda37a1b60aac15b8b74c5a1e2504397df0c0f89cd1c60ec6f5158bff2cf04e5137f2e3
-  languageName: node
-  linkType: hard
-
-"react@npm:^18.2.0":
+"react@npm:18.2.0, react@npm:^18.2.0":
   version: 18.2.0
   resolution: "react@npm:18.2.0"
   dependencies:
@@ -5012,12 +5003,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"scheduler@npm:0.0.0-experimental-f81c0f1ed-20230927":
-  version: 0.0.0-experimental-f81c0f1ed-20230927
-  resolution: "scheduler@npm:0.0.0-experimental-f81c0f1ed-20230927"
+"scheduler@npm:^0.23.0":
+  version: 0.23.0
+  resolution: "scheduler@npm:0.23.0"
   dependencies:
     loose-envify: ^1.1.0
-  checksum: 896f919d84d51f130466bfe41c8ab44a47f92edc0f640acf5b84d33ddf7295cc1c2733111db36177258cefac1e33b410937e0df19e462fa512c9af9e08e59c8a
+  checksum: d79192eeaa12abef860c195ea45d37cbf2bbf5f66e3c4dcd16f54a7da53b17788a70d109ee3d3dde1a0fd50e6a8fc171f4300356c5aee4fc0171de526bf35f8a
   languageName: node
   linkType: hard
 
@@ -5128,6 +5119,16 @@ __metadata:
     ip: ^2.0.0
     smart-buffer: ^4.2.0
   checksum: 259d9e3e8e1c9809a7f5c32238c3d4d2a36b39b83851d0f573bfde5f21c4b1288417ce1af06af1452569cd1eb0841169afd4998f0e04ba04656f6b7f0e46d748
+  languageName: node
+  linkType: hard
+
+"sonner@npm:^1.0.3":
+  version: 1.0.3
+  resolution: "sonner@npm:1.0.3"
+  peerDependencies:
+    react: ^18.0.0
+    react-dom: ^18.0.0
+  checksum: e7233c9982c05413e24c7ee14af4439c734c713f5a4e4d5f2c4ca9425615f96e9c560d0053af3ff0555dc70aaff49079d05a0bdf90457e551bd2641925bd08fd
   languageName: node
   linkType: hard
 

@@ -1,5 +1,6 @@
 import { Button } from '@mui/material'
-import { ChangeEvent, useRef } from 'react'
+import { useRef } from 'react'
+import type { ChangeEvent } from 'react'
 
 type ImagePickerProps = {
   onChange: (imageData: string, imageFile: File) => void
@@ -13,6 +14,8 @@ export default function ImagePicker({ onChange }: ImagePickerProps) {
     if (input.files?.length) {
       const reader = new FileReader()
       const image = input.files[0]
+
+      if (!image) return
 
       reader.onload = async (e) => {
         const imageData = e.target?.result?.toString() || ''
@@ -35,7 +38,7 @@ export default function ImagePicker({ onChange }: ImagePickerProps) {
         ref={inputElement}
         className='hidden'
         type='file'
-        accept='image/*'
+        accept='image/*, image/avif'
         onChange={(e) => handleChange(e)}
       />
     </>

@@ -3,6 +3,8 @@ import type { Metadata } from 'next'
 import { Kanit } from 'next/font/google'
 import { TrpcProvider } from '@/trpc/trpcProvider'
 import { Analytics } from '@vercel/analytics/react'
+import { Toaster } from 'sonner'
+import type { ReactNode } from 'react'
 
 const kanit = Kanit({
   weight: '400',
@@ -16,7 +18,7 @@ export const metadata: Metadata = {
 }
 
 type RootLayoutProps = {
-  children: React.ReactNode
+  children: ReactNode
 }
 
 export default function RootLayout({ children }: RootLayoutProps) {
@@ -25,6 +27,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
       <html lang='en'>
         <body className={`${kanit.className}`}>
           {children}
+          <Toaster />
           <Analytics />
         </body>
       </html>

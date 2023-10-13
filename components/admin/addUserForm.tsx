@@ -1,8 +1,14 @@
 import { TextField } from '@mui/material'
 import FormDropdown from '../kitchen/form/formDropdown'
 import { LoadingButton } from '@mui/lab'
-import { FieldErrors, UseFormGetValues, UseFormHandleSubmit, UseFormRegister, UseFormSetValue } from 'react-hook-form'
-import { RegisterCredentialsAdminUser } from '@/types/adminUser.type'
+import type {
+  FieldErrors,
+  UseFormGetValues,
+  UseFormHandleSubmit,
+  UseFormRegister,
+  UseFormSetValue,
+} from 'react-hook-form'
+import type { RegisterCredentialsAdminUser } from '@/types/adminUser.type'
 
 type AddUserFormProps = {
   onSubmit: (credentials: RegisterCredentialsAdminUser) => void
@@ -11,7 +17,7 @@ type AddUserFormProps = {
   handleSubmit: UseFormHandleSubmit<RegisterCredentialsAdminUser>
   getValues: UseFormGetValues<RegisterCredentialsAdminUser>
   setValue: UseFormSetValue<RegisterCredentialsAdminUser>
-  isSubmitted: boolean
+  isSubmitSuccessful: boolean
   createdSuccessfully: boolean
 }
 
@@ -22,7 +28,7 @@ export default function AddUserForm({
   handleSubmit,
   getValues,
   setValue,
-  isSubmitted,
+  isSubmitSuccessful,
   createdSuccessfully,
 }: AddUserFormProps) {
   const roles = [
@@ -82,7 +88,7 @@ export default function AddUserForm({
         sx={{ borderRadius: '5px' }}
         variant='outlined'
         type='submit'
-        loading={isSubmitted}
+        loading={isSubmitSuccessful}
       >
         Neuen Admin Hinzufügen
       </LoadingButton>

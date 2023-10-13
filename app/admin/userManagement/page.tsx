@@ -1,8 +1,9 @@
 'use client'
 
 import { trpc } from '@/trpc/trpc'
-import { RegisterCredentialsAdminUser, zRegisterCredentialsAdminUser } from '@/types/adminUser.type'
-import { UserResponse } from '@supabase/supabase-js'
+import { zRegisterCredentialsAdminUser } from '@/types/adminUser.type'
+import type { RegisterCredentialsAdminUser } from '@/types/adminUser.type'
+import type { UserResponse } from '@supabase/supabase-js'
 import { useState } from 'react'
 import UserList from '@/components/admin/userList'
 import AddUserForm from '@/components/admin/addUserForm'
@@ -23,7 +24,7 @@ export default function UserManagement() {
   const {
     register,
     handleSubmit,
-    formState: { isSubmitted, errors },
+    formState: { isSubmitSuccessful, errors },
     setValue,
     getValues,
     setError,
@@ -72,7 +73,7 @@ export default function UserManagement() {
           setValue={setValue}
           handleSubmit={handleSubmit}
           onSubmit={createAdminUser}
-          isSubmitted={isSubmitted}
+          isSubmitSuccessful={isSubmitSuccessful}
           createdSuccessfully={createdSuccessfully}
         />
       </section>

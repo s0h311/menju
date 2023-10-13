@@ -1,7 +1,5 @@
 import { z } from 'zod'
 
-export const zRestaurantId = z.number().int().positive().finite() //TODO auch duplicate in order.type vorhanden
-
 export const zAllergy = z.object({
   id: z.number(),
   name: z.string(),
@@ -52,7 +50,6 @@ export const zDishesByCategory = z.object({
   dishes: z.array(zDish),
 })
 
-export type Allergy = z.infer<typeof zAllergy>
 export type Nutritions = z.infer<typeof zNutritions>
 export type Dish = z.infer<typeof zDish>
 export type DishCategory = z.infer<typeof zDishCategory>

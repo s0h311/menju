@@ -1,4 +1,4 @@
-import { AdminUser } from '@/types/adminUser.type'
+import type { AdminUser } from '@/types/adminUser.type'
 
 type UserListProps = {
   adminUsers: AdminUser[]

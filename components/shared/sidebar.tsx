@@ -1,4 +1,4 @@
-import { SidebarMenu } from '@/types/dashboard.type'
+import type { SidebarMenu } from '@/types/dashboard.type'
 import Link from 'next/link'
 import { useState } from 'react'
 import { usePathname, useRouter } from 'next/navigation'

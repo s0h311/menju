@@ -1,7 +1,6 @@
-'use client'
-
-import { DietType, Dish, DishCategory } from '@/types/dish.type'
-import { DBMultiLanguageStringProperty, DBDish, zDBDish } from '@/types/db/dish.db.type'
+import type { DietType, Dish, DishCategory } from '@/types/dish.type'
+import type { DBMultiLanguageStringProperty, DBDish } from '@/types/db/dish.db.type'
+import { zDBDish } from '@/types/db/dish.db.type'
 import Dialog from '@/ui/dialog'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -9,7 +8,6 @@ import { TextField } from '@mui/material'
 import { useEffect, useRef, useState } from 'react'
 import useStore from '@/hooks/useStore'
 import { useMenuStore } from '@/store/menuStore'
-import { TextareaAutosize } from '@mui/base'
 import FormDropdown from '@/components/kitchen/form/formDropdown'
 import FormListWithChips from './form/formListWithChips'
 import FormMultiSelectionChips from './form/formMultiSelectionChips'
@@ -230,10 +228,13 @@ export default function AddDish({ open, editingDish, onClose }: AddDishProps) {
       />
 
       {/* Description */}
-      <TextareaAutosize
-        className='border border-slate-500 shadow-sm rounded-l-lg rounded-tr-lg p-3 outline-none'
+      <TextField
+        className='multiline-textfield'
         placeholder='Beschreibung'
+        multiline
         {...register('description.de')}
+        error={!!errors.description?.de}
+        helperText={errors.description?.de?.message}
       />
     </Dialog>
   )

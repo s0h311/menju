@@ -1,5 +1,5 @@
 import createTheme from '@mui/material/styles/createTheme'
-import { PaletteColorOptions } from '@mui/material/styles/createPalette'
+import type { PaletteColorOptions } from '@mui/material/styles/createPalette'
 
 declare module '@mui/material/styles' {
   interface Palette {
@@ -40,6 +40,14 @@ declare module '@mui/material/Checkbox' {
 
 declare module '@mui/material/TextField' {
   interface TextFieldPropsColorOverrides {
+    accent: true
+    bgColor: true
+    textColor: true
+  }
+}
+
+declare module '@mui/material/SvgIcon' {
+  interface SvgIconPropsColorOverrides {
     accent: true
     bgColor: true
     textColor: true

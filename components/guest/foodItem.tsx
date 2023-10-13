@@ -1,28 +1,30 @@
-import { Card, CardContent, CardMedia, Divider, Stack } from '@mui/material'
-import { Dish } from '@/types/dish.type'
+import { Card, CardContent, CardMedia } from '@mui/material'
+import type { Dish } from '@/types/dish.type'
 import Image from 'next/image'
 
 type FoodItemProps = {
   dish: Dish
+  priority: boolean
   onClick: () => void
 }
 
-export default function FoodItem({ dish, onClick }: FoodItemProps) {
+export default function FoodItem({ dish, priority, onClick }: FoodItemProps) {
   return (
     <Card
-      sx={{ minWidth: 250 }}
+      sx={{ minWidth: 250, maxWidth: 250, maxHeight: '40dvh' }}
       onClick={onClick}
       className='cursor-pointer border-solid border-2'
       key={dish.id}
     >
       {dish.picture && (
-        <CardMedia sx={{ height: 150 }}>
+        <CardMedia sx={{ height: 150, position: 'relative' }}>
           <Image
-            style={{ aspectRatio: '16/9' }}
+            style={{ aspectRatio: '16/9', objectFit: 'cover' }}
             src={dish.picture}
-            width={350}
-            height={240}
+            fill
+            sizes='(max-width: 414px) 60vw, (max-width: 768px) 45vw, 20vw'
             quality={70}
+            priority={priority}
             alt={dish.name}
           />
         </CardMedia>
@@ -33,40 +35,9 @@ export default function FoodItem({ dish, onClick }: FoodItemProps) {
           <p className='place-self-end'>{dish.price.toFixed(2)}€</p>
         </div>
 
-        <Stack
-          mt={2}
-          direction='row'
-          justifyContent='center'
-          alignItems='center'
-          divider={
-            <Divider
-              orientation='vertical'
-              flexItem
-            />
-          }
-          spacing={2}
-        >
-          <ul className='list-none'>
-            {dish.ingredients.required.map((ingredient) => (
-              <li
-                className='text-sm flex items-center'
-                key={ingredient}
-              >
-                {ingredient}
-              </li>
-            ))}
-          </ul>
-          <ul className='list-none'>
-            {dish.ingredients.optional.map((ingredient) => (
-              <li
-                className='text-sm flex items-center'
-                key={ingredient}
-              >
-                {ingredient} (Optional)
-              </li>
-            ))}
-          </ul>
-        </Stack>
+        <p className='overflow-hidden text-ellipsis text-sm text-slate-600'>
+          {[...dish.ingredients.required, ...dish.ingredients.optional].join(', ')}
+        </p>
       </CardContent>
     </Card>
   )

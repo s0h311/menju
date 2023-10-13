@@ -1,8 +1,8 @@
 'use client'
 
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 import Sidebar from './sidebar'
-import { SidebarMenu } from '@/types/dashboard.type'
+import type { SidebarMenu } from '@/types/dashboard.type'
 
 type DashboardProps = {
   sidebarMenus: SidebarMenu[]

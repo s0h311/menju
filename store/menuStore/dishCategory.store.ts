@@ -1,5 +1,5 @@
-import { MenuState } from '@/store/menuStore'
-import { DishCategory } from '@/types/dish.type'
+import type { MenuState } from '@/store/menuStore'
+import type { DishCategory } from '@/types/dish.type'
 
 type getState = () => MenuState
 type setState = (

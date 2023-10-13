@@ -1,13 +1,14 @@
 import type { Metadata } from 'next'
 import Dashboard from '@/components/shared/dashboard'
-import { SidebarMenu } from '@/types/dashboard.type'
+import type { SidebarMenu } from '@/types/dashboard.type'
+import type { ReactNode } from 'react'
 
 export const metadata: Metadata = {
   title: 'Kitchen Dashboard | Menju',
 }
 
 type KitchenDashboardLayoutProps = {
-  children: React.ReactNode
+  children: ReactNode
 }
 
 export default function AdminDashboardLayout({ children }: KitchenDashboardLayoutProps) {
@@ -26,6 +27,11 @@ export default function AdminDashboardLayout({ children }: KitchenDashboardLayou
       id: 3,
       label: 'Bestellungen',
       path: '/kitchen/orders',
+    },
+    {
+      id: 4,
+      label: 'Einstellungen',
+      path: '/kitchen/settings',
     },
   ]
 
