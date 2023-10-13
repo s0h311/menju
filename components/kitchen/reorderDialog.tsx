@@ -9,7 +9,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import Slide from '@mui/material/Slide'
 import type { TransitionProps } from '@mui/material/transitions'
 import type { DishCategory, Dish } from '@/types/dish.type'
-import { closestCenter, DndContext } from '@dnd-kit/core'
+import { closestCenter, DndContext, type DragEndEvent } from '@dnd-kit/core'
 import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { useState } from 'react'
 import { theme } from '@/ui/theme'
@@ -48,23 +48,31 @@ export default function ReorderDialog({ items, setOpenDialog }: ReorderDialogPro
   const { dishToDBDish, dishCategoryToDBDishCategory } = useTypeTransformer()
 
   const isDish = (item: Dish | DishCategory) => typeof item === 'object' && 'ingredients' in item
-  const onDragEnd = (event) => {
+  const onDragEnd = (event: DragEndEvent) => {
     const { active, over } = event
-    if (active.id === over.id) {
+    if (active.id === over?.id) {
       return
     }
     setItems((draggableItems) => {
       const oldIndex = draggableItems.findIndex((item) => item.id === active.id)
-      const newIndex = draggableItems.findIndex((item) => item.id === over.id)
-      draggableItems[oldIndex].priority = newIndex
-      draggableItems[newIndex].priority = oldIndex
+      const newIndex = draggableItems.findIndex((item) => item.id === over?.id)
+      if (oldIndex !== -1 && newIndex !== -1) {
+        draggableItems[oldIndex]!.priority = newIndex
+        draggableItems[newIndex]!.priority = oldIndex
+      }
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       return arrayMove(draggableItems, oldIndex, newIndex)
     })
   }
 
   const submitDishes = async (): Promise<void> => {
     for (const dish in draggableItems) {
-      const dBDish: DBDish = dishToDBDish(draggableItems[dish])
+      const currentDish = draggableItems[dish]!
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      currentDish.priority = draggableItems.indexOf(currentDish)
+      const dBDish: DBDish = dishToDBDish(currentDish as Dish)
       updateDishMutation(dBDish, {
         onSuccess: async (dish: Dish) => {
           menuStore?.updateDish(dish)
@@ -75,7 +83,13 @@ export default function ReorderDialog({ items, setOpenDialog }: ReorderDialogPro
   }
   const submitDishCategories = async (): Promise<void> => {
     for (const dishCategory in draggableItems) {
-      const dBDishCategory: DBDishCategory = dishCategoryToDBDishCategory(draggableItems[dishCategory])
+      const currentDishCategory = draggableItems[dishCategory]!
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      currentDishCategory.priority = draggableItems.indexOf(currentDishCategory)
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      const dBDishCategory: DBDishCategory = dishCategoryToDBDishCategory(currentDishCategory)
       updateDishCategoryMutation.mutateAsync(dBDishCategory, {
         onSuccess: async (dishCategory: DishCategory) => {
           menuStore?.updateDishCategory(dishCategory)
@@ -84,7 +98,8 @@ export default function ReorderDialog({ items, setOpenDialog }: ReorderDialogPro
       })
     }
   }
-
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   return (
     <ThemeProvider theme={theme}>
       <Dialog
@@ -114,7 +129,16 @@ export default function ReorderDialog({ items, setOpenDialog }: ReorderDialogPro
             <Button
               autoFocus
               color='inherit'
-              onClick={() => (isDish(draggableItems[0]) ? submitDishes() : submitDishCategories())}
+              onClick={() => {
+                const firstItem = draggableItems[0]
+                if (firstItem) {
+                  if (isDish(firstItem)) {
+                    submitDishes()
+                  } else {
+                    submitDishCategories()
+                  }
+                }
+              }}
             >
               speichern
             </Button>
