@@ -17,7 +17,7 @@ type AddUserFormProps = {
   handleSubmit: UseFormHandleSubmit<RegisterCredentialsAdminUser>
   getValues: UseFormGetValues<RegisterCredentialsAdminUser>
   setValue: UseFormSetValue<RegisterCredentialsAdminUser>
-  isSubmitted: boolean
+  isSubmitSuccessful: boolean
   createdSuccessfully: boolean
 }
 
@@ -28,7 +28,7 @@ export default function AddUserForm({
   handleSubmit,
   getValues,
   setValue,
-  isSubmitted,
+  isSubmitSuccessful,
   createdSuccessfully,
 }: AddUserFormProps) {
   const roles = [
@@ -88,7 +88,7 @@ export default function AddUserForm({
         sx={{ borderRadius: '5px' }}
         variant='outlined'
         type='submit'
-        loading={isSubmitted}
+        loading={isSubmitSuccessful}
       >
         Neuen Admin Hinzufügen
       </LoadingButton>

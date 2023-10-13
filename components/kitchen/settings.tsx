@@ -22,7 +22,7 @@ export default function KitchenSettingsList({
 
   const {
     handleSubmit,
-    formState: { isSubmitted },
+    formState: { isSubmitSuccessful },
     setValue,
     getValues,
     reset,
@@ -122,7 +122,7 @@ export default function KitchenSettingsList({
           sx={{ borderRadius: '5px' }}
           variant='outlined'
           type='submit'
-          loading={isSubmitted}
+          loading={isSubmitSuccessful}
         >
           Speichern
         </LoadingButton>

@@ -24,7 +24,7 @@ export default function UserManagement() {
   const {
     register,
     handleSubmit,
-    formState: { isSubmitted, errors },
+    formState: { isSubmitSuccessful, errors },
     setValue,
     getValues,
     setError,
@@ -73,7 +73,7 @@ export default function UserManagement() {
           setValue={setValue}
           handleSubmit={handleSubmit}
           onSubmit={createAdminUser}
-          isSubmitted={isSubmitted}
+          isSubmitSuccessful={isSubmitSuccessful}
           createdSuccessfully={createdSuccessfully}
         />
       </section>

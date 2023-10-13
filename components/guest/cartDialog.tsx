@@ -7,12 +7,11 @@ import { zCart } from '@/types/order.type'
 import Dialog from '@/ui/dialog'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ShoppingBagOutlined, AddCircle, RemoveCircle } from '@mui/icons-material'
-import { IconButton } from '@mui/material'
+import { IconButton, TextField } from '@mui/material'
 import Image from 'next/image'
 import { useCallback, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import FormMultiSelectionChips from '@/components/kitchen/form/formMultiSelectionChips'
-import { TextareaAutosize } from '@mui/base'
 import { trpc } from '@/trpc/trpc'
 import { useRestaurantStore } from '@/store/restaurantStore'
 import useTypeTransformer from '@/hooks/useTypeTranformer'
@@ -33,7 +32,7 @@ export default function CartDialog() {
     getValues,
     setValue,
     handleSubmit,
-    formState: { isSubmitted },
+    formState: { isSubmitSuccessful, errors },
     reset,
   } = useForm<Pick<Cart, 'note' | 'paymentMethod'>>({
     defaultValues: { note: '', paymentMethod: 'CARD' },
@@ -52,9 +51,11 @@ export default function CartDialog() {
   }, [setCart, cartStore])
 
   const createOrder = (cart: Pick<Cart, 'note' | 'paymentMethod'>) => {
-    toast.successMinimal('Bestellung eingegangen')
+    if (!cartStore || cartType === 'cannotOrder') {
+      return
+    }
 
-    if (!cartStore || cartType === 'cannotOrder') return
+    toast.successMinimal('Bestellung eingegangen')
 
     createOrderMutation.mutateAsync(
       orderToDBOrder({
@@ -111,7 +112,7 @@ export default function CartDialog() {
             proceedText='Bestellen'
             onProceed={cartType === 'cannotOrder' ? undefined : handleSubmit(createOrder)}
             onClose={() => setShowDialog(false)}
-            loading={isSubmitted}
+            loading={isSubmitSuccessful}
           >
             {!cart?.positions.length ? (
               <h3>Such dir doch etwas aus :)</h3>
@@ -172,10 +173,15 @@ export default function CartDialog() {
                   />
 
                   {/* Bemerkung */}
-                  <TextareaAutosize
-                    className='border border-slate-500 shadow-sm rounded-l-lg rounded-tr-lg p-3 outline-none w-full'
+                  <TextField
+                    className='multiline-textfield'
                     placeholder='Anmerkung'
-                    {...register('note', { onChange: (event) => cartStore?.updateNote(event.target.value) })}
+                    multiline
+                    {...register('note', {
+                      onChange: (event) => cartStore?.updateNote(event.target.value),
+                    })}
+                    error={!!errors.note}
+                    helperText={errors.note?.message}
                   />
 
                   {/* Gesamtbetrag */}
