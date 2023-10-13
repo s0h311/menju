@@ -1,4 +1,4 @@
-import { Dish, DishCategory } from '@/types/dish.type'
+import type { Dish, DishCategory } from '@/types/dish.type'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { Avatar, Card, ListItem, ListItemAvatar, ListItemText } from '@mui/material'
@@ -37,10 +37,7 @@ export default function ReorderableItem({ item }: ReorderableItemProps) {
             )}
           </Avatar>
         </ListItemAvatar>
-        <ListItemText
-          primary={item.name}
-          secondary={item.priority}
-        />
+        <ListItemText primary={item.name} />
       </ListItem>
     </Card>
   )
