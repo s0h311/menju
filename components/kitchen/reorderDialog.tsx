@@ -10,14 +10,17 @@ import Slide from '@mui/material/Slide'
 import { TransitionProps } from '@mui/material/transitions'
 import { DishCategory, Dish } from '@/types/dish.type'
 import { closestCenter, DndContext } from '@dnd-kit/core'
-import { arrayMove, SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable'
-import { CSS } from '@dnd-kit/utilities'
+import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { useState } from 'react'
-import { Avatar, Divider, List, ListItem, ListItemAvatar, ListItemText } from '@mui/material'
-import Image from 'next/image'
-import FastfoodOutlinedIcon from '@mui/icons-material/FastfoodOutlined'
+import { Divider, List } from '@mui/material'
 import { theme } from '@/ui/theme'
 import ThemeProvider from '@mui/material/styles/ThemeProvider'
+import { trpc } from '@/trpc/trpc'
+import useStore from '@/hooks/useStore'
+import { useMenuStore } from '@/store/menuStore'
+import useTypeTransformer from '@/hooks/useTypeTranformer'
+import { DBDish, DBDishCategory } from '@/types/db/dish.db.type'
+import ReOrderableItem from '@/components/kitchen/reorderableItem'
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -39,6 +42,12 @@ type ReorderDialogProps = {
 }
 export default function ReorderDialog({ items, setOpenDialog }: ReorderDialogProps) {
   const [draggableItems, setItems] = useState(items)
+  const menuStore = useStore(useMenuStore, (state) => state)
+  const updateDishCategoryMutation = trpc.updateDishCategory.useMutation()
+  const { mutateAsync: updateDishMutation } = trpc.updateDish.useMutation()
+  const { dishToDBDish, dishCategoryToDBDishCategory } = useTypeTransformer()
+
+  const isDish = (item: Dish | DishCategory) => typeof item === 'object' && 'ingredients' in item
   const onDragEnd = (event) => {
     const { active, over } = event
     if (active.id === over.id) {
@@ -53,38 +62,27 @@ export default function ReorderDialog({ items, setOpenDialog }: ReorderDialogPro
     })
   }
 
-  const SortableItem = ({ item }) => {
-    const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: item.id })
-    const style = {
-      transition,
-      transform: CSS.Transform.toString(transform),
+  const submitDishes = async (): Promise<void> => {
+    for (const dish in draggableItems) {
+      const dBDish: DBDish = dishToDBDish(draggableItems[dish])
+      updateDishMutation(dBDish, {
+        onSuccess: async (dish: Dish) => {
+          menuStore?.updateDish(dish)
+          setOpenDialog(null)
+        },
+      })
     }
-    return (
-      <ListItem
-        ref={setNodeRef}
-        style={style}
-        {...attributes}
-        {...listeners}
-        className='user'
-      >
-        <ListItemAvatar>
-          <Avatar>
-            {item.picture ? (
-              <Image
-                src={item.picture}
-                alt={''}
-              />
-            ) : (
-              <FastfoodOutlinedIcon></FastfoodOutlinedIcon>
-            )}
-          </Avatar>
-        </ListItemAvatar>
-        <ListItemText
-          primary={item.name}
-          secondary={item.priority}
-        />
-      </ListItem>
-    )
+  }
+  const submitDishCategories = async (): Promise<void> => {
+    for (const dishCategory in draggableItems) {
+      const dBDishCategory: DBDishCategory = dishCategoryToDBDishCategory(draggableItems[dishCategory])
+      updateDishCategoryMutation.mutateAsync(dBDishCategory, {
+        onSuccess: async (dishCategory: DishCategory) => {
+          menuStore?.updateDishCategory(dishCategory)
+          setOpenDialog(null)
+        },
+      })
+    }
   }
 
   return (
@@ -116,7 +114,7 @@ export default function ReorderDialog({ items, setOpenDialog }: ReorderDialogPro
             <Button
               autoFocus
               color='inherit'
-              onClick={() => setOpenDialog(null)}
+              onClick={() => (isDish(draggableItems[0]) ? submitDishes() : submitDishCategories())}
             >
               speichern
             </Button>
@@ -131,12 +129,14 @@ export default function ReorderDialog({ items, setOpenDialog }: ReorderDialogPro
               items={draggableItems}
               strategy={verticalListSortingStrategy}
             >
-              {draggableItems.map((item) => (
-                <div key={item.id}>
-                  <SortableItem item={item} />
-                  <Divider />
-                </div>
-              ))}
+              {draggableItems
+                .sort((item0, item1) => item0.priority - item1.priority)
+                .map((item) => (
+                  <div key={item.id}>
+                    <ReOrderableItem item={item} />
+                    <Divider />
+                  </div>
+                ))}
             </SortableContext>
           </DndContext>
         </List>

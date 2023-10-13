@@ -12,16 +12,6 @@ import { trpc } from '@/trpc/trpc'
 import AddDish from '@/components/kitchen/addDish'
 import useDish from '@/hooks/useDish'
 import ReorderDialog from '@/components/kitchen/reorderDialog'
-import { styled } from '@mui/system'
-
-const BootstrapDialog = styled(Dialog)(({ theme }) => ({
-  '& .MuiDialogContent-root': {
-    padding: theme.spacing(2),
-  },
-  '& .MuiDialogActions-root': {
-    padding: theme.spacing(1),
-  },
-}))
 export default function KitchenDishes() {
   const [activeDishesCategory, setActiveDishesCategory] = useState<DishesByCategory | null>(null)
   const [itemsToOrder, setItemsToOrder] = useState<Dish[] | DishCategory[] | null>(null)
@@ -32,7 +22,6 @@ export default function KitchenDishes() {
   const [open, setOpen] = React.useState(false)
 
   const handleClickOpen = () => {
-    console.log('ds')
     setOpen(true)
   }
   const handleClose = () => {
@@ -80,8 +69,7 @@ export default function KitchenDishes() {
         contentType='dishCategory'
         onReorder={() => {
           const allCategories = dishesByCategory.map((category) => category.category)
-          const items = activeDishesCategory ? activeDishesCategory.dishes : allCategories
-          setItemsToOrder(items)
+          setItemsToOrder(allCategories)
         }}
       >
         {dishesByCategory.map((card: DishesByCategory) => (
@@ -173,8 +161,9 @@ export default function KitchenDishes() {
       <Dialog
         sx={{ display: 'grid', placeItems: 'center', marginTop: '20px' }}
         open={open}
-        closeText='Kategorie wählen'
         maxWidth='xs'
+        closeText={'Weiter'}
+        revertSuccessError
         onClose={handleClose}
       >
         Wähle zunächst eine Kategorie aus um die Gerichte neu anzuordnen.
