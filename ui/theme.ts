@@ -46,6 +46,14 @@ declare module '@mui/material/TextField' {
   }
 }
 
+declare module '@mui/material/SvgIcon' {
+  interface SvgIconPropsColorOverrides {
+    accent: true
+    bgColor: true
+    textColor: true
+  }
+}
+
 export const theme = createTheme({
   palette: {
     primary: {

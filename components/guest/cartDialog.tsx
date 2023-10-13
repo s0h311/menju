@@ -8,6 +8,7 @@ import Dialog from '@/ui/dialog'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ShoppingBagOutlined, AddCircle, RemoveCircle } from '@mui/icons-material'
 import { IconButton, TextField } from '@mui/material'
+import ThemeProvider from '@mui/material/styles/ThemeProvider'
 import Image from 'next/image'
 import { useCallback, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -17,6 +18,7 @@ import { useRestaurantStore } from '@/store/restaurantStore'
 import useTypeTransformer from '@/hooks/useTypeTranformer'
 import useFeatures from '@/hooks/useFeatures'
 import toast from '@/utils/toast'
+import { theme } from '@/ui/theme'
 
 export default function CartDialog() {
   const [showDialog, setShowDialog] = useState<boolean>(false)
@@ -78,14 +80,14 @@ export default function CartDialog() {
   }, [])
 
   return (
-    <>
+    <ThemeProvider theme={theme}>
       {!showDialog ? (
         <IconButton
           sx={{
             position: 'fixed',
             bottom: '10px',
             right: '15px',
-            backgroundColor: '#7eaa92 !important',
+            backgroundColor: 'var(--primary) !important',
             borderRadius: '9999px',
             p: '12px',
           }}
@@ -98,7 +100,10 @@ export default function CartDialog() {
                 <p className='text-white font-bold'>{cartStore.quantity}</p>
               </div>
             )}
-            <ShoppingBagOutlined style={{ transform: 'scale(1.3)', zIndex: '-1' }} />
+            <ShoppingBagOutlined
+              color='textColor'
+              style={{ transform: 'scale(1.3)', zIndex: '-1' }}
+            />
           </>
         </IconButton>
       ) : (
@@ -197,6 +202,6 @@ export default function CartDialog() {
           </Dialog>
         </div>
       )}
-    </>
+    </ThemeProvider>
   )
 }
