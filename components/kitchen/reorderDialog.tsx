@@ -104,7 +104,7 @@ export default function ReorderDialog({ items, setOpenDialog }: ReorderDialogPro
     <ThemeProvider theme={theme}>
       <Dialog
         fullScreen
-        open={draggableItems != null}
+        open={!!draggableItems}
         onClose={() => setOpenDialog(null)}
         TransitionComponent={Transition}
         color='primary'

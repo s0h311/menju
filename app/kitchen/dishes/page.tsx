@@ -19,7 +19,7 @@ export default function KitchenDishes() {
   const [deletingDishCategory, setDeletingDishCategory] = useState<DishCategory | null>(null)
   const [editingDish, setEditingDish] = useState<Dish | null>(null)
   const [deletingDish, setDeletingDish] = useState<Dish | null>(null)
-  const [open, setOpen] = React.useState(false)
+  const [open, setOpen] = useState<boolean>(false)
 
   const handleClickOpen = () => {
     setOpen(true)
@@ -133,7 +133,7 @@ export default function KitchenDishes() {
         <ReorderDialog
           items={itemsToOrder}
           setOpenDialog={setItemsToOrder}
-        ></ReorderDialog>
+        />
       )}
 
       <Dialog
