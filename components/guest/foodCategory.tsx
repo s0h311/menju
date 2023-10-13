@@ -33,13 +33,15 @@ export default function FoodCategory({ category, onCardClick }: FoodCategoryProp
             menuStore.visibleDishes
               .filter((cat) => category.id === cat.category.id)
               .map((dish) =>
-                dish.dishes.map((dish) => (
-                  <FoodItem
-                    key={dish.id}
-                    dish={dish}
-                    onClick={() => onCardClick(dish)}
-                  />
-                ))
+                dish.dishes
+                  .sort((dish0, dish1) => dish0.priority - dish1.priority)
+                  .map((dish) => (
+                    <FoodItem
+                      key={dish.id}
+                      dish={dish}
+                      onClick={() => onCardClick(dish)}
+                    />
+                  ))
               )}
         </Stack>
       </Box>

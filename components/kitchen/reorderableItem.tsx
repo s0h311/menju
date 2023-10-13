@@ -1,10 +1,10 @@
 import { Dish, DishCategory } from '@/types/dish.type'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import { Avatar, ListItem, ListItemAvatar, ListItemText } from '@mui/material'
+import { Avatar, Card, ListItem, ListItemAvatar, ListItemText } from '@mui/material'
 import Image from 'next/image'
-import FastfoodOutlinedIcon from '@mui/icons-material/FastfoodOutlined'
 import * as React from 'react'
+import FastfoodOutlinedIcon from '@mui/icons-material/FastfoodOutlined'
 
 type ReorderableItemProps = {
   item: DishCategory | Dish
@@ -16,29 +16,32 @@ export default function ReorderableItem({ item }: ReorderableItemProps) {
     transform: CSS.Transform.toString(transform),
   }
   return (
-    <ListItem
+    <Card
       ref={setNodeRef}
       style={style}
       {...attributes}
       {...listeners}
       className='user'
+      sx={{ margin: 1, height: 200, width: 350 }}
     >
-      <ListItemAvatar>
-        <Avatar>
-          {item.picture ? (
-            <Image
-              src={item.picture}
-              alt={''}
-            />
-          ) : (
-            <FastfoodOutlinedIcon></FastfoodOutlinedIcon>
-          )}
-        </Avatar>
-      </ListItemAvatar>
-      <ListItemText
-        primary={item.name}
-        secondary={item.priority}
-      />
-    </ListItem>
+      <ListItem>
+        <ListItemAvatar>
+          <Avatar>
+            {item.picture ? (
+              <Image
+                src={item.picture}
+                alt={''}
+              />
+            ) : (
+              <FastfoodOutlinedIcon></FastfoodOutlinedIcon>
+            )}
+          </Avatar>
+        </ListItemAvatar>
+        <ListItemText
+          primary={item.name}
+          secondary={item.priority}
+        />
+      </ListItem>
+    </Card>
   )
 }

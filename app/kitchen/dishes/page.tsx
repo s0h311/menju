@@ -72,27 +72,29 @@ export default function KitchenDishes() {
           setItemsToOrder(allCategories)
         }}
       >
-        {dishesByCategory.map((card: DishesByCategory) => (
-          <div key={card.category.id}>
-            {!editingDishCategory || editingDishCategory.id !== card.category.id ? (
-              <Card
-                key={card.category.id}
-                title={card.category.name}
-                image={card.category.picture || card.dishes.at(0)?.picture || ''}
-                onClick={() => setActiveDishesCategory(card)}
-                onEdit={() => setEditingDishCategory(card.category)}
-                onDelete={() => setDeletingDishCategory(card.category)}
-              >
-                Anzahl Gerichte: {card.dishes.length}
-              </Card>
-            ) : (
-              <AddDishCategory
-                editingDishCategory={card.category}
-                onClose={() => setEditingDishCategory(null)}
-              />
-            )}
-          </div>
-        ))}
+        {dishesByCategory
+          .sort((card0, card1) => card0.category.priority - card1.category.priority)
+          .map((card: DishesByCategory) => (
+            <div key={card.category.id}>
+              {!editingDishCategory || editingDishCategory.id !== card.category.id ? (
+                <Card
+                  key={card.category.id}
+                  title={card.category.name}
+                  image={card.category.picture || card.dishes.at(0)?.picture || ''}
+                  onClick={() => setActiveDishesCategory(card)}
+                  onEdit={() => setEditingDishCategory(card.category)}
+                  onDelete={() => setDeletingDishCategory(card.category)}
+                >
+                  Anzahl Gerichte: {card.dishes.length}
+                </Card>
+              ) : (
+                <AddDishCategory
+                  editingDishCategory={card.category}
+                  onClose={() => setEditingDishCategory(null)}
+                />
+              )}
+            </div>
+          ))}
       </CardGrid>
       <CardGrid
         title={activeDishesCategory ? `Gerichte - ${activeDishesCategory.category.name}` : 'Alle Gerichte'}
@@ -103,18 +105,20 @@ export default function KitchenDishes() {
         }}
         onReset={() => setActiveDishesCategory(null)}
       >
-        {(activeDishesCategory?.dishes || allDishes).map((card: Dish) => (
-          <Card
-            key={card.id}
-            title={card.name}
-            image={card.picture || ''}
-            onClick={() => setEditingDish(card)}
-            onEdit={() => setEditingDish(card)}
-            onDelete={() => setDeletingDish(card)}
-          >
-            Preis: {card.price.toFixed(2)} EUR
-          </Card>
-        ))}
+        {(activeDishesCategory?.dishes || allDishes)
+          .sort((dish0, dish1) => dish0.priority - dish1.priority)
+          .map((card: Dish) => (
+            <Card
+              key={card.id}
+              title={card.name}
+              image={card.picture || ''}
+              onClick={() => setEditingDish(card)}
+              onEdit={() => setEditingDish(card)}
+              onDelete={() => setDeletingDish(card)}
+            >
+              Preis: {card.price.toFixed(2)} EUR
+            </Card>
+          ))}
       </CardGrid>
 
       {editingDish && (

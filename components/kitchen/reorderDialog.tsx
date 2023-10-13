@@ -12,7 +12,6 @@ import { DishCategory, Dish } from '@/types/dish.type'
 import { closestCenter, DndContext } from '@dnd-kit/core'
 import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { useState } from 'react'
-import { Divider, List } from '@mui/material'
 import { theme } from '@/ui/theme'
 import ThemeProvider from '@mui/material/styles/ThemeProvider'
 import { trpc } from '@/trpc/trpc'
@@ -20,7 +19,8 @@ import useStore from '@/hooks/useStore'
 import { useMenuStore } from '@/store/menuStore'
 import useTypeTransformer from '@/hooks/useTypeTranformer'
 import { DBDish, DBDishCategory } from '@/types/db/dish.db.type'
-import ReOrderableItem from '@/components/kitchen/reorderableItem'
+import ReorderableItem from '@/components/kitchen/reorderableItem'
+import { Grid } from '@mui/material'
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -120,7 +120,12 @@ export default function ReorderDialog({ items, setOpenDialog }: ReorderDialogPro
             </Button>
           </Toolbar>
         </AppBar>
-        <List sx={{ bgcolor: 'background.paper' }}>
+        <Grid
+          container
+          margin={1}
+          rowSpacing={1}
+          columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+        >
           <DndContext
             collisionDetection={closestCenter}
             onDragEnd={onDragEnd}
@@ -132,14 +137,14 @@ export default function ReorderDialog({ items, setOpenDialog }: ReorderDialogPro
               {draggableItems
                 .sort((item0, item1) => item0.priority - item1.priority)
                 .map((item) => (
-                  <div key={item.id}>
-                    <ReOrderableItem item={item} />
-                    <Divider />
-                  </div>
+                  <ReorderableItem
+                    item={item}
+                    key={item.id}
+                  />
                 ))}
             </SortableContext>
           </DndContext>
-        </List>
+        </Grid>
       </Dialog>
     </ThemeProvider>
   )
