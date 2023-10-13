@@ -16,7 +16,7 @@ export default function AddRestaurant() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitted },
+    formState: { errors, isSubmitSuccessful },
     setError,
     reset,
   } = useForm<RegisterCredentials>({
@@ -100,7 +100,7 @@ export default function AddRestaurant() {
           sx={{ borderRadius: '5px' }}
           variant='outlined'
           type='submit'
-          loading={isSubmitted}
+          loading={isSubmitSuccessful}
         >
           Neues Restaurant Anlegen
         </LoadingButton>

@@ -27,3 +27,7 @@ input::placeholder {
     scrollbar-width: none;
   }
 }
+
+.multiline-textfield {
+  @apply border border-slate-500 shadow-sm rounded-l-lg rounded-tr-lg outline-none w-full !important;
+}
