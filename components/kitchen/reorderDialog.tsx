@@ -3,7 +3,7 @@ import type { ReactElement, Ref } from 'react'
 import { Button, Dialog, AppBar, Toolbar, IconButton, Typography, Slide, Grid } from '@mui/material/'
 import { Close as CloseIcon } from '@mui/icons-material'
 import type { TransitionProps } from '@mui/material/transitions'
-import type { DishCategory, Dish } from '@/types/dish.type'
+import type { DishCategory, Dish, DishIntersection } from '@/types/dish.type'
 import { closestCenter, DndContext } from '@dnd-kit/core'
 import type { DragEndEvent } from '@dnd-kit/core'
 import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
@@ -36,10 +36,7 @@ type ReorderDialogProps<T> = {
   setOpenDialog: (value: T[] | null) => void
 }
 
-export default function ReorderDialog<T extends { id: number; priority: number; picture: string; name: string }>({
-  items,
-  setOpenDialog,
-}: ReorderDialogProps<T>) {
+export default function ReorderDialog<T extends DishIntersection>({ items, setOpenDialog }: ReorderDialogProps<T>) {
   const [draggableItems, setItems] = useState<T[]>(items)
   const menuStore = useStore(useMenuStore, (state) => state)
   const updateDishCategoryMutation = trpc.updateDishCategory.useMutation()

@@ -3,19 +3,13 @@ import { CSS } from '@dnd-kit/utilities'
 import { Avatar, Card, ListItem, ListItemAvatar, ListItemText } from '@mui/material'
 import Image from 'next/image'
 import FastfoodOutlinedIcon from '@mui/icons-material/FastfoodOutlined'
+import type { DishIntersection } from '@/types/dish.type'
 
 type ReorderableItemProps<T> = {
   item: T
 }
 
-export default function ReorderableItem<
-  T extends {
-    id: number
-    priority: number
-    picture: string
-    name: string
-  },
->({ item }: ReorderableItemProps<T>) {
+export default function ReorderableItem<T extends DishIntersection>({ item }: ReorderableItemProps<T>) {
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: item.id })
   const style = {
     transition,
