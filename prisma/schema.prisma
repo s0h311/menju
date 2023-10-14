@@ -11,7 +11,7 @@ datasource db {
 
 model Restaurant {
   id           Int            @id @default(autoincrement())
-  userId       String         @map("user_id") @db.Uuid
+  userId       String?        @map("user_id") @db.Uuid
   name         String
   abbreviation String         @unique
   categories   DishCategory[]

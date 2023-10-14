@@ -3,9 +3,10 @@ import type { Restaurant } from '@prisma/client'
 import type { AdminUser, RegisterCredentialsAdminUser } from '@/types/adminUser.type'
 import type { DBOrder } from '@/types/db/order.db.type'
 import { supabaseClientAdmin } from '../trpcServer'
+import type { UserResponse } from '@supabase/supabase-js'
 
-export async function createUser(credentials: RegisterCredentials, restaurant: Restaurant) {
-  return supabaseClientAdmin.auth.admin.createUser({
+export async function createUser(credentials: RegisterCredentials, restaurant: Restaurant): Promise<UserResponse> {
+  const res = await supabaseClientAdmin.auth.admin.createUser({
     email: credentials.email,
     password: credentials.password,
     email_confirm: true,
@@ -14,6 +15,21 @@ export async function createUser(credentials: RegisterCredentials, restaurant: R
       restaurantId: restaurant.id,
     },
   })
+
+  const { data, error } = res
+
+  if (data.user) {
+    await supabaseClientAdmin
+      .from('restaurant')
+      .update({ user_id: data.user.id })
+      .eq('id', data.user.user_metadata['restaurantId'])
+  }
+
+  if (error) {
+    console.error(error)
+  }
+
+  return res
 }
 
 export async function createAdminUser(credentials: RegisterCredentialsAdminUser) {
