@@ -1,17 +1,12 @@
-import * as React from 'react'
-import Button from '@mui/material/Button'
-import Dialog from '@mui/material/Dialog'
-import AppBar from '@mui/material/AppBar'
-import Toolbar from '@mui/material/Toolbar'
-import IconButton from '@mui/material/IconButton'
-import Typography from '@mui/material/Typography'
-import CloseIcon from '@mui/icons-material/Close'
-import Slide from '@mui/material/Slide'
+import { forwardRef, useState } from 'react'
+import type { ReactElement, Ref } from 'react'
+import { Button, Dialog, AppBar, Toolbar, IconButton, Typography, Slide, Grid } from '@mui/material/'
+import { Close as CloseIcon } from '@mui/icons-material'
 import type { TransitionProps } from '@mui/material/transitions'
 import type { DishCategory, Dish } from '@/types/dish.type'
-import { closestCenter, DndContext, type DragEndEvent } from '@dnd-kit/core'
+import { closestCenter, DndContext } from '@dnd-kit/core'
+import type { DragEndEvent } from '@dnd-kit/core'
 import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
-import { useState } from 'react'
 import { theme } from '@/ui/theme'
 import ThemeProvider from '@mui/material/styles/ThemeProvider'
 import { trpc } from '@/trpc/trpc'
@@ -20,13 +15,12 @@ import { useMenuStore } from '@/store/menuStore'
 import useTypeTransformer from '@/hooks/useTypeTranformer'
 import type { DBDish, DBDishCategory } from '@/types/db/dish.db.type'
 import ReorderableItem from '@/components/kitchen/reorderableItem'
-import { Grid } from '@mui/material'
 
-const Transition = React.forwardRef(function Transition(
+const Transition = forwardRef(function Transition(
   props: TransitionProps & {
-    children: React.ReactElement
+    children: ReactElement
   },
-  ref: React.Ref<unknown>
+  ref: Ref<unknown>
 ) {
   return (
     <Slide
@@ -36,70 +30,80 @@ const Transition = React.forwardRef(function Transition(
     />
   )
 })
-type ReorderDialogProps = {
-  items: DishCategory[] | Dish[]
-  setOpenDialog: (value: DishCategory[] | Dish[] | null) => void
+
+type ReorderDialogProps<T> = {
+  items: T[]
+  setOpenDialog: (value: T[] | null) => void
 }
-export default function ReorderDialog({ items, setOpenDialog }: ReorderDialogProps) {
-  const [draggableItems, setItems] = useState(items)
+
+export default function ReorderDialog<T extends { id: number; priority: number; picture: string; name: string }>({
+  items,
+  setOpenDialog,
+}: ReorderDialogProps<T>) {
+  const [draggableItems, setItems] = useState<T[]>(items)
   const menuStore = useStore(useMenuStore, (state) => state)
   const updateDishCategoryMutation = trpc.updateDishCategory.useMutation()
   const { mutateAsync: updateDishMutation } = trpc.updateDish.useMutation()
   const { dishToDBDish, dishCategoryToDBDishCategory } = useTypeTransformer()
 
-  const isDish = (item: Dish | DishCategory) => typeof item === 'object' && 'ingredients' in item
   const onDragEnd = (event: DragEndEvent) => {
     const { active, over } = event
-    if (active.id === over?.id) {
-      return
-    }
+    if (active.id === over?.id) return
+
     setItems((draggableItems) => {
       const oldIndex = draggableItems.findIndex((item) => item.id === active.id)
       const newIndex = draggableItems.findIndex((item) => item.id === over?.id)
-      if (oldIndex !== -1 && newIndex !== -1) {
-        draggableItems[oldIndex]!.priority = newIndex
-        draggableItems[newIndex]!.priority = oldIndex
+
+      if (oldIndex >= 0 && newIndex >= 0) {
+        const oldItem = draggableItems[oldIndex]
+        const newItem = draggableItems[newIndex]
+
+        if (oldItem && newItem) {
+          oldItem.priority = newIndex
+          newItem.priority = oldIndex
+        }
       }
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       return arrayMove(draggableItems, oldIndex, newIndex)
     })
   }
 
+  const submit = (): void => {
+    const firstItem = draggableItems[0]
+
+    if (!firstItem) return
+    if (typeof firstItem === 'object' && 'ingredients' in firstItem) {
+      submitDishes()
+      return
+    }
+    submitDishCategories()
+  }
+
   const submitDishes = async (): Promise<void> => {
-    for (const dish in draggableItems) {
-      const currentDish = draggableItems[dish]!
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      currentDish.priority = draggableItems.indexOf(currentDish)
-      const dBDish: DBDish = dishToDBDish(currentDish as Dish)
+    draggableItems.forEach((dish, index) => {
+      dish.priority = index
+      const dBDish: DBDish = dishToDBDish(dish as unknown as Dish)
       updateDishMutation(dBDish, {
         onSuccess: async (dish: Dish) => {
           menuStore?.updateDish(dish)
           setOpenDialog(null)
         },
       })
-    }
+    })
   }
+
   const submitDishCategories = async (): Promise<void> => {
-    for (const dishCategory in draggableItems) {
-      const currentDishCategory = draggableItems[dishCategory]!
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      currentDishCategory.priority = draggableItems.indexOf(currentDishCategory)
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      const dBDishCategory: DBDishCategory = dishCategoryToDBDishCategory(currentDishCategory)
+    draggableItems.forEach((dishCategory, index) => {
+      dishCategory.priority = index
+      const dBDishCategory: DBDishCategory = dishCategoryToDBDishCategory(dishCategory as unknown as DishCategory)
       updateDishCategoryMutation.mutateAsync(dBDishCategory, {
         onSuccess: async (dishCategory: DishCategory) => {
           menuStore?.updateDishCategory(dishCategory)
           setOpenDialog(null)
         },
       })
-    }
+    })
   }
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
+
   return (
     <ThemeProvider theme={theme}>
       <Dialog
@@ -129,16 +133,7 @@ export default function ReorderDialog({ items, setOpenDialog }: ReorderDialogPro
             <Button
               autoFocus
               color='inherit'
-              onClick={() => {
-                const firstItem = draggableItems[0]
-                if (firstItem) {
-                  if (isDish(firstItem)) {
-                    submitDishes()
-                  } else {
-                    submitDishCategories()
-                  }
-                }
-              }}
+              onClick={submit}
             >
               speichern
             </Button>
