@@ -7,6 +7,7 @@ const main = async () => {
     data: {
       name: 'Batman',
       abbreviation: 'BTM',
+      userId: 'edb17952-604b-412b-8c16-f2f37012c2e6', // test@menju.co
     },
   })
 

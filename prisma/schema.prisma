@@ -11,6 +11,10 @@ datasource db {
 
 model Restaurant {
   id           Int            @id @default(autoincrement())
+<<<<<<< Updated upstream
+=======
+  userId       String?        @map("user_id") @db.Uuid
+>>>>>>> Stashed changes
   name         String
   abbreviation String         @unique
   categories   DishCategory[]

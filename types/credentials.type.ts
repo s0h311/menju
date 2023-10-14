@@ -11,6 +11,7 @@ export const zRegisterCredentials = z.object({
   email: z.string().email(),
   password: z.string().min(8).max(20),
   restaurantId: z.number(),
+  userId: z.string().uuid().optional(),
 })
 
 type StringIndexSignature = {
