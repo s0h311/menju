@@ -1,5 +1,5 @@
 import { Box, Divider, Skeleton, Stack } from '@mui/material'
-import FoodItemSkeleton from '@/components/guest/skelleton/foodItemSkeleton'
+import FoodItemSkeleton from '@/components/guest/skeleton/foodItemSkeleton'
 
 export default function FoodCategorySkeleton() {
   return (

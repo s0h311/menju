@@ -1,5 +1,6 @@
 export const initialDBDish = {
   id: undefined,
+  priority: 0,
   name: { de: '', en: '', it: '' },
   price: 0,
   picture: null,

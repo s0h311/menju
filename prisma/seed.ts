@@ -12,6 +12,7 @@ const main = async () => {
 
   const dishCategory1 = await prisma.dishCategory.create({
     data: {
+      priority: 0,
       name: { en: 'lunch', de: 'mittagessen', it: 'pranzo' },
       picture:
         'https://xtapuuiutmkpsjijkgfw.supabase.co/storage/v1/object/public/pictures/examples/schnelles-mittagessen.jpg',
@@ -21,6 +22,7 @@ const main = async () => {
 
   const dish1 = await prisma.dish.create({
     data: {
+      priority: 0,
       name: { en: 'Doner kebab', de: 'Döner', it: 'Kebab' },
       price: 6.5,
       picture:
@@ -56,6 +58,7 @@ const main = async () => {
 
   const dishCategory2 = await prisma.dishCategory.create({
     data: {
+      priority: 1,
       name: { en: 'dinner', de: 'abendessen', it: 'cena' },
       picture: 'https://xtapuuiutmkpsjijkgfw.supabase.co/storage/v1/object/public/pictures/examples/zucchini.jpeg',
       restaurantId: restaurant.id,
@@ -64,6 +67,7 @@ const main = async () => {
 
   const dish2 = await prisma.dish.create({
     data: {
+      priority: 0,
       name: { en: 'Pasta', de: 'Nudeln', it: 'Pasta' },
       price: 9.3,
       picture: 'https://xtapuuiutmkpsjijkgfw.supabase.co/storage/v1/object/public/pictures/examples/nudeln.webp',
@@ -98,6 +102,7 @@ const main = async () => {
 
   const dish3 = await prisma.dish.create({
     data: {
+      priority: 0,
       name: { en: 'Pizza', de: 'Pizza', it: 'Pizza' },
       price: 11.8,
       picture: 'https://xtapuuiutmkpsjijkgfw.supabase.co/storage/v1/object/public/pictures/examples/pizza.jpg',
@@ -131,6 +136,7 @@ const main = async () => {
 
   const dish4 = await prisma.dish.create({
     data: {
+      priority: 0,
       name: { de: 'Pizza', en: 'Pizza', it: 'Pizza' },
       price: 7.5,
       picture: 'https://xtapuuiutmkpsjijkgfw.supabase.co/storage/v1/object/public/pictures/examples/flammenkuchen.jpg',

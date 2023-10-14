@@ -45,6 +45,7 @@ export default function AddDishCategory({ editingDishCategory, onClose }: AddDis
       ? dishCategoryToDBDishCategory(editingDishCategory)
       : {
           id: undefined,
+          priority: 0,
           name: { de: '', en: '', it: '' },
           picture: null,
           restaurantId: restaurantStore?.restaurantId,

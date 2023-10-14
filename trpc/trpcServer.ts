@@ -71,10 +71,11 @@ export const appRouter = t.router({
   addDishCategory: t.procedure.input(zDBDishCategory).mutation(async (req) => {
     const { input } = req
     const dishCategory = await createDishCategory(input)
-    return {
+    const object = {
       ...dishCategory,
       name: capitalize(getMultiLanguageStringProperty(dishCategory.name, 'de')),
     }
+    return object
   }),
 
   updateDishCategory: t.procedure.input(zDBDishCategory).mutation(async (req) => {

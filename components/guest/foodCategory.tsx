@@ -26,7 +26,7 @@ export default function FoodCategory({ category, dishes, onCardClick }: FoodCate
           className='overflow-x-auto no-scrollbar p-1'
         >
           {dishes.length > 0 &&
-            dishes.map((dish, index) => (
+            dishes.sort((dish0,dish1) => dish0.priority-dish1.priority).map((dish, index) => (
               <FoodItem
                 key={dish.id}
                 dish={dish}

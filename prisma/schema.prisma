@@ -23,6 +23,7 @@ model Restaurant {
 
 model DishCategory {
   id           Int        @id @default(autoincrement())
+  priority     Int
   name         Json
   picture      String?
   restaurantId Int        @map("restaurant_id")
@@ -35,6 +36,7 @@ model DishCategory {
 
 model Dish {
   id            Int          @id @default(autoincrement())
+  priority     Int
   name          Json
   price         Float
   picture       String?
