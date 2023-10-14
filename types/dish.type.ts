@@ -56,3 +56,10 @@ export type DishCategory = z.infer<typeof zDishCategory>
 export type DishesByCategory = z.infer<typeof zDishesByCategory>
 export type Ingredients = z.infer<typeof zIngredients>
 export type DietType = z.infer<typeof zDietType>
+export type DishIntersection = {
+  // Intersection of Dish and DishCategory
+  id: number
+  priority: number
+  picture: string | null
+  name: string
+}

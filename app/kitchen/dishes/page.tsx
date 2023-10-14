@@ -2,7 +2,7 @@
 
 import { useMenuStore } from '@/store/menuStore'
 import useStore from '@/hooks/useStore'
-import type { Dish, DishCategory, DishesByCategory } from '@/types/dish.type'
+import type { Dish, DishCategory, DishIntersection, DishesByCategory } from '@/types/dish.type'
 import React, { useState } from 'react'
 import CardGrid from '@/components/kitchen/cardGrid'
 import Card from '@/components/kitchen/card'
@@ -12,21 +12,15 @@ import { trpc } from '@/trpc/trpc'
 import AddDish from '@/components/kitchen/addDish'
 import useDish from '@/hooks/useDish'
 import ReorderDialog from '@/components/kitchen/reorderDialog'
+
 export default function KitchenDishes() {
   const [activeDishesCategory, setActiveDishesCategory] = useState<DishesByCategory | null>(null)
-  const [itemsToOrder, setItemsToOrder] = useState<Dish[] | DishCategory[] | null>(null)
+  const [itemsToReorder, setItemsToReorder] = useState<DishIntersection[] | null>(null)
   const [editingDishCategory, setEditingDishCategory] = useState<DishCategory | null>(null)
   const [deletingDishCategory, setDeletingDishCategory] = useState<DishCategory | null>(null)
   const [editingDish, setEditingDish] = useState<Dish | null>(null)
   const [deletingDish, setDeletingDish] = useState<Dish | null>(null)
   const [open, setOpen] = useState<boolean>(false)
-
-  const handleClickOpen = () => {
-    setOpen(true)
-  }
-  const handleClose = () => {
-    setOpen(false)
-  }
 
   const menuStore = useStore(useMenuStore, (state) => state)
   const { dishesByCategory } = useDish()
@@ -69,7 +63,7 @@ export default function KitchenDishes() {
         contentType='dishCategory'
         onReorder={() => {
           const allCategories = dishesByCategory.map((category) => category.category)
-          setItemsToOrder(allCategories)
+          setItemsToReorder(allCategories)
         }}
       >
         {dishesByCategory
@@ -101,7 +95,7 @@ export default function KitchenDishes() {
         contentType='dish'
         withReset
         onReorder={() => {
-          activeDishesCategory ? setItemsToOrder(activeDishesCategory.dishes) : handleClickOpen()
+          activeDishesCategory ? setItemsToReorder(activeDishesCategory.dishes) : setOpen(true)
         }}
         onReset={() => setActiveDishesCategory(null)}
       >
@@ -129,10 +123,10 @@ export default function KitchenDishes() {
         />
       )}
 
-      {itemsToOrder && (
+      {itemsToReorder && (
         <ReorderDialog
-          items={itemsToOrder}
-          setOpenDialog={setItemsToOrder}
+          items={itemsToReorder}
+          setOpenDialog={setItemsToReorder}
         />
       )}
 
@@ -168,7 +162,7 @@ export default function KitchenDishes() {
         maxWidth='xs'
         closeText={'Weiter'}
         revertSuccessError
-        onClose={handleClose}
+        onClose={() => setOpen(false)}
       >
         Wähle zunächst eine Kategorie aus um die Gerichte neu anzuordnen.
       </Dialog>

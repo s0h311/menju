@@ -22,13 +22,12 @@ export default function FormListWithChips({
   const labelInput = useRef<HTMLInputElement>(null)
 
   const addItem = () => {
-    const inputValue = labelInput.current?.value || null
-    if (!inputValue) return
+    if (!labelInput.current) return
 
-    const multiLanguage = { de: inputValue, en: '', it: '' }
+    const multiLanguage = { de: labelInput.current.value, en: '', it: '' }
     onItemAdd(multiLanguage)
 
-    labelInput.current!.value = ''
+    labelInput.current.value = ''
   }
 
   return (

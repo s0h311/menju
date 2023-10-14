@@ -14,7 +14,7 @@ type CardGridProps = {
   contentType: 'dishCategory' | 'dish'
   withReset?: boolean
   onReset?: () => void
-  onReorder?: () => void
+  onReorder: () => void
   children: ReactNode
 }
 
