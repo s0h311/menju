@@ -15,7 +15,7 @@ import ReorderDialog from '@/components/kitchen/reorderDialog'
 
 export default function KitchenDishes() {
   const [activeDishesCategory, setActiveDishesCategory] = useState<DishesByCategory | null>(null)
-  const [itemsToOrder, setItemsToOrder] = useState<DishIntersection[] | null>(null)
+  const [itemsToReorder, setItemsToReorder] = useState<DishIntersection[] | null>(null)
   const [editingDishCategory, setEditingDishCategory] = useState<DishCategory | null>(null)
   const [deletingDishCategory, setDeletingDishCategory] = useState<DishCategory | null>(null)
   const [editingDish, setEditingDish] = useState<Dish | null>(null)
@@ -63,7 +63,7 @@ export default function KitchenDishes() {
         contentType='dishCategory'
         onReorder={() => {
           const allCategories = dishesByCategory.map((category) => category.category)
-          setItemsToOrder(allCategories)
+          setItemsToReorder(allCategories)
         }}
       >
         {dishesByCategory
@@ -95,7 +95,7 @@ export default function KitchenDishes() {
         contentType='dish'
         withReset
         onReorder={() => {
-          activeDishesCategory ? setItemsToOrder(activeDishesCategory.dishes) : () => setOpen(true)
+          activeDishesCategory ? setItemsToReorder(activeDishesCategory.dishes) : setOpen(true)
         }}
         onReset={() => setActiveDishesCategory(null)}
       >
@@ -123,10 +123,10 @@ export default function KitchenDishes() {
         />
       )}
 
-      {itemsToOrder && (
+      {itemsToReorder && (
         <ReorderDialog
-          items={itemsToOrder}
-          setOpenDialog={setItemsToOrder}
+          items={itemsToReorder}
+          setOpenDialog={setItemsToReorder}
         />
       )}
 
