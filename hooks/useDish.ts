@@ -104,10 +104,10 @@ const useDish = (configs?: UseDishConfigs) => {
       dishes: [],
     }
 
-    setDishesByCategory((dbc) => {
+    setDishesByCategory((dbc: DishesByCategory[]) => {
       const newDishesByCategory = structuredClone(dbc)
       if (editingDishCategory) {
-        const index = dbc.findIndex((dbc) => dbc.category.id === editingDishCategory.id)
+        const index = dbc.findIndex((dbc: DishesByCategory) => dbc.category.id === editingDishCategory.id)
         newDishesByCategory.splice(index, 1, newDishCategory)
         return newDishesByCategory
       }
@@ -118,22 +118,24 @@ const useDish = (configs?: UseDishConfigs) => {
   const mutateDishOptimistic = async (dbDish: DBDish, imageData: string | null, editingDish?: Dish): Promise<void> => {
     const newDish: Dish = dBdishToDish(dbDish, restaurantStore?.language ?? 'de')
 
-    setDishesByCategory((currentDishesByCategory) => {
+    setDishesByCategory((currentDishesByCategory: DishesByCategory[]) => {
       const newDishesByCategory = structuredClone(currentDishesByCategory)
 
       let dishCategoryIndex = 0
-      const dishCategory: DishesByCategory | undefined = newDishesByCategory.find((dbc, index) => {
-        if (dbc.category.id === dbDish.id) {
-          dishCategoryIndex = index
-          return true
+      const dishCategory: DishesByCategory | undefined = newDishesByCategory.find(
+        (dbc: DishesByCategory, index: number) => {
+          if (dbc.category.id === dbDish.id) {
+            dishCategoryIndex = index
+            return true
+          }
+          return false
         }
-        return false
-      })
+      )
 
       if (!dishCategory) return newDishesByCategory
 
       if (editingDish) {
-        const dishIndex = dishCategory?.dishes.findIndex((currentDish) => currentDish.id === dbDish.id)
+        const dishIndex = dishCategory?.dishes.findIndex((currentDish: Dish) => currentDish.id === dbDish.id)
         dishCategory?.dishes.splice(dishIndex, 1, newDish)
 
         return newDishesByCategory

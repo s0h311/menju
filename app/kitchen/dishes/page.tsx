@@ -62,12 +62,12 @@ export default function KitchenDishes() {
         title='Kategorien'
         contentType='dishCategory'
         onReorder={() => {
-          const allCategories = dishesByCategory.map((category) => category.category)
+          const allCategories = dishesByCategory.map((category: DishesByCategory) => category.category)
           setItemsToReorder(allCategories)
         }}
       >
         {dishesByCategory
-          .sort((card0, card1) => card0.category.priority - card1.category.priority)
+          .sort((card0: DishesByCategory, card1: DishesByCategory) => card0.category.priority - card1.category.priority)
           .map((card: DishesByCategory) => (
             <div key={card.category.id}>
               {!editingDishCategory || editingDishCategory.id !== card.category.id ? (
