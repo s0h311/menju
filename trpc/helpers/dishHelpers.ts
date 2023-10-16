@@ -1,4 +1,4 @@
-import type { JSONValue } from 'superjson/dist/types'
+import type { JSONValue } from '@/types/utility.type'
 import type { Language } from '@/types/order.type'
 import type { Dish, Ingredients, Nutritions } from '@/types/dish.type'
 import type { DBMultiLanguageStringProperty } from '@/types/db/dish.db.type'
