@@ -16,7 +16,7 @@ const main = async () => {
       priority: 0,
       name: { en: 'lunch', de: 'mittagessen', it: 'pranzo' },
       picture:
-        'https://xtapuuiutmkpsjijkgfw.supabase.co/storage/v1/object/public/pictures/examples/schnelles-mittagessen.jpg',
+        'https://xtapuuiutmkpsjijkgfw.supabase.co/storage/v1/object/public/pictures/edb17952-604b-412b-8c16-f2f37012c2e6/1696921832630.jpg',
       restaurantId: restaurant.id,
     },
   })
@@ -24,10 +24,10 @@ const main = async () => {
   const dish1 = await prisma.dish.create({
     data: {
       priority: 0,
-      name: { en: 'Doner kebab', de: 'Döner', it: 'Kebab' },
+      name: { en: 'Doner kebab', de: 'Döner im Brot mit Salat und Soße', it: 'Kebab' },
       price: 6.5,
       picture:
-        'https://xtapuuiutmkpsjijkgfw.supabase.co/storage/v1/object/public/pictures/examples/doener.jpg?t=2023-09-22T03%3A52%3A14.870Z',
+        'https://xtapuuiutmkpsjijkgfw.supabase.co/storage/v1/object/public/pictures/edb17952-604b-412b-8c16-f2f37012c2e6/1696922150160.jpg',
       ingredients: {
         required: [{ de: 'Bread', en: 'Brot', it: 'pane' }],
         optional: [
@@ -61,7 +61,8 @@ const main = async () => {
     data: {
       priority: 1,
       name: { en: 'dinner', de: 'abendessen', it: 'cena' },
-      picture: 'https://xtapuuiutmkpsjijkgfw.supabase.co/storage/v1/object/public/pictures/examples/zucchini.jpeg',
+      picture:
+        'https://xtapuuiutmkpsjijkgfw.supabase.co/storage/v1/object/public/pictures/edb17952-604b-412b-8c16-f2f37012c2e6/1696920877162.webp',
       restaurantId: restaurant.id,
     },
   })
@@ -71,7 +72,8 @@ const main = async () => {
       priority: 0,
       name: { en: 'Pasta', de: 'Nudeln', it: 'Pasta' },
       price: 9.3,
-      picture: 'https://xtapuuiutmkpsjijkgfw.supabase.co/storage/v1/object/public/pictures/examples/nudeln.webp',
+      picture:
+        'https://xtapuuiutmkpsjijkgfw.supabase.co/storage/v1/object/public/pictures/edb17952-604b-412b-8c16-f2f37012c2e6/1696920037467.jpeg',
       ingredients: {
         required: [{ de: 'Nudeln', en: 'Pasta', it: 'Pasta' }],
         optional: [
@@ -106,7 +108,8 @@ const main = async () => {
       priority: 0,
       name: { en: 'Pizza', de: 'Pizza', it: 'Pizza' },
       price: 11.8,
-      picture: 'https://xtapuuiutmkpsjijkgfw.supabase.co/storage/v1/object/public/pictures/examples/pizza.jpg',
+      picture:
+        'https://xtapuuiutmkpsjijkgfw.supabase.co/storage/v1/object/public/pictures/edb17952-604b-412b-8c16-f2f37012c2e6/1696917827692.avif',
       ingredients: {
         required: [{ de: 'teig', en: 'dough', it: 'impasto' }],
         optional: [
@@ -140,7 +143,8 @@ const main = async () => {
       priority: 0,
       name: { de: 'Pizza', en: 'Pizza', it: 'Pizza' },
       price: 7.5,
-      picture: 'https://xtapuuiutmkpsjijkgfw.supabase.co/storage/v1/object/public/pictures/examples/flammenkuchen.jpg',
+      picture:
+        'https://xtapuuiutmkpsjijkgfw.supabase.co/storage/v1/object/public/pictures/edb17952-604b-412b-8c16-f2f37012c2e6/1696916530493.jpg',
       categoryId: dishCategory1.id,
       ingredients: {
         required: [{ de: 'teig', en: 'dough', it: 'impasto' }],
