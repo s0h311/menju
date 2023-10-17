@@ -11,6 +11,7 @@ import {
 import ThemeProvider from '@mui/material/styles/ThemeProvider'
 import { EditRounded, DeleteForeverRounded } from '@mui/icons-material'
 import { theme } from '@/ui/theme'
+import Image from 'next/image'
 
 export type CardProps = {
   title: string
@@ -27,10 +28,19 @@ export default function Card({ title, image, onClick, onDelete, onEdit, children
       <MCard sx={{ cursor: 'pointer' }}>
         <CardActionArea onClick={onClick}>
           <CardMedia
-            sx={{ height: '13dvh' }}
-            component='img'
-            image={image}
-          />
+            sx={{ height: '13dvh', position: 'relative' }}
+            component='div'
+          >
+            <Image
+              style={{ objectFit: 'cover' }}
+              src={image ?? ''}
+              fill
+              sizes='23dvw'
+              quality={70}
+              alt=''
+            />
+          </CardMedia>
+
           <CardContent>
             <Typography
               sx={{ fontSize: '18px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}

@@ -16,6 +16,7 @@ import { useEffect, useRef, useState } from 'react'
 import useStorageUploader from '@/hooks/useStorageUploader'
 import { useRestaurantStore } from '@/store/restaurantStore'
 import useTypeTransformer from '@/hooks/useTypeTranformer'
+import Image from 'next/image'
 
 type AddDishCategoryProps = {
   editingDishCategory?: DishCategory
@@ -124,11 +125,19 @@ export default function AddDishCategory({ editingDishCategory, onClose }: AddDis
       >
         {(getValues().picture || preview) && (
           <CardMedia
-            sx={{ height: '13dvh' }}
-            component='img'
-            image={getValues().picture || preview || ''}
+            sx={{ height: '13dvh', position: 'relative' }}
+            component='div'
             onClick={removeImage}
-          />
+          >
+            <Image
+              style={{ objectFit: 'cover' }}
+              src={getValues().picture || preview || ''}
+              fill
+              sizes='23dvw'
+              quality={70}
+              alt=''
+            />
+          </CardMedia>
         )}
         <CardContent sx={{ display: 'grid', gap: '10px' }}>
           {!getValues().picture && !preview && <ImagePicker onChange={onImageChange} />}
