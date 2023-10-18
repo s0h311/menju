@@ -5,8 +5,8 @@ import type { DBOrder } from '@/types/db/order.db.type'
 import type { Order, OrderStatus } from '@/types/order.type'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { useEffect, useState } from 'react'
-import { CheckCircleOutlined } from '@mui/icons-material'
-import { IconButton } from '@mui/material'
+import { Check } from '@mui/icons-material'
+import { Button } from '@mui/material'
 
 type OrderListProps = {
   initialOrders: DBOrder[]
@@ -53,7 +53,7 @@ export default function OrderList({ initialOrders }: OrderListProps) {
   }
 
   return (
-    <ul className='grid grid-cols-3 gap-5'>
+    <ul className='grid lg:grid-cols-3 gap-5 grid-cols-2'>
       {orders.map((order) => (
         <li
           key={order.id}
@@ -61,12 +61,14 @@ export default function OrderList({ initialOrders }: OrderListProps) {
         >
           <div className='flex gap-2 relative'>
             {/* OrderId */}
-            <p className='bg-yellow-400 rounded px-2 w-fit'>{order.id}</p>
+            <p className='bg-yellow-400 rounded px-2 w-fit'>{order.id?.substring(order.id.indexOf('-') + 1)}</p>
 
             {/* Zahlungeingang */}
-            <p className={`rounded px-2 w-fit ${order.isPayed ? 'bg-green-300' : 'bg-red-300'}`}>
-              {order.isPayed ? 'BEZAHLT' : 'NICHT BEZAHLT'}
-            </p>
+            {order.paymentMethod === 'CARD' && (
+              <p className={`rounded px-2 w-fit ${order.isPayed ? 'bg-green-300' : 'bg-red-300'}`}>
+                {order.isPayed ? 'BEZAHLT' : 'UNBEZAHLT'}
+              </p>
+            )}
 
             {/* Zahlungsmethode */}
             <p>{order.paymentMethod}</p>
@@ -79,13 +81,15 @@ export default function OrderList({ initialOrders }: OrderListProps) {
                 /* Status Ändern */
                 //TODO remove '!'
               }
-              <IconButton
-                sx={{ p: 0 }}
+
+              <Button
+                sx={{ p: 0, boxShadow: 'none' }}
                 color='success'
                 onClick={() => updateStatus(order.id!, 'DONE')}
+                variant='contained'
               >
-                <CheckCircleOutlined />
-              </IconButton>
+                <Check />
+              </Button>
             </div>
           </div>
 
@@ -113,6 +117,9 @@ export default function OrderList({ initialOrders }: OrderListProps) {
               <p className='text-slate-500'>{order.note}</p>
             </div>
           )}
+
+          {/* OrderId Voll */}
+          <p className='text-xs place-self-end'>{order.id}</p>
         </li>
       ))}
     </ul>
