@@ -7,7 +7,18 @@ export const dynamic = 'force-dynamic'
 export default async function KitchenSettings() {
   const superbaseClient = createServerComponentClient({ cookies })
 
-  const { data, error } = await superbaseClient.from('restaurant').select().single()
+  // TODO duplicate 'orders/page.tsx, einen Service daraus machen'
+  const { data: userData, error: userError } = await superbaseClient.auth.getUser()
+
+  const { data, error } = await superbaseClient
+    .from('restaurant')
+    .select()
+    .eq('user_id', userData.user?.id)
+    .single()
+
+  if (userError) {
+    console.error('[KitchenSettings - get user]', userError)
+  }
 
   if (error) {
     console.error('[KitchenSettings - fetch features]', error)

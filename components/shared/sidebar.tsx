@@ -29,7 +29,7 @@ export default function Sidebar({ menus }: SidebarProps) {
         </button>
       )}
       {showSidebar && (
-        <aside className='bg-secondary p-5 lg:p-7 w-1/4 xl:w-1/5 h-full relative'>
+        <aside className='bg-secondary p-5 lg:p-7 w-fit h-full relative'>
           <button
             className='absolute top-5 right-0 bg-accent px-1.5 py-4 rounded-l-md'
             onClick={() => setShowSidebar(!showSidebar)}
@@ -40,7 +40,7 @@ export default function Sidebar({ menus }: SidebarProps) {
             {menus.map((menu) => (
               <li key={menu.id}>
                 <Link
-                  className={path === menu.path ? 'underline' : ''}
+                  className={`${path === menu.path ? 'underline' : ''} whitespace-nowrap`}
                   href={menu.path}
                 >
                   {menu.label}
