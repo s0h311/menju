@@ -50,6 +50,8 @@
     "react-beautiful-dnd": "13.1.1",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.47.0",
+    "react-qr-code": "^2.0.12",
+    "react-to-print": "^2.13.0",
     "sharp": "^0.32.6",
     "sonner": "^1.0.3",
     "superjson": "^2.0.0",
