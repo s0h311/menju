@@ -4,8 +4,7 @@ import QRCode from 'react-qr-code'
 import QRCodeGrid from '@/components/kitchen/qrCodeGrid'
 import { useRef, useState } from 'react'
 import { useReactToPrint } from 'react-to-print'
-import PrintRoundedIcon from '@mui/icons-material/PrintRounded'
-import CloseRoundedIcon from '@mui/icons-material/CloseRounded'
+import { PrintRounded, CloseRounded } from '@mui/icons-material'
 
 type QRCodeDialogProps = {
   qrCode: string | null
@@ -51,7 +50,7 @@ export default function QRCodeDialog({ qrCode, setQRCode }: QRCodeDialogProps) {
         </div>
         <Button
           variant='outlined'
-          startIcon={<CloseRoundedIcon />}
+          startIcon={<CloseRounded />}
           onClick={() => setQRCode(null)}
           color='warning'
         >
@@ -73,7 +72,7 @@ export default function QRCodeDialog({ qrCode, setQRCode }: QRCodeDialogProps) {
         </div>
         <Button
           variant='outlined'
-          endIcon={<PrintRoundedIcon />}
+          endIcon={<PrintRounded />}
           onClick={() => printQrCodes()}
         >
           Ausdrucken

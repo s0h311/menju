@@ -1,5 +1,4 @@
-import { Box } from '@mui/material'
-import { Grid } from '@mui/material/'
+import { Box, Grid } from '@mui/material/'
 import QRCode from 'react-qr-code'
 
 type QRCodeGridProps = {
