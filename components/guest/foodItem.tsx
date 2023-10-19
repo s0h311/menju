@@ -30,9 +30,9 @@ export default function FoodItem({ dish, priority, onClick }: FoodItemProps) {
         </CardMedia>
       )}
       <CardContent>
-        <div className='grid grid-flow-col'>
+        <div className='flex justify-between'>
           <h1 className='text-lg'>{dish.name}</h1>
-          <p className='place-self-end'>{dish.price.toFixed(2)}€</p>
+          <p>{dish.price.toFixed(2)}€</p>
         </div>
 
         <p className='overflow-hidden text-ellipsis text-sm text-slate-600'>

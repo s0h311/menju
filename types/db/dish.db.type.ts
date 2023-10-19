@@ -3,12 +3,12 @@ import { zRestaurantId } from '@/types/restaurant.type'
 import { zDietType, zNutritions } from '@/types/dish.type'
 
 const zDBMultiLanguageStringProperty = z.object({
-  de: z.string().nonempty(),
+  de: z.string().min(1),
   en: z.string(),
   it: z.string(),
 })
 
-const zDBMultiLanguageStringPropertyOptional = z.object({
+const zDBMultiLanguageStringPropertyCanBeEmpty = z.object({
   de: z.string(),
   en: z.string(),
   it: z.string(),
@@ -39,7 +39,7 @@ export const zDBDish = z.object({
   allergies: z.array(zDBMultiLanguageStringProperty).nullable(),
   nutritions: zNutritions.nullable(),
   dietType: zDietType.nullable(),
-  description: zDBMultiLanguageStringPropertyOptional.nullable(),
+  description: zDBMultiLanguageStringPropertyCanBeEmpty.nullable(),
   saleStartDate: z.date().nullable(),
   saleEndDate: z.date().nullable(),
   salePrice: z.number().nullable(),
