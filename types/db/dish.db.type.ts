@@ -14,9 +14,15 @@ const zDBMultiLanguageStringPropertyCanBeEmpty = z.object({
   it: z.string(),
 })
 
+const zDBExtraIngredient = z.object({
+  name: zDBMultiLanguageStringProperty,
+  price: z.number().min(0),
+})
+
 const zDBIngredients = z.object({
   required: z.array(zDBMultiLanguageStringProperty),
   optional: z.array(zDBMultiLanguageStringProperty),
+  extra: z.array(zDBExtraIngredient),
 })
 
 export const zDBDishCategory = z.object({
@@ -49,3 +55,4 @@ export const zDBDish = z.object({
 export type DBDish = z.infer<typeof zDBDish>
 export type DBDishCategory = z.infer<typeof zDBDishCategory>
 export type DBMultiLanguageStringProperty = z.infer<typeof zDBMultiLanguageStringProperty>
+export type DBExtraIngredient = z.infer<typeof zDBExtraIngredient>

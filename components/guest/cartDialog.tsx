@@ -12,7 +12,7 @@ import ThemeProvider from '@mui/material/styles/ThemeProvider'
 import Image from 'next/image'
 import { useCallback, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import FormMultiSelectionChips from '@/components/kitchen/form/formMultiSelectionChips'
+import FormMultiSelectionChips from '@/ui/form/formMultiSelectionChips'
 import { trpc } from '@/trpc/trpc'
 import { useRestaurantStore } from '@/store/restaurantStore'
 import useTypeTransformer from '@/hooks/useTypeTranformer'
@@ -79,6 +79,18 @@ export default function CartDialog() {
     return currentIngredients.join(', ')
   }, [])
 
+  const getTotalDishPrice = useCallback((position: OrderPosition): number => {
+    const dishPrice = position.dish.price
+
+    if (position.extraIngredients.length === 0) return dishPrice
+
+    const costOfAllExtraIngredients: number = position.extraIngredients
+      .map((ingredient) => ingredient.price)
+      .reduce((price1, price2) => price1 + price2)
+
+    return dishPrice + costOfAllExtraIngredients
+  }, [])
+
   return (
     <ThemeProvider theme={theme}>
       {!showDialog ? (
@@ -126,7 +138,7 @@ export default function CartDialog() {
                 {/* Positionen */}
                 {cart.positions.map((position) => (
                   <div
-                    key={position.dish.id + position.leftOutIngredients.join('')}
+                    key={position.dish.id + position.leftOutIngredients.join('') + position.extraIngredients.join('')}
                     className='grid w-11/12 mx-auto'
                   >
                     {position.dish.picture && (
@@ -161,7 +173,7 @@ export default function CartDialog() {
                     {/* Name + Preis */}
                     <div className='flex place-content-between'>
                       <h3>{position.dish.name}</h3>
-                      <p>{position.dish.price.toFixed(2) + '€'}</p>
+                      <p>{getTotalDishPrice(position).toFixed(2) + '€'}</p>
                     </div>
                     <p className='truncate text-sm text-gray-500'>{getIngredientsText(position)}</p>
                   </div>
@@ -169,28 +181,32 @@ export default function CartDialog() {
 
                 <hr />
 
-                {/* Zahlungsmethoden */}
                 <div className='space-y-2'>
-                  <FormMultiSelectionChips
-                    items={enabledPaymentMethods}
-                    activeItem={getValues('paymentMethod')}
-                    onClick={updatePaymentMethod}
-                  />
+                  {cartType === 'canOrder' && (
+                    <>
+                      {/* Zahlungsmethoden */}
+                      <FormMultiSelectionChips
+                        items={enabledPaymentMethods}
+                        activeItem={getValues('paymentMethod')}
+                        onClick={updatePaymentMethod}
+                      />
 
-                  {/* Bemerkung */}
-                  <TextField
-                    className='multiline-textfield'
-                    placeholder='Anmerkung'
-                    multiline
-                    {...register('note', {
-                      onChange: (event) => cartStore?.updateNote(event.target.value),
-                    })}
-                    error={!!errors.note}
-                    helperText={errors.note?.message}
-                  />
+                      {/* Bemerkung */}
+                      <TextField
+                        className='multiline-textfield'
+                        placeholder='Anmerkung'
+                        multiline
+                        {...register('note', {
+                          onChange: (event) => cartStore?.updateNote(event.target.value),
+                        })}
+                        error={!!errors.note}
+                        helperText={errors.note?.message}
+                      />
+                    </>
+                  )}
 
                   {/* Gesamtbetrag */}
-                  <p>Gesamtbetrag: {cartStore?.cart.netTotal.toFixed(2)}€</p>
+                  <p>Gesamtbetrag: {cart?.netTotal.toFixed(2)}€</p>
 
                   {/* Hinweis */}
                   {cartType === 'cannotOrder' && (

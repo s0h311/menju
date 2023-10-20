@@ -1,5 +1,6 @@
 import type { OrderPosition, PaymentMethod } from '@/types/order.type'
 import type { CartActions, CartState } from '../cartStore'
+import type { ExtraIngredient } from '@/types/dish.type'
 
 type State = CartState & CartActions
 type getState = () => State
@@ -55,9 +56,30 @@ export const updateNote = (get: getState, set: setState, note: string) =>
     cart: { ...get().cart, note },
   })
 
+export const updateNetTotal = (
+  get: getState,
+  set: setState,
+  extraIngredients: ExtraIngredient[],
+  shouldDecrease?: boolean
+) => {
+  if (extraIngredients.length === 0) return
+
+  let costOfAllExtraIngredients: number = extraIngredients
+    .map((ingredient) => ingredient.price)
+    .reduce((price1, price2) => price1 + price2)
+
+  if (shouldDecrease) costOfAllExtraIngredients *= -1
+
+  set({
+    cart: { ...get().cart, netTotal: get().cart.netTotal + costOfAllExtraIngredients },
+  })
+}
+
 // HELPERS //
 
 const comparePositions = (p1: OrderPosition, p2: OrderPosition): boolean =>
   p1.dish.id === p2.dish.id &&
   p1.leftOutIngredients.length === p2.leftOutIngredients.length &&
+  p1.extraIngredients.length === p2.extraIngredients.length &&
+  p2.extraIngredients.every((p) => p1.extraIngredients.includes(p)) &&
   p2.leftOutIngredients.every((p) => p1.leftOutIngredients.includes(p))

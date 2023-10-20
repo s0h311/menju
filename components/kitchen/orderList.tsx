@@ -83,7 +83,7 @@ export default function OrderList({ initialOrders }: OrderListProps) {
               }
 
               <Button
-                sx={{ p: 0, boxShadow: 'none' }}
+                sx={{ p: 0, boxShadow: 'none', minWidth: 0 }}
                 color='success'
                 onClick={() => updateStatus(order.id!, 'DONE')}
                 variant='contained'
@@ -105,7 +105,12 @@ export default function OrderList({ initialOrders }: OrderListProps) {
                 <p>{position.dish.name}</p>
               </div>
               {position.leftOutIngredients.length > 0 && (
-                <p className='bg-red-400 rounded px-2'>{position.leftOutIngredients}</p>
+                <p className='bg-red-400 rounded px-2'>{position.leftOutIngredients.join(', ')}</p>
+              )}
+              {position.extraIngredients.length > 0 && (
+                <p className='bg-blue-400 rounded px-2'>
+                  {position.extraIngredients.map((ingredient) => ingredient.name).join(', ')}
+                </p>
               )}
             </div>
           ))}

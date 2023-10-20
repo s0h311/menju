@@ -1,7 +1,7 @@
 import Dialog from '@/ui/dialog'
 import { Checkbox } from '@mui/material'
 import ThemeProvider from '@mui/material/styles/ThemeProvider'
-import type { Dish } from '@/types/dish.type'
+import type { Dish, ExtraIngredient } from '@/types/dish.type'
 import { useState } from 'react'
 import type { OrderPosition } from '@/types/order.type'
 import { useCartStore } from '@/store/cartStore'
@@ -22,6 +22,7 @@ export default function DishDialog({ dish, setOpenDialog }: DishDialogProps) {
     dish,
     quantity: 1,
     leftOutIngredients: [],
+    extraIngredients: [],
   })
 
   const addToBasket = () => {
@@ -42,6 +43,24 @@ export default function DishDialog({ dish, setOpenDialog }: DishDialogProps) {
       leftOutIngredients,
     })
   }
+
+  const onExtraIngredientChange = (ingredient: ExtraIngredient) => {
+    let extraIngredients = order.extraIngredients
+
+    if (isExtraIngredientSelected(ingredient)) {
+      extraIngredients = extraIngredients.filter((currentIngredient) => currentIngredient.name !== ingredient.name)
+    } else {
+      extraIngredients = [...extraIngredients, ingredient]
+    }
+
+    setOrder({
+      ...order,
+      extraIngredients,
+    })
+  }
+
+  const isExtraIngredientSelected = (ingredient: ExtraIngredient): boolean =>
+    !!order.extraIngredients.find((currentIngredient: ExtraIngredient) => currentIngredient.name === ingredient.name)
 
   return (
     <ThemeProvider theme={theme}>
@@ -89,6 +108,8 @@ export default function DishDialog({ dish, setOpenDialog }: DishDialogProps) {
           {(dish.ingredients.required.length > 0 || dish.ingredients.optional.length > 0) && (
             <div>
               <h3>Zutaten</h3>
+
+              {/* Required Ingredients */}
               <ul className='grid grid-cols-2'>
                 {dish.ingredients.required.map((ingredient) => (
                   <li
@@ -107,6 +128,7 @@ export default function DishDialog({ dish, setOpenDialog }: DishDialogProps) {
                 ))}
               </ul>
 
+              {/* Optional Ingredients */}
               <ul className='grid grid-cols-2'>
                 {dish.ingredients.optional.map((ingredient) => (
                   <li
@@ -121,6 +143,25 @@ export default function DishDialog({ dish, setOpenDialog }: DishDialogProps) {
                       checked={!order.leftOutIngredients.includes(ingredient)}
                     />
                     <p className='text-sm leading-none'>{ingredient}</p>
+                  </li>
+                ))}
+              </ul>
+
+              {/* Extra Ingredients */}
+              <ul className='grid grid-cols-2'>
+                {dish.ingredients.extra.map((ingredient) => (
+                  <li
+                    className='text-sm flex items-center cursor-pointer'
+                    key={ingredient.name}
+                    onClick={() => onExtraIngredientChange(ingredient)}
+                  >
+                    <Checkbox
+                      sx={{ paddingLeft: '8px' }}
+                      color='primary'
+                      size='small'
+                      checked={isExtraIngredientSelected(ingredient)}
+                    />
+                    <p className='text-sm leading-none'>{`${ingredient.name} - ${ingredient.price}€`}</p>
                   </li>
                 ))}
               </ul>

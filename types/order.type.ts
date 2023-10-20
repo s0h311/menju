@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { zDish } from './dish.type'
+import { zDish, zExtraIngredient } from './dish.type'
 import { zPaymentMethod, zRestaurantId } from '@/types/restaurant.type'
 
 export const zLanguage = z.enum(['en', 'de', 'it'])
@@ -8,6 +8,7 @@ export const zOrderPosition = z.object({
   dish: zDish,
   quantity: z.number(),
   leftOutIngredients: z.string().array(),
+  extraIngredients: z.array(zExtraIngredient),
 })
 
 export const zOrderStatus = z.enum(['RECEIVED', 'DONE', 'REJECTED'])

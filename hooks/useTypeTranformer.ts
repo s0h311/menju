@@ -23,6 +23,10 @@ export default function useTypeTransformer() {
       ingredients: {
         required: stringArrayToDBMultiLanguageStringArray(dish.ingredients.required),
         optional: stringArrayToDBMultiLanguageStringArray(dish.ingredients.optional),
+        extra: dish.ingredients.extra.map((ingredient) => ({
+          name: stringToDBMultiLanguageString(ingredient.name),
+          price: ingredient.price,
+        })),
       },
       labels: !dish.labels ? null : stringArrayToDBMultiLanguageStringArray(dish.labels),
       allergies: !dish.allergies ? null : stringArrayToDBMultiLanguageStringArray(dish.allergies),
@@ -39,6 +43,10 @@ export default function useTypeTransformer() {
       ingredients: {
         required: dish.ingredients.required.map((ingredient) => ingredient[language]),
         optional: dish.ingredients.optional.map((ingredient) => ingredient[language]),
+        extra: dish.ingredients.extra.map((ingredient) => ({
+          name: ingredient.name[language],
+          price: ingredient.price,
+        })),
       },
       labels: !dish.labels ? [] : dish.labels.map((label) => label[language]),
       allergies: !dish.allergies ? [] : dish.allergies.map((allergy) => allergy[language]),

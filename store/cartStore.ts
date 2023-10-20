@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 import type { Cart, OrderPosition, PaymentMethod } from '@/types/order.type'
-import { addPosition, removePosition, updateNote, updatePaymentMethod } from './cartStore/cart.store'
+import { addPosition, removePosition, updateNetTotal, updateNote, updatePaymentMethod } from './cartStore/cart.store'
 
 export type CartState = {
   cart: Omit<Cart, 'restaurantId'>
@@ -40,10 +40,12 @@ export const useCartStore = create(
       removePosition: (position: OrderPosition) => {
         removePosition(get, set, position)
         set({ quantity: get().quantity - 1 })
+        updateNetTotal(get, set, position.extraIngredients, true)
       },
       addPosition: (position: OrderPosition) => {
         addPosition(get, set, position)
         set({ quantity: get().quantity + 1 })
+        updateNetTotal(get, set, position.extraIngredients)
       },
       updatePaymentMethod: (paymentMethod: PaymentMethod) => updatePaymentMethod(get, set, paymentMethod),
       updateNote: (note: string) => updateNote(get, set, note),
