@@ -117,7 +117,7 @@ export default function AddDishCategory({ editingDishCategory, onClose }: AddDis
   return (
     <ThemeProvider theme={theme}>
       <MCard
-        sx={{ cursor: 'pointer' }}
+        sx={{ cursor: 'pointer', alignContent: 'space-between' }}
         component='form'
         autoComplete='off'
         onSubmit={handleSubmit(onSubmit)}
@@ -125,7 +125,7 @@ export default function AddDishCategory({ editingDishCategory, onClose }: AddDis
       >
         {(getValues().picture || preview) && (
           <CardMedia
-            sx={{ height: '13dvh', position: 'relative' }}
+            sx={{ position: 'relative' }}
             component='div'
             onClick={removeImage}
           >
@@ -151,7 +151,7 @@ export default function AddDishCategory({ editingDishCategory, onClose }: AddDis
             multiline
             color='accent'
           />
-          <CardActions sx={{ padding: '0', paddingTop: '7px', marginBottom: '-8px' }}>
+          <CardActions sx={{ padding: '0', paddingTop: '7px' }}>
             <Button
               sx={{ width: '100%' }}
               variant='outlined'
