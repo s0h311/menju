@@ -9,6 +9,13 @@ type FoodItemProps = {
 }
 
 export default function FoodItem({ dish, priority, onClick }: FoodItemProps) {
+  const getIngredientsList = (): string =>
+    [
+      ...dish.ingredients.required,
+      ...dish.ingredients.optional,
+      ...dish.ingredients.extra.map((ingredient) => ingredient.name),
+    ].join(', ')
+
   return (
     <Card
       sx={{ minWidth: 250, maxWidth: 250, maxHeight: '40dvh' }}
@@ -34,10 +41,7 @@ export default function FoodItem({ dish, priority, onClick }: FoodItemProps) {
           <h1 className='text-lg'>{dish.name}</h1>
           <p>{dish.price.toFixed(2)}€</p>
         </div>
-
-        <p className='overflow-hidden text-ellipsis text-sm text-slate-600'>
-          {[...dish.ingredients.required, ...dish.ingredients.optional].join(', ')}
-        </p>
+        <p className='overflow-hidden text-ellipsis text-sm text-slate-600'>{getIngredientsList()}</p>
       </CardContent>
     </Card>
   )

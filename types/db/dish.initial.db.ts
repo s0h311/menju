@@ -5,7 +5,7 @@ export const initialDBDish = {
   price: 0,
   picture: null,
   categoryId: 0,
-  ingredients: { required: [], optional: [] },
+  ingredients: { required: [], optional: [], extra: [] },
   labels: [],
   allergies: [],
   nutritions: { energy: 0, protein: 0 },

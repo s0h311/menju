@@ -35,6 +35,11 @@ const main = async () => {
           { de: 'Salat', en: 'Salat', it: 'Insalata' },
           { de: 'Soße', en: 'Sauce', it: 'Salsa' },
         ],
+        extra: [
+          { name: { de: 'honig', en: '', it: '' }, price: 1 },
+          { name: { de: 'milch', en: '', it: '' }, price: 2 },
+          { name: { de: 'käse', en: '', it: '' }, price: 4 },
+        ],
       },
       labels: [
         { de: 'Vegan', en: 'Vegan', it: 'Vegan' },
@@ -80,6 +85,11 @@ const main = async () => {
           { de: 'Parmesan', en: 'Parmesan', it: 'Parmigiano' },
           { de: 'Tomatensoße', en: 'Tomato sauce', it: 'Salsa di pomodoro' },
         ],
+        extra: [
+          { name: { de: 'honig', en: '', it: '' }, price: 1 },
+          { name: { de: 'milch', en: '', it: '' }, price: 2 },
+          { name: { de: 'käse', en: '', it: '' }, price: 4 },
+        ],
       },
       labels: [
         { de: 'Vegan', en: 'Vegan', it: 'Vegan' },
@@ -116,6 +126,11 @@ const main = async () => {
           { de: 'tomatensoße', en: 'tomatosauce', it: 'salsa di pomodoro' },
           { de: 'Käse', en: 'Cheese', it: 'Formaggio' },
         ],
+        extra: [
+          { name: { de: 'honig', en: '', it: '' }, price: 1 },
+          { name: { de: 'milch', en: '', it: '' }, price: 2 },
+          { name: { de: 'käse', en: '', it: '' }, price: 4 },
+        ],
       },
       labels: [
         { de: 'Beste Pizza der Stadt', en: 'Best pizza in town', it: 'La migliore pizza in città' },
@@ -149,6 +164,11 @@ const main = async () => {
       ingredients: {
         required: [{ de: 'teig', en: 'dough', it: 'impasto' }],
         optional: [{ de: 'tomatensoße', en: 'tomatosauce', it: 'salsa di pomodoro' }],
+        extra: [
+          { name: { de: 'honig', en: '', it: '' }, price: 1 },
+          { name: { de: 'milch', en: '', it: '' }, price: 2 },
+          { name: { de: 'käse', en: '', it: '' }, price: 4 },
+        ],
       },
       labels: [{ de: 'Beste Pizza der Stadt', en: 'Best pizza in town', it: 'La migliore pizza in città' }],
       allergies: [
