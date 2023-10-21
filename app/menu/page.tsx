@@ -15,6 +15,7 @@ import useDish from '@/hooks/useDish'
 import { useSearchParams } from 'next/navigation'
 import { QUERY_PARAM } from '@/types/queryParams.type'
 import useFeatures from '@/hooks/useFeatures'
+import Navbar from '@/components/guest/navbar'
 
 export default function Menu() {
   const queryParams = useSearchParams()
@@ -40,34 +41,37 @@ export default function Menu() {
   }
 
   return (
-    <Stack className='mb-4'>
-      {visibleDishes ? (
-        <>
-          {filterChips.length > 0 && isFilterBarEnabled && <FilterBar chipData={filterChips} />}
-          {visibleDishes?.map((dishesByCategory) => (
-            <FoodCategory
-              key={dishesByCategory.category.id}
-              category={dishesByCategory.category}
-              dishes={dishesByCategory.dishes}
-              onCardClick={(dish) => setActiveDish(dish)}
-            />
-          ))}
-        </>
-      ) : (
-        <>
-          {filterChips.length > 0 && isFilterBarEnabled && <FilterBarSkeleton />}
-          <FoodCategorySkeleton />
-          <FoodCategorySkeleton />
-        </>
-      )}
-      {activeDish && (
-        <DishDialog
-          dish={activeDish}
-          setOpenDialog={setActiveDish}
-        />
-      )}
+    <section>
+      <Navbar />
+      <Stack className='mb-4'>
+        {visibleDishes ? (
+          <>
+            {filterChips.length > 0 && isFilterBarEnabled && <FilterBar chipData={filterChips} />}
+            {visibleDishes?.map((dishesByCategory) => (
+              <FoodCategory
+                key={dishesByCategory.category.id}
+                category={dishesByCategory.category}
+                dishes={dishesByCategory.dishes}
+                onCardClick={(dish) => setActiveDish(dish)}
+              />
+            ))}
+          </>
+        ) : (
+          <>
+            {filterChips.length > 0 && isFilterBarEnabled && <FilterBarSkeleton />}
+            <FoodCategorySkeleton />
+            <FoodCategorySkeleton />
+          </>
+        )}
+        {activeDish && (
+          <DishDialog
+            dish={activeDish}
+            setOpenDialog={setActiveDish}
+          />
+        )}
 
-      <CartDialog />
-    </Stack>
+        <CartDialog />
+      </Stack>
+    </section>
   )
 }
