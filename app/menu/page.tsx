@@ -14,7 +14,7 @@ import CartDialog from '@/components/guest/cartDialog'
 import useDish from '@/hooks/useDish'
 import { useSearchParams } from 'next/navigation'
 import { QUERY_PARAM } from '@/types/queryParams.type'
-import useFeatures from '@/hooks/useFeatures'
+import useRestaurant from '@/hooks/useRestaurant'
 import Navbar from '@/components/guest/navbar'
 
 export default function Menu() {
@@ -23,7 +23,7 @@ export default function Menu() {
   const tableId: string = queryParams.get(QUERY_PARAM.tableId) ?? 'unknown'
 
   const { dishesByCategory, visibleDishes } = useDish({ restaurantId, language: 'de', tableId })
-  const { isFilterBarEnabled } = useFeatures()
+  const { isFilterBarEnabled, logoUrl } = useRestaurant()
   const [activeDish, setActiveDish] = useState<Dish | null>(null)
 
   const filterChips: FilterChipModel[] = getFilterChips(dishesByCategory)
@@ -42,7 +42,7 @@ export default function Menu() {
 
   return (
     <section>
-      <Navbar />
+      {logoUrl && <Navbar logoUrl={logoUrl} />}
       <Stack className='mb-4'>
         {visibleDishes ? (
           <>

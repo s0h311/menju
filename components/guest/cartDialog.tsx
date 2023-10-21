@@ -16,7 +16,7 @@ import FormMultiSelectionChips from '@/ui/form/formMultiSelectionChips'
 import { trpc } from '@/trpc/trpc'
 import { useRestaurantStore } from '@/store/restaurantStore'
 import useTypeTransformer from '@/hooks/useTypeTranformer'
-import useFeatures from '@/hooks/useFeatures'
+import useRestaurant from '@/hooks/useRestaurant'
 import toast from '@/utils/toast'
 import { theme } from '@/ui/theme'
 
@@ -27,7 +27,7 @@ export default function CartDialog() {
   const createOrderMutation = trpc.createOrder.useMutation()
   const restaurantStore = useStore(useRestaurantStore, (state) => state)
   const { orderToDBOrder } = useTypeTransformer()
-  const { cartType, enabledPaymentMethods } = useFeatures()
+  const { cartType, enabledPaymentMethods } = useRestaurant()
 
   const {
     register,

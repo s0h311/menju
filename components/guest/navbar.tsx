@@ -1,23 +1,24 @@
 import Image from 'next/image'
 
 type NavbarProps = {
-  logoUrl?: string
+  logoUrl: string
 }
 
 export default function Navbar({ logoUrl }: NavbarProps) {
   return (
-    <header className='w-full h-[7dvh] left-0 flex items-center'>
+    <header className='w-full h-[9dvh] flex items-center'>
       {logoUrl && (
-        <div>
+        <div className='h-full py-2'>
           <Image
+            className='w-auto h-full'
             src={logoUrl}
-            fill
+            width={0}
+            height={0}
+            sizes='100dvw'
             alt='Restaurant Logo'
           />
         </div>
       )}
-      <h1 className='text-lg'>Menju&nbsp;</h1>
-      <h2 className='font-'>| Food Easy</h2>
     </header>
   )
 }

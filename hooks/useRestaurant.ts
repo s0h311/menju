@@ -4,7 +4,7 @@ import type { PaymentMethod } from '@/types/order.type'
 import type { CartType } from '@/types/restaurant.type'
 import { defaultFeatures } from '@/types/restaurant.type'
 
-const useFeatures = () => {
+const useRestaurant = () => {
   const restaurantStore = useStore(useRestaurantStore, (state) => state, true)
 
   const isFilterBarEnabled: boolean =
@@ -12,12 +12,14 @@ const useFeatures = () => {
   const cartType: CartType = restaurantStore?.features?.cartType ?? defaultFeatures.cartType
   const enabledPaymentMethods: PaymentMethod[] =
     restaurantStore?.features?.enabledPaymentMethods ?? defaultFeatures.enabledPaymentMethods
+  const logoUrl: string | null = restaurantStore?.logoUrl ?? null
 
   return {
     isFilterBarEnabled,
     cartType,
     enabledPaymentMethods,
+    logoUrl,
   }
 }
 
-export default useFeatures
+export default useRestaurant
