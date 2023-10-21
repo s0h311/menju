@@ -26,9 +26,9 @@ export default function FilterBar({ chipData }: FilterBarProps) {
     <ThemeProvider theme={theme}>
       <Accordion className='rounded sticky top-2 border border-primary z-[1]'>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <h1 className='text-lg'>Filter</h1>
+          <h1 className='text-lg -my-2'>Filter</h1>
         </AccordionSummary>
-        <AccordionDetails sx={{ marginTop: '-10px' }}>
+        <AccordionDetails sx={{ marginTop: '-16px' }}>
           {chipData.map((filter: FilterChipModel) => (
             <Chip
               sx={{ m: '3px' }}

@@ -20,7 +20,7 @@ export default function FoodItem({ dish, priority, onClick }: FoodItemProps) {
     <Card
       sx={{ minWidth: 250, maxWidth: 250, maxHeight: '40dvh' }}
       onClick={onClick}
-      className='cursor-pointer border-solid border-2'
+      className='cursor-pointer'
       key={dish.id}
     >
       {dish.picture && (
@@ -37,9 +37,11 @@ export default function FoodItem({ dish, priority, onClick }: FoodItemProps) {
         </CardMedia>
       )}
       <CardContent>
-        <div className='flex justify-between'>
-          <h1 className='text-lg'>{dish.name}</h1>
-          <p>{dish.price.toFixed(2)}€</p>
+        <div className='grid grid-flow-col gap-2 place-content-between'>
+          <div className='mb-2'>
+            <h1 className='text-lg break-all leading-none'>{dish.name}</h1>
+          </div>
+          <p className='leading-none'>{dish.price.toFixed(2)}€</p>
         </div>
         <p className='overflow-hidden text-ellipsis text-sm text-slate-600'>{getIngredientsList()}</p>
       </CardContent>
