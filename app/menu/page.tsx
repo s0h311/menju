@@ -43,10 +43,10 @@ export default function Menu() {
   return (
     <section>
       {logoUrl && <Navbar logoUrl={logoUrl} />}
-      <Stack className='mb-4'>
+      {filterChips.length > 0 && isFilterBarEnabled && <FilterBar chipData={filterChips} />}
+      <Stack className='py-4'>
         {visibleDishes ? (
           <>
-            {filterChips.length > 0 && isFilterBarEnabled && <FilterBar chipData={filterChips} />}
             {visibleDishes?.map((dishesByCategory) => (
               <FoodCategory
                 key={dishesByCategory.category.id}
@@ -69,7 +69,6 @@ export default function Menu() {
             setOpenDialog={setActiveDish}
           />
         )}
-
         <CartDialog />
       </Stack>
     </section>
