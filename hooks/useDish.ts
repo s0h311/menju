@@ -80,6 +80,7 @@ const useDish = (configs?: UseDishConfigs) => {
       restaurantStore.setName(restaurantData.name)
       restaurantStore.setAbbreviation(restaurantData.abbreviation)
       restaurantStore.setFeatures(restaurantData.features as Features)
+      restaurantStore.setLogoUrl(restaurantData.logoUrl)
     }
   }, [
     menuStore,

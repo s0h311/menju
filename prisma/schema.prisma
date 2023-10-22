@@ -11,13 +11,13 @@ datasource db {
 
 model Restaurant {
   id           Int            @id @default(autoincrement())
+  userId       String?        @map("user_id") @db.Uuid
   name         String
   abbreviation String         @unique
   features     Json           @default("{\"cartType\": \"canOrder\", \"isFilterBarEnabled\": true, \"enabledPaymentMethods\": [\"CARD\", \"CASH\"]}")
-  userId       String?        @map("user_id") @db.Uuid
-  logo         String?
   categories   DishCategory[]
   orders       Order[]
+  logoUrl      String?
 
   @@map("restaurant")
   @@schema("public")
@@ -25,10 +25,10 @@ model Restaurant {
 
 model DishCategory {
   id           Int        @id @default(autoincrement())
+  priority     Int        @default(0)
   name         Json
   picture      String?
   restaurantId Int        @map("restaurant_id")
-  priority     Int        @default(0)
   dishes       Dish[]
   restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
 
@@ -38,6 +38,7 @@ model DishCategory {
 
 model Dish {
   id            Int          @id @default(autoincrement())
+  priority      Int          @default(0)
   name          Json
   price         Float
   picture       String?
@@ -52,7 +53,6 @@ model Dish {
   saleEndDate   DateTime?    @map("sale_end_date")
   salePrice     Float?       @map("sale_price")
   saleDays      Int[]        @map("sale_days")
-  priority      Int          @default(0)
   category      DishCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 
   @@index([categoryId])
