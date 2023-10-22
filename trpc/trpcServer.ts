@@ -42,6 +42,7 @@ export const supabaseClientAdmin = createClient(
 export const appRouter = t.router({
   restaurant: t.procedure.input(zRestaurantId).query(async (req) => {
     const { input: restaurantId } = req
+    console.log('[TRPC Server] - restaurant - restaurantId', restaurantId)
     return await getRestaurant(restaurantId)
   }),
 
