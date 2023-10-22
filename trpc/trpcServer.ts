@@ -51,7 +51,11 @@ export const appRouter = t.router({
       const {
         input: { restaurantId, features },
       } = req
-      return await updateFeatures(restaurantId, features)
+      console.log('[TRPC Server] - restaurantId', restaurantId)
+      console.log('[TRPC Server] - features', features)
+      const data = await updateFeatures(restaurantId, features)
+      console.log('[TRPC Server] - updateFeatures', data)
+      return data
     }),
 
   dishesByCategory: t.procedure.input(zLanguageAndRestaurantId).query(async (req) => {

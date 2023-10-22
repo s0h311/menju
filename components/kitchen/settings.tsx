@@ -52,14 +52,16 @@ export default function KitchenSettingsList({
         features: newFeatures,
       },
       {
-        onSuccess: displayErrorOrSuccess,
+        onSuccess: (data) => displayErrorOrSuccess(data),
       }
     )
   }
 
-  const displayErrorOrSuccess = (): void => {
+  const displayErrorOrSuccess = (data: any): void => {
     toast.success('Erfolgreich gespeichert')
     reset({}, { keepValues: true })
+
+    console.log('[Settings - save]', data)
   }
 
   const watchAll = watch()
