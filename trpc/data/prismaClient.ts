@@ -13,7 +13,9 @@ export async function getRestaurant(restaurantId: RestaurantId) {
 }
 
 export async function updateFeatures(id: RestaurantId, features: Features): Promise<PRestaurant> {
-  return prismaClient.restaurant.update({ where: { id }, data: { features } })
+  const data = await prismaClient.restaurant.update({ where: { id }, data: { features } })
+  console.log('[Prisma Client] - updateFeatures', data)
+  return data
 }
 
 export async function getDishesByCategoryFromRestaurant(restaurantId: RestaurantId, language: Language) {
