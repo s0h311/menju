@@ -14,7 +14,7 @@ export default function Navbar({ logoUrl }: NavbarProps) {
             src={logoUrl}
             width={0}
             height={0}
-            sizes='100dvw'
+            sizes='40dvw'
             alt='Restaurant Logo'
           />
         </div>

@@ -47,12 +47,13 @@ export default function Menu() {
       <Stack className='py-4'>
         {visibleDishes ? (
           <>
-            {visibleDishes?.map((dishesByCategory) => (
+            {visibleDishes?.map((dishesByCategory, index) => (
               <FoodCategory
                 key={dishesByCategory.category.id}
                 category={dishesByCategory.category}
                 dishes={dishesByCategory.dishes}
                 onCardClick={(dish) => setActiveDish(dish)}
+                hasPriority={index <= 1}
               />
             ))}
           </>
