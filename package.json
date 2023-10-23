@@ -11,7 +11,7 @@
   "scripts": {
     "postinstall": "prisma generate",
     "dev": "next lint && next dev",
-    "dev:prod": "dotenv -e .env.production -- next lint && next dev",
+    "dev:prod": "dotenv -e .env.production -- yarn dev",
     "build": "next lint && next build",
     "start": "next start",
     "lint": "next lint",

@@ -42,7 +42,6 @@ export const supabaseClientAdmin = createClient(
 export const appRouter = t.router({
   restaurant: t.procedure.input(zRestaurantId).query(async (req) => {
     const { input: restaurantId } = req
-    console.log('[TRPC Server] - restaurant - restaurantId', restaurantId)
     return await getRestaurant(restaurantId)
   }),
 
@@ -52,11 +51,7 @@ export const appRouter = t.router({
       const {
         input: { restaurantId, features },
       } = req
-      console.log('[TRPC Server] - restaurantId', restaurantId)
-      console.log('[TRPC Server] - features', features)
-      const data = await updateFeatures(restaurantId, features)
-      console.log('[TRPC Server] - updateFeatures', data)
-      return data
+      return await updateFeatures(restaurantId, features)
     }),
 
   dishesByCategory: t.procedure.input(zLanguageAndRestaurantId).query(async (req) => {
