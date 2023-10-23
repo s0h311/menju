@@ -8,8 +8,9 @@ type FoodCategoryProps = {
   category: DishCategory
   dishes: Dish[]
   onCardClick: (dish: Dish) => void
+  hasPriority?: boolean
 }
-export default function FoodCategory({ category, dishes, onCardClick }: FoodCategoryProps) {
+export default function FoodCategory({ category, dishes, onCardClick, hasPriority = false }: FoodCategoryProps) {
   return (
     <ThemeProvider theme={theme}>
       <Box className='mt-4'>
@@ -26,14 +27,16 @@ export default function FoodCategory({ category, dishes, onCardClick }: FoodCate
           className='overflow-x-auto no-scrollbar p-1'
         >
           {dishes.length > 0 &&
-            dishes.sort((dish0,dish1) => dish0.priority-dish1.priority).map((dish, index) => (
-              <FoodItem
-                key={dish.id}
-                dish={dish}
-                priority={index <= 2}
-                onClick={() => onCardClick(dish)}
-              />
-            ))}
+            dishes
+              .sort((dish0, dish1) => dish0.priority - dish1.priority)
+              .map((dish, index) => (
+                <FoodItem
+                  key={dish.id}
+                  dish={dish}
+                  priority={hasPriority && index <= 1}
+                  onClick={() => onCardClick(dish)}
+                />
+              ))}
         </Stack>
       </Box>
     </ThemeProvider>
