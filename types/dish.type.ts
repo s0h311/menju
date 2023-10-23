@@ -11,9 +11,15 @@ export const zNutritions = z.object({
   protein: z.number(),
 })
 
+export const zExtraIngredient = z.object({
+  name: z.string(),
+  price: z.number().min(0),
+})
+
 export const zIngredients = z.object({
   required: z.array(z.string()),
   optional: z.array(z.string()),
+  extra: z.array(zExtraIngredient),
 })
 
 export const zDietType = z.enum(['VEGAN', 'VEGETARIAN', 'PESCATARIAN', 'OMNIVORE'])
@@ -55,6 +61,7 @@ export type Dish = z.infer<typeof zDish>
 export type DishCategory = z.infer<typeof zDishCategory>
 export type DishesByCategory = z.infer<typeof zDishesByCategory>
 export type Ingredients = z.infer<typeof zIngredients>
+export type ExtraIngredient = z.infer<typeof zExtraIngredient>
 export type DietType = z.infer<typeof zDietType>
 export type DishIntersection = {
   // Intersection of Dish and DishCategory

@@ -40,11 +40,18 @@ export const getIngredients = (property: JSONValue, language: Language): Ingredi
   const res: Ingredients = {
     required: [],
     optional: [],
+    extra: [],
   }
   if (property && typeof property === 'object') {
     const data = property as Ingredients
     data['required'].forEach((ingredient) => res.required.push(getMultiLanguageStringProperty(ingredient, language)))
     data['optional'].forEach((ingredient) => res.optional.push(getMultiLanguageStringProperty(ingredient, language)))
+    data['extra'].forEach((ingredient) =>
+      res.extra.push({
+        name: getMultiLanguageStringProperty(ingredient.name, language),
+        price: ingredient.price,
+      })
+    )
   }
   return res
 }

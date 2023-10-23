@@ -9,11 +9,11 @@ import { prismaClient } from '../trpcServer'
 import type { Features } from '@/types/restaurant.type'
 
 export async function getRestaurant(restaurantId: RestaurantId) {
-  return prismaClient.restaurant.findFirst({ where: { id: restaurantId } })
+  return await prismaClient.restaurant.findFirst({ where: { id: restaurantId } })
 }
 
 export async function updateFeatures(id: RestaurantId, features: Features): Promise<PRestaurant> {
-  return prismaClient.restaurant.update({ where: { id }, data: { features } })
+  return await prismaClient.restaurant.update({ where: { id }, data: { features } })
 }
 
 export async function getDishesByCategoryFromRestaurant(restaurantId: RestaurantId, language: Language) {

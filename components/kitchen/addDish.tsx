@@ -1,5 +1,5 @@
 import type { DietType, Dish, DishCategory } from '@/types/dish.type'
-import type { DBMultiLanguageStringProperty, DBDish } from '@/types/db/dish.db.type'
+import type { DBMultiLanguageStringProperty, DBDish, DBExtraIngredient } from '@/types/db/dish.db.type'
 import { zDBDish } from '@/types/db/dish.db.type'
 import Dialog from '@/ui/dialog'
 import { useForm } from 'react-hook-form'
@@ -8,14 +8,15 @@ import { TextField } from '@mui/material'
 import { useEffect, useRef, useState } from 'react'
 import useStore from '@/hooks/useStore'
 import { useMenuStore } from '@/store/menuStore'
-import FormDropdown from '@/components/kitchen/form/formDropdown'
-import FormListWithChips from './form/formListWithChips'
-import FormMultiSelectionChips from './form/formMultiSelectionChips'
+import FormDropdown from '@/ui/form/formDropdown'
+import FormListWithChips from '../../ui/form/formListWithChips'
+import FormMultiSelectionChips from '../../ui/form/formMultiSelectionChips'
 import useStorageUploader from '@/hooks/useStorageUploader'
 import { trpc } from '@/trpc/trpc'
 import { initialDBDish } from '@/types/db/dish.initial.db'
 import useTypeTransformer from '@/hooks/useTypeTranformer'
 import ImagePicker from './imagePicker'
+import ExtraIngredientInput from './form/extraIngredientInput'
 
 type AddDishProps = {
   open: boolean
@@ -70,7 +71,7 @@ export default function AddDish({ open, editingDish, onClose }: AddDishProps) {
   ) => {
     const field = getValues(fieldName)
     if (!field || !field.length) setValue(fieldName, [newItem], { shouldValidate: true })
-    else setValue(fieldName, [...field, newItem], { shouldValidate: true })
+    else setValue(fieldName, [newItem, ...field], { shouldValidate: true })
   }
 
   const removeMultiLanguageItem = (
@@ -79,9 +80,23 @@ export default function AddDish({ open, editingDish, onClose }: AddDishProps) {
   ) => {
     let field = getValues(fieldName)
     if (field) {
-      field = field?.filter((currentField) => currentField.de !== item.de)
+      field = field.filter((currentField) => currentField.de !== item.de)
     }
     setValue(fieldName, field, { shouldValidate: true })
+  }
+
+  const addExtraIngredient = (newItem: DBExtraIngredient) => {
+    const field = getValues('ingredients.extra')
+    if (!field || !field.length) setValue('ingredients.extra', [newItem], { shouldValidate: true })
+    else setValue('ingredients.extra', [newItem, ...field], { shouldValidate: true })
+  }
+
+  const removeExtraIngredient = (item: DBExtraIngredient) => {
+    let field = getValues('ingredients.extra')
+    if (field) {
+      field = field.filter((currentField) => currentField.name.de !== item.name.de)
+    }
+    setValue('ingredients.extra', field, { shouldValidate: true })
   }
 
   const dietTypes: DietType[] = ['VEGAN', 'VEGETARIAN', 'PESCATARIAN', 'OMNIVORE']
@@ -218,6 +233,13 @@ export default function AddDish({ open, editingDish, onClose }: AddDishProps) {
         placeholder='optionale Zutat'
         chipColor='bg-sky-900'
         addButttonColor='bg-sky-800'
+      />
+
+      {/* Extra Ingredients */}
+      <ExtraIngredientInput
+        onItemAdd={(item: DBExtraIngredient) => addExtraIngredient(item)}
+        onItemRemove={(item: DBExtraIngredient) => removeExtraIngredient(item)}
+        items={getValues().ingredients.extra || []}
       />
 
       {/* DietType */}

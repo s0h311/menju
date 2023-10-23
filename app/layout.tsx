@@ -1,14 +1,12 @@
 import './globals.css'
 import type { Metadata } from 'next'
-import { Kanit } from 'next/font/google'
+import { Roboto_Serif } from 'next/font/google'
 import { TrpcProvider } from '@/trpc/trpcProvider'
 import { Analytics } from '@vercel/analytics/react'
 import { Toaster } from 'sonner'
 import type { ReactNode } from 'react'
 
-const kanit = Kanit({
-  weight: '400',
-  style: 'normal',
+const robotoSerif = Roboto_Serif({
   subsets: ['latin'],
 })
 
@@ -25,7 +23,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <TrpcProvider>
       <html lang='en'>
-        <body className={`${kanit.className}`}>
+        <body className={`${robotoSerif.className}`}>
           {children}
           <Toaster />
           <Analytics />

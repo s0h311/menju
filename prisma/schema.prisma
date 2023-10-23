@@ -14,9 +14,10 @@ model Restaurant {
   userId       String?        @map("user_id") @db.Uuid
   name         String
   abbreviation String         @unique
+  features     Json           @default("{\"cartType\": \"canOrder\", \"isFilterBarEnabled\": true, \"enabledPaymentMethods\": [\"CARD\", \"CASH\"]}")
   categories   DishCategory[]
   orders       Order[]
-  features     Json           @default("{ \"isFilterBarEnabled\": true, \"cartType\": \"canOrder\", \"enabledPaymentMethods\": [\"CARD\", \"CASH\"] }")
+  logoUrl      String?
 
   @@map("restaurant")
   @@schema("public")
