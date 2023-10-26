@@ -24,7 +24,12 @@ export default function CardGrid({ title, contentType, withReset, onReset, onReo
   return (
     <ThemeProvider theme={theme}>
       <div className='p-5 rounded-lg bg-gray-300 space-y-3 relative overflow-y-scroll'>
-        <h2 className='text-lg'>{title}</h2>
+        <div className='flex items-center space-x-2'>
+          <h2 className='text-lg'>{title} </h2>
+          <Button onClick={() => setEditingActive(true)}>
+            <Add />
+          </Button>
+        </div>
         <IconButton
           sx={{ position: 'absolute', right: withReset ? 50 : 5, top: 0 }}
           onClick={onReorder}
@@ -42,14 +47,6 @@ export default function CardGrid({ title, contentType, withReset, onReset, onReo
           </IconButton>
         )}
         <div className='grid grid-cols-2 xl:grid-cols-3 gap-5'>
-          {(!editingActive || contentType === 'dish') && (
-            <Button
-              variant='outlined'
-              onClick={() => setEditingActive(true)}
-            >
-              <Add />
-            </Button>
-          )}
           {editingActive && contentType === 'dishCategory' && (
             <AddDishCategory onClose={() => setEditingActive(false)} />
           )}
