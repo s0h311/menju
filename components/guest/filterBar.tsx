@@ -12,7 +12,7 @@ type FilterBarProps = {
 
 export default function FilterBar({ chipData }: FilterBarProps) {
   const menuStore = useStore(useMenuStore, (state) => state)
-  function isFilterActive(filterLabel: string): boolean {
+  const isFilterActive = (filterLabel: string): boolean => {
     let isFilterActive = false
     menuStore?.activeFilter.map((filter) => {
       if (filter.label === filterLabel) {
