@@ -21,7 +21,7 @@ import {
   updateFeatures,
 } from '@/trpc/data/prismaClient'
 import type { Restaurant } from '@prisma/client'
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from '@prisma/client/edge'
 import { zRegisterCredentialsAdminUser } from '@/types/adminUser.type'
 import { zDBOrder } from '@/types/db/order.db.type'
 import { zRestaurantId } from '@/types/restaurant.type'
