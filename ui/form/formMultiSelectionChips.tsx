@@ -11,7 +11,7 @@ export default function FormMultiSelectionChips<T>({ items, activeItem, onClick 
         <button
           key={String(item)}
           className={`rounded-xl px-2 py-1 text-sm cursor-pointer ${
-            activeItem === item ? 'bg-accent' : 'bg-slate-500 text-gray-200'
+            activeItem === item && 'border border-success text-success'
           }`}
           type='button'
           onClick={() => onClick(item)}
