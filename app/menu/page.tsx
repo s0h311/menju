@@ -1,6 +1,6 @@
 'use client'
 
-import type { Dish, DishesByCategory } from '@/types/dish.type'
+import type { Dish } from '@/types/dish.type'
 import type { FilterChipModel } from '@/types/filterChip.type'
 import { Stack } from '@mui/material'
 import FilterBar from '@/components/guest/filterBar'
@@ -26,25 +26,28 @@ export default function Menu() {
   const { isFilterBarEnabled, logoUrl } = useRestaurant()
   const [activeDish, setActiveDish] = useState<Dish | null>(null)
 
-  const filterChips: FilterChipModel[] = getFilterChips(dishesByCategory)
-
-  function getFilterChips(dishesByCategory: DishesByCategory[]): FilterChipModel[] {
-    const filterChipNames: Set<string> = new Set<string>()
+  const filterChips: FilterChipModel[] = ((): FilterChipModel[] => {
+    const filterChipNames = new Set<string>()
     const filterChips: FilterChipModel[] = []
-    dishesByCategory?.map((dishes: DishesByCategory): void => {
-      dishes.dishes.map((dish: Dish): void =>
+
+    if (!dishesByCategory || !dishesByCategory.length) return []
+
+    dishesByCategory.map(({ dishes }): void => {
+      dishes.map((dish: Dish): void =>
         [...dish.allergies, ...dish.labels].forEach((filterName: string) => filterChipNames.add(filterName))
       )
     })
+
     filterChipNames.forEach((name: string) => filterChips.push({ label: name }))
+
     return filterChips
-  }
+  })()
 
   return (
     <section>
       {logoUrl && <Navbar logoUrl={logoUrl} />}
       {filterChips.length > 0 && isFilterBarEnabled && <FilterBar chipData={filterChips} />}
-      <Stack className='py-4'>
+      <Stack className='pt-4'>
         {visibleDishes ? (
           <>
             {visibleDishes?.map((dishesByCategory, index) => (

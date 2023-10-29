@@ -144,7 +144,7 @@ export default function CartDialog() {
                     {position.dish.picture && (
                       <Image
                         className='rounded-lg'
-                        style={{ aspectRatio: '16/9' }}
+                        style={{ aspectRatio: '16/9', objectFit: 'cover' }}
                         src={position.dish.picture}
                         width={350}
                         height={240}

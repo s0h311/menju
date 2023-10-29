@@ -9,7 +9,7 @@ import useTypeTransformer from './useTypeTranformer'
 import type { LanguageAndRestaurantId } from '@/types/order.type'
 import type { Features } from '@/types/restaurant.type'
 
-type UseDishConfigs = LanguageAndRestaurantId & { tableId: string }
+type UseDishConfigs = LanguageAndRestaurantId & { tableId?: string }
 
 const useDish = (configs?: UseDishConfigs) => {
   const restaurantStore = useStore(useRestaurantStore, (state) => state, true)
@@ -51,7 +51,10 @@ const useDish = (configs?: UseDishConfigs) => {
     if (configs) {
       restaurantStore.setRestaurantId(configs.restaurantId)
       restaurantStore.setLanguage(configs.language)
-      restaurantStore.setTableId(configs.tableId)
+
+      if (configs.tableId) {
+        restaurantStore.setTableId(configs.tableId)
+      }
     }
 
     if (!restaurantStore.features && !isFetchedRestaurantQuery) {

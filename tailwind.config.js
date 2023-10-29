@@ -10,6 +10,8 @@ const tailwindConfigs = {
         accent: 'var(--accent)',
         bgColor: 'var(--bg-color)',
         textColor: 'var(--text-color)',
+        success: '#207232',
+        error: '#D32B2F',
       },
       width: {
         screen: '100dvw',

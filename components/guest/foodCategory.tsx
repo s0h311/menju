@@ -13,7 +13,7 @@ type FoodCategoryProps = {
 export default function FoodCategory({ category, dishes, onCardClick, hasPriority = false }: FoodCategoryProps) {
   return (
     <ThemeProvider theme={theme}>
-      <Box className='mt-4'>
+      <Box className='mb-4'>
         <h1 className='text-2xl'>{category.name.charAt(0).toUpperCase() + category.name.slice(1)}</h1>
         <Divider
           orientation='horizontal'
