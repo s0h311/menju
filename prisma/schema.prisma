@@ -17,7 +17,7 @@ model Restaurant {
   features     Json           @default("{\"cartType\": \"canOrder\", \"isFilterBarEnabled\": true, \"enabledPaymentMethods\": [\"CARD\", \"CASH\"]}")
   categories   DishCategory[]
   orders       Order[]
-  logoUrl      String?
+  logoUrl      String?        @map("logo_url")
 
   @@map("restaurant")
   @@schema("public")
