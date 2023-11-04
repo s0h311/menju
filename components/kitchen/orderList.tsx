@@ -2,21 +2,31 @@
 
 import useTypeTransformer from '@/hooks/useTypeTranformer'
 import type { DBOrder } from '@/types/db/order.db.type'
-import type { Order, OrderStatus } from '@/types/order.type'
+import type { Order, OrderStatus, RestaurantId } from '@/types/order.type'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { useEffect, useState } from 'react'
 import { Check } from '@mui/icons-material'
 import { Button } from '@mui/material'
+import { useRestaurantStore } from '@/store/restaurantStore'
+import useStore from '@/hooks/useStore'
 
 type OrderListProps = {
   initialOrders: DBOrder[]
+  restaurantId: RestaurantId
 }
 
-export default function OrderList({ initialOrders }: OrderListProps) {
+export default function OrderList({ initialOrders, restaurantId }: OrderListProps) {
   const supabaseClient = createClientComponentClient()
   const { dbOrderToOrder } = useTypeTransformer()
 
   const [orders, setOrders] = useState<Order[]>([])
+  const restaurantStore = useStore(useRestaurantStore, (state) => state, true)
+
+  useEffect(() => {
+    if (restaurantStore) {
+      restaurantStore.setRestaurantId(restaurantId)
+    }
+  }, [restaurantStore, restaurantId])
 
   useEffect(() => {
     const currentOrders = initialOrders.map((dbOrder) => dbOrderToOrder(dbOrder))

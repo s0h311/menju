@@ -13,11 +13,7 @@ import AddDish from '@/components/kitchen/addDish'
 import useDish from '@/hooks/useDish'
 import ReorderDialog from '@/components/kitchen/reorderDialog'
 
-type ManageDishesProps = {
-  restaurantId: number
-}
-
-export default function ManageDishes({ restaurantId }: ManageDishesProps) {
+export default function ManageDishes() {
   const [activeDishesCategory, setActiveDishesCategory] = useState<DishesByCategory | null>(null)
   const [itemsToReorder, setItemsToReorder] = useState<DishIntersection[] | null>(null)
   const [editingDishCategory, setEditingDishCategory] = useState<DishCategory | null>(null)
@@ -27,7 +23,7 @@ export default function ManageDishes({ restaurantId }: ManageDishesProps) {
   const [open, setOpen] = useState<boolean>(false)
 
   const menuStore = useStore(useMenuStore, (state) => state)
-  const { dishesByCategory } = useDish({ restaurantId, language: 'de' })
+  const { dishesByCategory } = useDish()
 
   const allDishes: Dish[] =
     dishesByCategory
