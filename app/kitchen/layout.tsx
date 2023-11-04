@@ -15,7 +15,7 @@ export default function AdminDashboardLayout({ children }: KitchenDashboardLayou
   const dashboardMenus: SidebarMenu[] = [
     {
       id: 1,
-      label: 'Start',
+      label: 'Bestellungen',
       path: '/kitchen',
     },
     {
@@ -25,16 +25,11 @@ export default function AdminDashboardLayout({ children }: KitchenDashboardLayou
     },
     {
       id: 3,
-      label: 'Bestellungen',
-      path: '/kitchen/orders',
-    },
-    {
-      id: 4,
       label: 'Einstellungen',
       path: '/kitchen/settings',
     },
     {
-      id: 5,
+      id: 4,
       label: 'Tools',
       path: '/kitchen/tools',
     },
