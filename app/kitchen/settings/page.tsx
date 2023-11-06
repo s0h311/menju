@@ -1,4 +1,5 @@
 import KitchenSettingsList from '@/components/kitchen/settings'
+import logger from '@/utils/logger'
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 
@@ -17,11 +18,11 @@ export default async function KitchenSettings() {
     .single()
 
   if (userError) {
-    console.error('[KitchenSettings - get user]', userError)
+    logger.error(userError.message, 'KitchenSettings - get user')
   }
 
   if (error) {
-    console.error('[KitchenSettings - fetch features]', error)
+    logger.error(error.message, 'KitchenSettings - fetch features')
   }
 
   return (
