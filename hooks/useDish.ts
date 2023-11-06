@@ -63,7 +63,6 @@ const useDish = (configs?: UseDishConfigs) => {
 
     if (menuStore?.allDishes.length === 0 && !isFetchedDishesByCategoryQuery) {
       refetchDishesByCategoryQuery()
-      console.log('hit refetchDishesByCategoryQuery')
     }
   }, [
     restaurantStore,
@@ -78,7 +77,6 @@ const useDish = (configs?: UseDishConfigs) => {
   useEffect(() => {
     if (menuStore && isDishesByCategoryQuerySuccess) {
       menuStore.setAllDishes(trueDishesByCategory)
-      console.log('hit setAllDishes')
     }
 
     if (restaurantStore && isRestaurantQuerySuccess && restaurantData) {
