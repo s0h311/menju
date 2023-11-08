@@ -15,6 +15,7 @@ model Restaurant {
   name         String
   abbreviation String         @unique
   features     Json           @default("{\"cartType\": \"canOrder\", \"isFilterBarEnabled\": true, \"enabledPaymentMethods\": [\"CARD\", \"CASH\"]}")
+  colors       Json           @default("{\"primary\": \"#7eaa92\", \"secondary\": \"#caddc3\", \"accent\": \"#f7e987\", \"textColor\": \"#445069\"}")
   categories   DishCategory[]
   orders       Order[]
   logoUrl      String?        @map("logo_url")

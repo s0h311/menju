@@ -33,6 +33,7 @@ export default async function KitchenSettings() {
             name: data.name,
             abbreviation: data.abbreviation,
             features: data.features,
+            colors: data.colors,
           }}
         />
       )}

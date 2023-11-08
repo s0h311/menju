@@ -6,7 +6,7 @@ import { capitalize, getMultiLanguageStringProperty, mapDish } from '@/trpc/help
 import type { JsonObject } from '@prisma/client/runtime/library'
 import type { RegisterCredentials } from '@/types/credentials.type'
 import { prismaClient } from '../trpcServer'
-import type { Features } from '@/types/restaurant.type'
+import type { Colors, Features } from '@/types/restaurant.type'
 
 export async function getRestaurant(restaurantId: RestaurantId) {
   return await prismaClient.restaurant.findFirst({ where: { id: restaurantId } })
@@ -14,6 +14,10 @@ export async function getRestaurant(restaurantId: RestaurantId) {
 
 export async function updateFeatures(id: RestaurantId, features: Features): Promise<PRestaurant> {
   return await prismaClient.restaurant.update({ where: { id }, data: { features } })
+}
+
+export async function updateColors(id: RestaurantId, colors: Colors): Promise<PRestaurant> {
+  return await prismaClient.restaurant.update({ where: { id }, data: { colors } })
 }
 
 export async function getDishesByCategoryFromRestaurant(restaurantId: RestaurantId, language: Language) {

@@ -16,6 +16,7 @@ import {
   deleteDishCategory,
   getDishesByCategoryFromRestaurant,
   getRestaurant,
+  updateColors,
   updateDish,
   updateDishCategory,
   updateFeatures,
@@ -24,7 +25,7 @@ import type { Restaurant } from '@prisma/client'
 import { PrismaClient } from '@prisma/client'
 import { zRegisterCredentialsAdminUser } from '@/types/adminUser.type'
 import { zDBOrder } from '@/types/db/order.db.type'
-import { zRestaurantId } from '@/types/restaurant.type'
+import { zColors, zRestaurantId } from '@/types/restaurant.type'
 import { zFeatures } from '@/types/restaurant.type'
 
 const t = initTRPC.create({
@@ -53,6 +54,13 @@ export const appRouter = t.router({
       } = req
       return await updateFeatures(restaurantId, features)
     }),
+
+  updateColors: t.procedure.input(z.object({ restaurantId: zRestaurantId, colors: zColors })).mutation(async (req) => {
+    const {
+      input: { restaurantId, colors },
+    } = req
+    return await updateColors(restaurantId, colors)
+  }),
 
   dishesByCategory: t.procedure.input(zLanguageAndRestaurantId).query(async (req) => {
     const {
