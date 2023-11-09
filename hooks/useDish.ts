@@ -1,7 +1,7 @@
 import useStore from './useStore'
 import { useEffect, experimental_useOptimistic as useOptimistic } from 'react'
 import type { Dish, DishCategory, DishesByCategory } from '@/types/dish.type'
-import { trpc } from '@/trpc/trpc'
+import { trpc } from '@/trpc/trpcObject'
 import { useMenuStore } from '@/store/menuStore'
 import type { DBDish, DBDishCategory } from '@/types/db/dish.db.type'
 import { useRestaurantStore } from '@/store/restaurantStore'
