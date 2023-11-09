@@ -4,6 +4,7 @@ import type { AdminUser, RegisterCredentialsAdminUser } from '@/types/adminUser.
 import type { DBOrder } from '@/types/db/order.db.type'
 import { supabaseClientAdmin } from '../trpcServer'
 import type { UserResponse } from '@supabase/supabase-js'
+import logger from '@/utils/logger'
 
 export async function createUser(credentials: RegisterCredentials, restaurant: Restaurant): Promise<UserResponse> {
   const res = await supabaseClientAdmin.auth.admin.createUser({
@@ -26,7 +27,7 @@ export async function createUser(credentials: RegisterCredentials, restaurant: R
   }
 
   if (error) {
-    console.error(error)
+    logger.error(error.message, 'createUser')
   }
 
   return res
