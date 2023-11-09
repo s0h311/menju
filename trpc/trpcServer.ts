@@ -1,10 +1,10 @@
 import { createClient } from '@supabase/supabase-js'
 import { PrismaClient } from '@prisma/client'
-import { addminRouter } from './routes/admin.route'
-import { dishRouter } from './routes/dish.route'
-import { dishCategoryRouter } from './routes/dishCategory.route'
-import { menuRouter } from './routes/menu.route'
-import { restaurantRouter } from './routes/restaurant.route'
+import { addminRouter } from './routers/admin.route'
+import { dishRouter } from './routers/dish.route'
+import { dishCategoryRouter } from './routers/dishCategory.route'
+import { menuRouter } from './routers/menu.route'
+import { restaurantRouter } from './routers/restaurant.route'
 import { mergeRouters } from './trpc'
 
 export const prismaClient = new PrismaClient()
