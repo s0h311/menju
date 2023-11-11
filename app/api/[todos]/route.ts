@@ -2,73 +2,87 @@ import { NextResponse } from 'next/server'
 import { prismaClient } from '@/trpc/trpcServer'
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 
-const handler = async (request: Request): Promise<NextResponse> => {
-  const authHeader = request.headers.get('Authorization')
-  const expectedCredentials = 'Basic ' + Buffer.from('gdsc:haw').toString('base64')
-
-  if (authHeader !== expectedCredentials) {
+const handleGet = async (request: Request): Promise<NextResponse> => {
+  if (!(await checkAuthentication(request))) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
-  const { searchParams } = new URL(request.url)
-
   try {
-    switch (request.method) {
-      case 'GET':
-        return await handleGet()
-      case 'POST':
-        return await handlePost(request)
-      case 'PUT':
-        return await handlePut(request)
-      case 'DELETE':
-        const id = searchParams.get('id')
-        if (id === null) {
-          return NextResponse.json({ error: 'Unprocessable Content' }, { status: 422 })
-        }
-        return await handleDelete(parseInt(id))
-      default:
-        return NextResponse.json({ error: 'Method Not Allowed' }, { status: 405 })
-    }
+    return NextResponse.json(await prismaClient.todo.findMany())
   } catch (error) {
-    //stupid error check due to mysterious exception after deleting todo successfully
-    if (Object.keys(<object>error).length === 0) {
-      return NextResponse.json('OK', { status: 200 })
-    }
-    if (error instanceof PrismaClientKnownRequestError) {
-      return NextResponse.json({ error: 'Unprocessable Content', prismaError: error }, { status: 422 })
-    }
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
+    return handleError(error)
   }
 }
 
-const handleGet = async (): Promise<NextResponse> => NextResponse.json(await prismaClient.todo.findMany())
 const handlePost = async (request: Request): Promise<NextResponse> => {
-  const newTodo = await request.json()
-  return NextResponse.json(
-    await prismaClient.todo.create({
-      data: newTodo,
-    }),
-    { status: 201 }
-  )
+  if (!(await checkAuthentication(request))) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+  try {
+    const newTodo = await request.json()
+    return NextResponse.json(
+      await prismaClient.todo.create({
+        data: newTodo,
+      }),
+      { status: 201 }
+    )
+  } catch (error) {
+    return handleError(error)
+  }
 }
 
-const handlePut = async (request: Request): Promise<NextResponse> => {
+const handlePatch = async (request: Request): Promise<NextResponse> => {
+  if (!(await checkAuthentication(request))) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
   const todo = await request.json()
-  const updatedTodo = await prismaClient.todo.update({
-    where: {
-      id: todo.id,
-    },
-    data: {
-      ...todo,
-    },
-  })
-  return NextResponse.json(updatedTodo, { status: 200 })
+  try {
+    const updatedTodo = await prismaClient.todo.update({
+      where: {
+        id: todo.id,
+      },
+      data: {
+        ...todo,
+      },
+    })
+    return NextResponse.json(updatedTodo, { status: 200 })
+  } catch (error) {
+    return handleError(error)
+  }
 }
 
-const handleDelete = async (id: number): Promise<NextResponse> => {
-  await prismaClient.todo.delete({ where: { id: id } })
-  return NextResponse.json('No Content', { status: 204 })
+const handleDelete = async (request: Request): Promise<NextResponse> => {
+  const { searchParams } = new URL(request.url)
+  const id = searchParams.get('id')
+  if (!(await checkAuthentication(request))) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+  if (id === null) {
+    return NextResponse.json({ error: 'Unprocessable Content' }, { status: 422 })
+  }
+  try {
+    await prismaClient.todo.delete({ where: { id: parseInt(id) } })
+    return NextResponse.json('No Content', { status: 204 })
+  } catch (error) {
+    return handleError(error)
+  }
 }
-export const GET = handler
-export const POST = handler
-export const PUT = handler
-export const DELETE = handler
+const checkAuthentication = async (request: Request): Promise<boolean> => {
+  const authHeader = request.headers.get('Authorization')
+  const expectedCredentials = 'Basic ' + Buffer.from('gdsc:haw').toString('base64')
+  return authHeader === expectedCredentials
+}
+
+const handleError = (error: unknown): NextResponse => {
+  if (Object.keys(<object>error).length === 0) {
+    return NextResponse.json('OK', { status: 200 })
+  }
+  if (error instanceof PrismaClientKnownRequestError) {
+    return NextResponse.json({ error: 'Unprocessable Content', prismaError: error }, { status: 422 })
+  }
+  return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
+}
+
+export const GET = handleGet
+export const POST = handlePost
+export const PATCH = handlePatch
+export const DELETE = handleDelete
