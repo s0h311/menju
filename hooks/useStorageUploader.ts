@@ -1,7 +1,10 @@
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { createBrowserClient } from '@supabase/ssr'
 import type { StorageUploadResponse } from '@/types/utility.type'
 
-const supabaseClient = createClientComponentClient()
+const supabaseClient = createBrowserClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+)
 
 enum Storages {
   IMAGE = 'pictures',

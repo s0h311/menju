@@ -2,7 +2,6 @@
 
 const nextConfig = {
   experimental: {
-    serverActions: true,
     swcPlugins: [
       [
         'next-superjson-plugin',

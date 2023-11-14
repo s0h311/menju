@@ -1,5 +1,5 @@
 import useStore from './useStore'
-import { useEffect, experimental_useOptimistic as useOptimistic } from 'react'
+import { useEffect, useState } from 'react'
 import type { Dish, DishCategory, DishesByCategory } from '@/types/dish.type'
 import { trpc } from '@/trpc/trpcObject'
 import { useMenuStore } from '@/store/menuStore'
@@ -94,7 +94,8 @@ const useDish = (configs?: UseDishConfigs) => {
     isRestaurantQuerySuccess,
   ])
 
-  const [dishesByCategory, setDishesByCategory] = useOptimistic<DishesByCategory[]>(menuStore?.allDishes ?? [])
+  // TODO replace useState with useOptimistic once its stable
+  const [dishesByCategory, setDishesByCategory] = useState<DishesByCategory[]>(menuStore?.allDishes ?? [])
 
   // OPTIMISCTIC MUTATIONS //
 

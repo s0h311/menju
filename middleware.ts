@@ -1,15 +1,63 @@
-import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs'
+import { createServerClient } from '@supabase/ssr'
+import type { CookieOptions } from '@supabase/ssr'
 import { NextRequest, NextResponse } from 'next/server'
 import { RouteAdminDashboard, RouteKitchenDashboard, RouteLogin } from './types/routes'
 
-export async function middleware(req: NextRequest) {
-  const url = req.nextUrl.clone()
-  const path = req.nextUrl.pathname
-  const res = NextResponse.next()
+export async function middleware(request: NextRequest) {
+  const url = request.nextUrl.clone()
+  const path = request.nextUrl.pathname
+  let response = NextResponse.next({
+    request: {
+      headers: request.headers,
+    },
+  })
+
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        get: (name: string) => request.cookies.get(name)?.value,
+        set(name: string, value: string, options: CookieOptions) {
+          request.cookies.set({
+            name,
+            value,
+            ...options,
+          })
+          response = NextResponse.next({
+            request: {
+              headers: request.headers,
+            },
+          })
+          response.cookies.set({
+            name,
+            value,
+            ...options,
+          })
+        },
+        remove(name: string, options: CookieOptions) {
+          request.cookies.set({
+            name,
+            value: '',
+            ...options,
+          })
+          response = NextResponse.next({
+            request: {
+              headers: request.headers,
+            },
+          })
+          response.cookies.set({
+            name,
+            value: '',
+            ...options,
+          })
+        },
+      },
+    }
+  )
 
   //  KITCHEN //
   if (path.includes(RouteKitchenDashboard)) {
-    const supabase = createMiddlewareClient({ req, res })
     const {
       data: { session },
     } = await supabase.auth.getSession()
@@ -21,12 +69,11 @@ export async function middleware(req: NextRequest) {
     if (path === RouteKitchenDashboard && !session) {
       url.pathname = RouteLogin
       return NextResponse.redirect(url)
-    } else return res
+    } else return response
   }
 
   // ADMIN //
   if (path.includes(RouteAdminDashboard)) {
-    const supabase = createMiddlewareClient({ req, res })
     const {
       data: { session },
     } = await supabase.auth.getSession()
@@ -37,8 +84,8 @@ export async function middleware(req: NextRequest) {
     if (!session || !allowedRoles.includes(role)) {
       url.pathname = RouteLogin
       return NextResponse.redirect(url)
-    } else return res
+    } else return response
   }
 
-  return res
+  return response
 }
