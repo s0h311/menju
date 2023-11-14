@@ -1,11 +1,20 @@
 import KitchenSettingsList from '@/components/kitchen/settings'
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
+import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 
 export const dynamic = 'force-dynamic'
 
 export default async function KitchenSettings() {
-  const superbaseClient = createServerComponentClient({ cookies })
+  const cookieStore = cookies()
+  const superbaseClient = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        get: (name: string) => cookieStore.get(name)?.value,
+      },
+    }
+  )
 
   // TODO duplicate 'orders/page.tsx, einen Service daraus machen'
   const { data: userData, error: userError } = await superbaseClient.auth.getUser()

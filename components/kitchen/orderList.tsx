@@ -3,7 +3,7 @@
 import useTypeTransformer from '@/hooks/useTypeTranformer'
 import type { DBOrder } from '@/types/db/order.db.type'
 import type { Order, OrderStatus, RestaurantId } from '@/types/order.type'
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { createBrowserClient } from '@supabase/ssr'
 import { useEffect, useState } from 'react'
 import { Check } from '@mui/icons-material'
 import { Button } from '@mui/material'
@@ -16,7 +16,10 @@ type OrderListProps = {
 }
 
 export default function OrderList({ initialOrders, restaurantId }: OrderListProps) {
-  const supabaseClient = createClientComponentClient()
+  const supabaseClient = createBrowserClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  )
   const { dbOrderToOrder } = useTypeTransformer()
 
   const [orders, setOrders] = useState<Order[]>([])

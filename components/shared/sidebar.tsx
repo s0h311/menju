@@ -2,7 +2,7 @@ import type { SidebarMenu } from '@/types/dashboard.type'
 import Link from 'next/link'
 import { useState } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { createBrowserClient } from '@supabase/ssr'
 
 type SidebarProps = {
   menus: SidebarMenu[]
@@ -11,7 +11,10 @@ type SidebarProps = {
 export default function Sidebar({ menus }: SidebarProps) {
   const [showSidebar, setShowSidebar] = useState<boolean>(true)
   const path = usePathname()
-  const supabase = createClientComponentClient()
+  const supabase = createBrowserClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  )
   const router = useRouter()
   const signOut = async () => {
     await supabase.auth.signOut()
