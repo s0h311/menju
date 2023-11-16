@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form'
 import ToggleButton from '../../ui/form/toggleButton'
 import type { PaymentMethod } from '@/types/order.type'
 import { LoadingButton } from '@mui/lab'
-import { trpc } from '@/trpc/trpc'
+import { trpc } from '@/trpc/trpcObject'
 import toast from '@/utils/toast'
 import { useEffect } from 'react'
 
