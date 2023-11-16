@@ -1,4 +1,5 @@
 import OrderList from '@/components/kitchen/orderList'
+import logger from '@/utils/logger'
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 
@@ -32,15 +33,15 @@ export default async function Orders() {
   const restaurantId = userData.user?.user_metadata['restaurantId']
 
   if (userError) {
-    console.error('[KitchenSettings - get user]', userError)
+    logger.error(userError.message, 'Orders - get user')
   }
 
   if (orderError) {
-    console.error('[Orders - fetch orders]', orderError)
+    logger.error(orderError.message, 'Orders - fetch orders')
   }
 
   if (restaurantError) {
-    console.error('[Orders - fetch features]', restaurantError)
+    logger.error(restaurantError.message, 'Orders - fetch features')
   }
 
   return (
