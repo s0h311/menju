@@ -48,7 +48,10 @@ export default async function Orders() {
       {restaurantData && restaurantData.features.cartType === 'cannotOrder' ? (
         <p>Die Bestellfunktion ist nicht freigeschaltet</p>
       ) : (
-        <OrderList initialOrders={orderData ?? []} />
+        <OrderList
+          initialOrders={orderData ?? []}
+          restaurantId={restaurantId}
+        />
       )}
     </>
   )
