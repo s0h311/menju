@@ -15,6 +15,15 @@ const nextConfig = {
           },
         ],
       },
+      {
+        source: '/api/todos/*',
+        headers: [
+          {
+            key: 'Access-Control-Allow-Origin',
+            value: '*',
+          },
+        ],
+      },
     ]
   },
   images: {
