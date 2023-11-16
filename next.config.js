@@ -2,14 +2,7 @@
 
 const nextConfig = {
   experimental: {
-    swcPlugins: [
-      [
-        'next-superjson-plugin',
-        {
-          excluded: [],
-        },
-      ],
-    ],
+    swcPlugins: [['next-superjson2', {}]],
   },
   async headers() {
     return [
