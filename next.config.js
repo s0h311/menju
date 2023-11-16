@@ -16,7 +16,7 @@ const nextConfig = {
         ],
       },
       {
-        source: '/api/todos/*',
+        source: '/api/todos/:path*',
         headers: [
           {
             key: 'Access-Control-Allow-Origin',
