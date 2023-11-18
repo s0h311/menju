@@ -7,10 +7,11 @@ import React, { useState } from 'react'
 import QRCodeDialog from '@/components/kitchen/qrCodeDialog'
 import useStore from '@/hooks/useStore'
 import { useRestaurantStore } from '@/store/restaurantStore'
-import { theme } from '@/ui/theme'
 import ThemeProvider from '@mui/material/styles/ThemeProvider'
+import { useCustomTheme } from '@/ui/theme'
 
 export default function Tools() {
+  const theme = useCustomTheme()
   const [tableIdentification, setTableIdentification] = useState<string | null>(null)
   const [qrCode, setQRCode] = useState<string | null>(null)
   const restaurantStore = useStore(useRestaurantStore, (state) => state)

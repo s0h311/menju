@@ -5,9 +5,9 @@ import { useState } from 'react'
 import { Button, IconButton } from '@mui/material'
 import ThemeProvider from '@mui/material/styles/ThemeProvider'
 import { Add, ReplayRounded, ReorderRounded } from '@mui/icons-material'
-import { theme } from '@/ui/theme'
 import AddDishCategory from './addDishCategory'
 import AddDish from './addDish'
+import { useCustomTheme } from '@/ui/theme'
 
 type CardGridProps = {
   title: string
@@ -19,6 +19,7 @@ type CardGridProps = {
 }
 
 export default function CardGrid({ title, contentType, withReset, onReset, onReorder, children }: CardGridProps) {
+  const theme = useCustomTheme()
   const [editingActive, setEditingActive] = useState<boolean>(false)
 
   return (

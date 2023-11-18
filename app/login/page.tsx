@@ -5,7 +5,6 @@ import image from '@/public/images/login-food.jpg'
 import { Box, TextField } from '@mui/material'
 import ThemeProvider from '@mui/material/styles/ThemeProvider'
 import { LoadingButton } from '@mui/lab'
-import { theme } from '@/ui/theme'
 import { zLoginCredentials } from '@/types/credentials.type'
 import type { LoginCredentials } from '@/types/credentials.type'
 import { useForm } from 'react-hook-form'
@@ -15,8 +14,10 @@ import useDeviceType from '@/hooks/useDeviceType'
 import { useRouter } from 'next/navigation'
 import useStore from '@/hooks/useStore'
 import { useRestaurantStore } from '@/store/restaurantStore'
+import { useCustomTheme } from '@/ui/theme'
 
 export default function Login() {
+  const theme = useCustomTheme()
   const supabase = createClientComponentClient()
   const router = useRouter()
 

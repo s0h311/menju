@@ -10,8 +10,8 @@ import {
 } from '@mui/material'
 import ThemeProvider from '@mui/material/styles/ThemeProvider'
 import { EditRounded, DeleteForeverRounded } from '@mui/icons-material'
-import { theme } from '@/ui/theme'
 import Image from 'next/image'
+import { useCustomTheme } from '@/ui/theme'
 
 export type CardProps = {
   title: string
@@ -23,6 +23,7 @@ export type CardProps = {
 }
 
 export default function Card({ title, image, onClick, onDelete, onEdit, children }: CardProps) {
+  const theme = useCustomTheme()
   return (
     <ThemeProvider theme={theme}>
       <MCard sx={{ cursor: 'pointer' }}>

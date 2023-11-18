@@ -18,9 +18,10 @@ import { useRestaurantStore } from '@/store/restaurantStore'
 import useTypeTransformer from '@/hooks/useTypeTranformer'
 import useRestaurant from '@/hooks/useRestaurant'
 import toast from '@/utils/toast'
-import { theme } from '@/ui/theme'
+import { useCustomTheme } from '@/ui/theme'
 
 export default function CartDialog() {
+  const theme = useCustomTheme()
   const [showDialog, setShowDialog] = useState<boolean>(false)
   const cartStore = useStore(useCartStore, (state) => state)
   const [cart, setCart] = useState<Omit<Cart, 'restaurantId'> | null>(null)

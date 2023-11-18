@@ -23,7 +23,7 @@ export default function Menu() {
   const tableId: string = queryParams.get(QUERY_PARAM.tableId) ?? 'unknown'
 
   const { dishesByCategory, visibleDishes } = useDish({ restaurantId, language: 'de', tableId })
-  const { isFilterBarEnabled, logoUrl } = useRestaurant()
+  const { isFilterBarEnabled, logoUrl, colors } = useRestaurant()
   const [activeDish, setActiveDish] = useState<Dish | null>(null)
 
   const filterChips: FilterChipModel[] = ((): FilterChipModel[] => {
@@ -43,14 +43,14 @@ export default function Menu() {
     return filterChips
   })()
 
-  return (
+  return colors ? (
     <section>
       {logoUrl && <Navbar logoUrl={logoUrl} />}
       {filterChips.length > 0 && isFilterBarEnabled && <FilterBar chipData={filterChips} />}
       <Stack className='pt-4'>
-        {visibleDishes ? (
+        {visibleDishes && (
           <>
-            {visibleDishes?.map((dishesByCategory, index) => (
+            {visibleDishes.map((dishesByCategory, index) => (
               <FoodCategory
                 key={dishesByCategory.category.id}
                 category={dishesByCategory.category}
@@ -59,12 +59,6 @@ export default function Menu() {
                 hasPriority={index <= 1}
               />
             ))}
-          </>
-        ) : (
-          <>
-            {filterChips.length > 0 && isFilterBarEnabled && <FilterBarSkeleton />}
-            <FoodCategorySkeleton />
-            <FoodCategorySkeleton />
           </>
         )}
         {activeDish && (
@@ -76,5 +70,13 @@ export default function Menu() {
         <CartDialog />
       </Stack>
     </section>
+  ) : (
+    <Stack className='pt-4'>
+      <>
+        <FilterBarSkeleton />
+        <FoodCategorySkeleton />
+        <FoodCategorySkeleton />
+      </>
+    </Stack>
   )
 }

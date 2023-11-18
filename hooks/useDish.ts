@@ -7,7 +7,7 @@ import type { DBDish, DBDishCategory } from '@/types/db/dish.db.type'
 import { useRestaurantStore } from '@/store/restaurantStore'
 import useTypeTransformer from './useTypeTranformer'
 import type { LanguageAndRestaurantId } from '@/types/order.type'
-import type { Features } from '@/types/restaurant.type'
+import type { Colors, Features } from '@/types/restaurant.type'
 
 type UseDishConfigs = LanguageAndRestaurantId & { tableId?: string }
 
@@ -83,6 +83,7 @@ const useDish = (configs?: UseDishConfigs) => {
       restaurantStore.setName(restaurantData.name)
       restaurantStore.setAbbreviation(restaurantData.abbreviation)
       restaurantStore.setFeatures(restaurantData.features as Features)
+      restaurantStore.setColors(restaurantData.colors as Colors)
       restaurantStore.setLogoUrl(restaurantData.logoUrl)
     }
   }, [

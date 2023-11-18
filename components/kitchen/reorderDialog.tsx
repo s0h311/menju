@@ -7,7 +7,6 @@ import type { DishCategory, Dish, DishIntersection } from '@/types/dish.type'
 import { closestCenter, DndContext } from '@dnd-kit/core'
 import type { DragEndEvent } from '@dnd-kit/core'
 import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
-import { theme } from '@/ui/theme'
 import ThemeProvider from '@mui/material/styles/ThemeProvider'
 import { trpc } from '@/trpc/trpc'
 import useStore from '@/hooks/useStore'
@@ -15,6 +14,7 @@ import { useMenuStore } from '@/store/menuStore'
 import useTypeTransformer from '@/hooks/useTypeTranformer'
 import type { DBDish, DBDishCategory } from '@/types/db/dish.db.type'
 import ReorderableItem from '@/components/kitchen/reorderableItem'
+import { useCustomTheme } from '@/ui/theme'
 
 const Transition = forwardRef(function Transition(
   props: TransitionProps & {
@@ -37,6 +37,7 @@ type ReorderDialogProps<T> = {
 }
 
 export default function ReorderDialog<T extends DishIntersection>({ items, setOpenDialog }: ReorderDialogProps<T>) {
+  const theme = useCustomTheme()
   const [draggableItems, setItems] = useState<T[]>(items)
   const menuStore = useStore(useMenuStore, (state) => state)
   const updateDishCategoryMutation = trpc.updateDishCategory.useMutation()
