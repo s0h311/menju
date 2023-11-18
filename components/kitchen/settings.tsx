@@ -129,10 +129,7 @@ export default function KitchenSettingsList({
         </LoadingButton>
       </form>
 
-      <ColorSettings
-        colors={colors}
-        restaurantId={restaurantId}
-      />
+      <ColorSettings />
     </div>
   )
 }
