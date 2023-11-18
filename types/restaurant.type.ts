@@ -3,7 +3,7 @@ import { z } from 'zod'
 export const zPaymentMethod = z.enum(['CARD', 'CASH', 'COUPON'])
 export const zRestaurantId = z.number().int().positive().finite()
 const zCartType = z.enum(['cannotOrder', 'canOrder'])
-const zColor = z.string().length(7).regex(/^#/)
+const zColor = z.string().regex(/^#/)
 
 export const zFeatures = z.object({
   isFilterBarEnabled: z.boolean().default(true),
