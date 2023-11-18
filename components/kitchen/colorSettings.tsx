@@ -2,7 +2,6 @@
 import { Button } from '@mui/material'
 import ThemeProvider from '@mui/material/styles/ThemeProvider'
 import { type Colors } from '@/types/restaurant.type'
-import { trpc } from '@/trpc/trpc'
 import toast from '@/utils/toast'
 import React, { useState } from 'react'
 import { GithubPlacement } from '@uiw/react-color-github'
@@ -10,6 +9,7 @@ import Chrome from '@uiw/react-color-chrome'
 import useStore from '@/hooks/useStore'
 import { useRestaurantStore } from '@/store/restaurantStore'
 import { useCustomTheme } from '@/ui/theme'
+import { trpc } from '@/trpc/trpcObject'
 
 export default function ColorSettings() {
   const theme = useCustomTheme()

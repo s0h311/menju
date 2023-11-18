@@ -1,11 +1,21 @@
 import OrderList from '@/components/kitchen/orderList'
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
+import logger from '@/utils/logger'
+import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 
 export const dynamic = 'force-dynamic'
 
 export default async function Orders() {
-  const superbaseClient = createServerComponentClient({ cookies })
+  const cookieStore = cookies()
+  const superbaseClient = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        get: (name: string) => cookieStore.get(name)?.value,
+      },
+    }
+  )
 
   const { data: userData, error: userError } = await superbaseClient.auth.getUser()
 
@@ -23,15 +33,15 @@ export default async function Orders() {
   const restaurantId = userData.user?.user_metadata['restaurantId']
 
   if (userError) {
-    console.error('[KitchenSettings - get user]', userError)
+    logger.error(userError.message, 'Orders - get user')
   }
 
   if (orderError) {
-    console.error('[Orders - fetch orders]', orderError)
+    logger.error(orderError.message, 'Orders - fetch orders')
   }
 
   if (restaurantError) {
-    console.error('[Orders - fetch features]', restaurantError)
+    logger.error(restaurantError.message, 'Orders - fetch features')
   }
 
   return (
@@ -39,7 +49,10 @@ export default async function Orders() {
       {restaurantData && restaurantData.features.cartType === 'cannotOrder' ? (
         <p>Die Bestellfunktion ist nicht freigeschaltet</p>
       ) : (
-        <OrderList initialOrders={orderData ?? []} />
+        <OrderList
+          initialOrders={orderData ?? []}
+          restaurantId={restaurantId}
+        />
       )}
     </>
   )

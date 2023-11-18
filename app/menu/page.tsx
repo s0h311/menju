@@ -29,7 +29,6 @@ export default function Menu() {
   const filterChips: FilterChipModel[] = ((): FilterChipModel[] => {
     const filterChipNames = new Set<string>()
     const filterChips: FilterChipModel[] = []
-
     if (!dishesByCategory || !dishesByCategory.length) return []
 
     dishesByCategory.map(({ dishes }): void => {
@@ -44,11 +43,11 @@ export default function Menu() {
   })()
 
   return colors ? (
-    <section>
-      {logoUrl && <Navbar logoUrl={logoUrl} />}
-      {filterChips.length > 0 && isFilterBarEnabled && <FilterBar chipData={filterChips} />}
-      <Stack className='pt-4'>
-        {visibleDishes && (
+    visibleDishes && (
+      <section>
+        {logoUrl && <Navbar logoUrl={logoUrl} />}
+        {filterChips.length > 0 && isFilterBarEnabled && <FilterBar chipData={filterChips} />}
+        <Stack className='pt-4'>
           <>
             {visibleDishes.map((dishesByCategory, index) => (
               <FoodCategory
@@ -60,16 +59,17 @@ export default function Menu() {
               />
             ))}
           </>
-        )}
-        {activeDish && (
-          <DishDialog
-            dish={activeDish}
-            setOpenDialog={setActiveDish}
-          />
-        )}
-        <CartDialog />
-      </Stack>
-    </section>
+          )
+          {activeDish && (
+            <DishDialog
+              dish={activeDish}
+              setOpenDialog={setActiveDish}
+            />
+          )}
+          <CartDialog />
+        </Stack>
+      </section>
+    )
   ) : (
     <Stack className='pt-4'>
       <>

@@ -9,7 +9,7 @@ import { zLoginCredentials } from '@/types/credentials.type'
 import type { LoginCredentials } from '@/types/credentials.type'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { createBrowserClient } from '@supabase/ssr'
 import useDeviceType from '@/hooks/useDeviceType'
 import { useRouter } from 'next/navigation'
 import useStore from '@/hooks/useStore'
@@ -18,7 +18,10 @@ import { useCustomTheme } from '@/ui/theme'
 
 export default function Login() {
   const theme = useCustomTheme()
-  const supabase = createClientComponentClient()
+  const supabase = createBrowserClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  )
   const router = useRouter()
 
   const restaurantStore = useStore(useRestaurantStore, (state) => state)

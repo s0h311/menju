@@ -1,11 +1,21 @@
 import KitchenSettingsList from '@/components/kitchen/settings'
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
+import logger from '@/utils/logger'
+import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 
 export const dynamic = 'force-dynamic'
 
 export default async function KitchenSettings() {
-  const superbaseClient = createServerComponentClient({ cookies })
+  const cookieStore = cookies()
+  const superbaseClient = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        get: (name: string) => cookieStore.get(name)?.value,
+      },
+    }
+  )
 
   // TODO duplicate 'orders/page.tsx, einen Service daraus machen'
   const { data: userData, error: userError } = await superbaseClient.auth.getUser()
@@ -17,11 +27,11 @@ export default async function KitchenSettings() {
     .single()
 
   if (userError) {
-    console.error('[KitchenSettings - get user]', userError)
+    logger.error(userError.message, 'KitchenSettings - get user')
   }
 
   if (error) {
-    console.error('[KitchenSettings - fetch features]', error)
+    logger.error(error.message, 'KitchenSettings - fetch features')
   }
 
   return (

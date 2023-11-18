@@ -37,6 +37,16 @@ model DishCategory {
   @@schema("public")
 }
 
+model Todo {
+  id           Int        @id @default(autoincrement())
+  title        String
+  description  String
+  dueDate      DateTime
+  completed    Boolean
+  @@map("todo")
+  @@schema("public")
+}
+
 model Dish {
   id            Int          @id @default(autoincrement())
   priority      Int          @default(0)

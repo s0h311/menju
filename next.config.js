@@ -2,15 +2,7 @@
 
 const nextConfig = {
   experimental: {
-    serverActions: true,
-    swcPlugins: [
-      [
-        'next-superjson-plugin',
-        {
-          excluded: [],
-        },
-      ],
-    ],
+    swcPlugins: [['next-superjson2', {}]],
   },
   async headers() {
     return [
@@ -21,6 +13,17 @@ const nextConfig = {
             key: 'Access-Control-Allow-Origin',
             value: 'https://menju.co',
           },
+        ],
+      },
+      {
+        source: '/api/todos/:path*',
+        headers: [
+          {
+            key: 'Access-Control-Allow-Origin',
+            value: '*',
+          },
+          { key: 'Access-Control-Allow-Methods', value: 'GET,DELETE,PATCH,POST' },
+          { key: 'Access-Control-Allow-Headers', value: 'Authorization' },
         ],
       },
     ]
