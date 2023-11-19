@@ -2,7 +2,7 @@ import { Box, Divider, Stack } from '@mui/material'
 import ThemeProvider from '@mui/material/styles/ThemeProvider'
 import FoodItem from './foodItem'
 import type { Dish, DishCategory } from '@/types/dish.type'
-import { theme } from '@/ui/theme'
+import { useCustomTheme } from '@/ui/theme'
 
 type FoodCategoryProps = {
   category: DishCategory
@@ -12,7 +12,7 @@ type FoodCategoryProps = {
 }
 export default function FoodCategory({ category, dishes, onCardClick, hasPriority = false }: FoodCategoryProps) {
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={useCustomTheme()}>
       <Box className='mb-4'>
         <h1 className='text-2xl'>{category.name.charAt(0).toUpperCase() + category.name.slice(1)}</h1>
         <Divider

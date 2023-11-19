@@ -10,13 +10,14 @@ import { LoadingButton } from '@mui/lab'
 import { trpc } from '@/trpc/trpcObject'
 import toast from '@/utils/toast'
 import { useEffect } from 'react'
+import ColorSettings from '@/components/kitchen/colorSettings'
 
 type SettingsListProps = {
   restaurant: Restaurant
 }
 
 export default function KitchenSettingsList({
-  restaurant: { id: restaurantId, name, abbreviation, features },
+  restaurant: { id: restaurantId, name, abbreviation, features, colors },
 }: SettingsListProps) {
   const { mutateAsync: updateFeaturesMutation } = trpc.updateFeatures.useMutation()
 
@@ -127,6 +128,8 @@ export default function KitchenSettingsList({
           Speichern
         </LoadingButton>
       </form>
+
+      <ColorSettings />
     </div>
   )
 }

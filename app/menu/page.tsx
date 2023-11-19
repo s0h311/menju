@@ -23,13 +23,12 @@ export default function Menu() {
   const tableId: string = queryParams.get(QUERY_PARAM.tableId) ?? 'unknown'
 
   const { dishesByCategory, visibleDishes } = useDish({ restaurantId, language: 'de', tableId })
-  const { isFilterBarEnabled, logoUrl } = useRestaurant()
+  const { isFilterBarEnabled, logoUrl, colors } = useRestaurant()
   const [activeDish, setActiveDish] = useState<Dish | null>(null)
 
   const filterChips: FilterChipModel[] = ((): FilterChipModel[] => {
     const filterChipNames = new Set<string>()
     const filterChips: FilterChipModel[] = []
-
     if (!dishesByCategory || !dishesByCategory.length) return []
 
     dishesByCategory.map(({ dishes }): void => {
@@ -43,14 +42,14 @@ export default function Menu() {
     return filterChips
   })()
 
-  return (
-    <section>
-      {logoUrl && <Navbar logoUrl={logoUrl} />}
-      {filterChips.length > 0 && isFilterBarEnabled && <FilterBar chipData={filterChips} />}
-      <Stack className='pt-4'>
-        {visibleDishes ? (
+  return colors ? (
+    visibleDishes && (
+      <section>
+        {logoUrl && <Navbar logoUrl={logoUrl} />}
+        {filterChips.length > 0 && isFilterBarEnabled && <FilterBar chipData={filterChips} />}
+        <Stack className='pt-4'>
           <>
-            {visibleDishes?.map((dishesByCategory, index) => (
+            {visibleDishes.map((dishesByCategory, index) => (
               <FoodCategory
                 key={dishesByCategory.category.id}
                 category={dishesByCategory.category}
@@ -60,21 +59,24 @@ export default function Menu() {
               />
             ))}
           </>
-        ) : (
-          <>
-            {filterChips.length > 0 && isFilterBarEnabled && <FilterBarSkeleton />}
-            <FoodCategorySkeleton />
-            <FoodCategorySkeleton />
-          </>
-        )}
-        {activeDish && (
-          <DishDialog
-            dish={activeDish}
-            setOpenDialog={setActiveDish}
-          />
-        )}
-        <CartDialog />
-      </Stack>
-    </section>
+          )
+          {activeDish && (
+            <DishDialog
+              dish={activeDish}
+              setOpenDialog={setActiveDish}
+            />
+          )}
+          <CartDialog />
+        </Stack>
+      </section>
+    )
+  ) : (
+    <Stack className='pt-4'>
+      <>
+        <FilterBarSkeleton />
+        <FoodCategorySkeleton />
+        <FoodCategorySkeleton />
+      </>
+    </Stack>
   )
 }

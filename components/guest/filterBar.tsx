@@ -4,13 +4,14 @@ import type { FilterChipModel } from '@/types/filterChip.type'
 import { useMenuStore } from '@/store/menuStore'
 import useStore from '@/hooks/useStore'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import { theme } from '@/ui/theme'
+import { useCustomTheme } from '@/ui/theme'
 
 type FilterBarProps = {
   chipData: FilterChipModel[]
 }
 
 export default function FilterBar({ chipData }: FilterBarProps) {
+  const theme = useCustomTheme()
   const menuStore = useStore(useMenuStore, (state) => state)
   const isFilterActive = (filterLabel: string): boolean => {
     let isFilterActive = false

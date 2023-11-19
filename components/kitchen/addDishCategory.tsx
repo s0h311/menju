@@ -4,7 +4,6 @@ import ThemeProvider from '@mui/material/styles/ThemeProvider'
 import { LoadingButton } from '@mui/lab'
 import { Check, Close } from '@mui/icons-material'
 import { useForm } from 'react-hook-form'
-import { theme } from '@/ui/theme'
 import type { DishCategory } from '@/types/dish.type'
 import type { DBDishCategory } from '@/types/db/dish.db.type'
 import { zDBDishCategory } from '@/types/db/dish.db.type'
@@ -17,6 +16,7 @@ import useStorageUploader from '@/hooks/useStorageUploader'
 import { useRestaurantStore } from '@/store/restaurantStore'
 import useTypeTransformer from '@/hooks/useTypeTranformer'
 import Image from 'next/image'
+import { useCustomTheme } from '@/ui/theme'
 
 type AddDishCategoryProps = {
   editingDishCategory?: DishCategory
@@ -24,6 +24,7 @@ type AddDishCategoryProps = {
 }
 
 export default function AddDishCategory({ editingDishCategory, onClose }: AddDishCategoryProps) {
+  const theme = useCustomTheme()
   const addDishCategoryMutation = trpc.addDishCategory.useMutation()
   const updateDishCategoryMutation = trpc.updateDishCategory.useMutation()
   const menuStore = useStore(useMenuStore, (state) => state)

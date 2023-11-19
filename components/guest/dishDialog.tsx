@@ -5,9 +5,9 @@ import type { Dish, ExtraIngredient } from '@/types/dish.type'
 import { useState } from 'react'
 import type { OrderPosition } from '@/types/order.type'
 import { useCartStore } from '@/store/cartStore'
-import { theme } from '@/ui/theme'
 import useStore from '@/hooks/useStore'
 import toast from '@/utils/toast'
+import { useCustomTheme } from '@/ui/theme'
 
 type DishDialogProps = {
   dish: Dish
@@ -16,6 +16,7 @@ type DishDialogProps = {
 
 // TODO in mehrere Komponente aufteilen
 export default function DishDialog({ dish, setOpenDialog }: DishDialogProps) {
+  const theme = useCustomTheme()
   const cartStore = useStore(useCartStore, (state) => state)
 
   const [order, setOrder] = useState<OrderPosition>({

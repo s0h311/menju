@@ -1,6 +1,6 @@
-import { zFeatures, zRestaurantId } from '@/types/restaurant.type'
+import { zColors, zFeatures, zRestaurantId } from '@/types/restaurant.type'
 import { procedure, router } from '../trpc'
-import { getRestaurant, updateFeatures } from '../data/prismaClient'
+import { getRestaurant, updateColors, updateFeatures } from '../data/prismaClient'
 import { z } from 'zod'
 
 export const restaurantRouter = router({
@@ -17,4 +17,11 @@ export const restaurantRouter = router({
       } = req
       return await updateFeatures(restaurantId, features)
     }),
+
+  updateColors: procedure.input(z.object({ restaurantId: zRestaurantId, colors: zColors })).mutation(async (req) => {
+    const {
+      input: { restaurantId, colors },
+    } = req
+    return await updateColors(restaurantId, colors)
+  }),
 })

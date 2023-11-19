@@ -7,11 +7,11 @@ import {
 } from '@mui/material'
 import type { Breakpoint, SxProps } from '@mui/material'
 import ThemeProvider from '@mui/material/styles/ThemeProvider'
-import { theme } from './theme'
 import type { ReactNode } from 'react'
 import Image from 'next/image'
 import type { StaticImport } from 'next/dist/shared/lib/get-img-props'
 import { LoadingButton } from '@mui/lab'
+import { useCustomTheme } from '@/ui/theme'
 
 type DialogProps = {
   title?: string
@@ -48,9 +48,10 @@ export default function Dialog({
   imageData,
   loading,
 }: DialogProps) {
+  const customTheme = useCustomTheme()
   return (
     <>
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={customTheme}>
         <MatDialog
           PaperProps={{
             sx: { borderRadius: '16px', maxHeight: '75dvh', overflowY: 'scroll' },
