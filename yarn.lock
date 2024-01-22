@@ -4155,7 +4155,7 @@ __metadata:
     eslint-config-prettier: "npm:9.0.0"
     eslint-plugin-unused-imports: "npm:^3.0.0"
     next: "npm:14.0.2"
-    next-superjson2: "npm:^0.6.0"
+    next-superjson-plugin: "npm:^0.6.1"
     pino: "npm:^8.16.1"
     pino-pretty: "npm:^10.2.3"
     postcss: "npm:8.4.31"
@@ -4398,15 +4398,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"next-superjson2@npm:^0.6.0":
+"next-superjson-plugin@npm:^0.6.1":
   version: 0.6.1
-  resolution: "next-superjson2@npm:0.6.1"
+  resolution: "next-superjson-plugin@npm:0.6.1"
   dependencies:
     hoist-non-react-statics: "npm:^3.3.2"
   peerDependencies:
     next: ^13.0 || ^14.0
-    superjson: ^2
-  checksum: 3da266ca29309d8f2446a0347bb477b6f57462223aa2534ccd250b854b04f05cf13e8561a78140318d066e94932056ff6e31f3128ef7c06da1dfdf21faa4b552
+    superjson: ^1 || ^2
+  checksum: ef37b1646317f98324c386273b6cc178aacd0a7fe104fb0643a1f34190d3455b5d84862c368de768560a702efc550c9140a3806d18c613ceb0f11d462995fcbf
   languageName: node
   linkType: hard
 
