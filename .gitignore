@@ -4,8 +4,6 @@
 /build
 .vercel
 next-env.d.ts
-/.yarn/cache
-/.yarn/install-state.*
 /.vscode/
 /.idea/
 .DS_Store

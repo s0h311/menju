@@ -1,6 +1,5 @@
 node_modules
 *.lock
+package-lock.json
 .nvmrc
-.yarnrc*
 *.d.ts
-.yarn
