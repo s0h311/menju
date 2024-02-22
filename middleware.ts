@@ -6,6 +6,7 @@ import { RouteAdminDashboard, RouteKitchenDashboard, RouteLogin } from './types/
 export async function middleware(request: NextRequest) {
   const url = request.nextUrl.clone()
   const path = request.nextUrl.pathname
+  
   let response = NextResponse.next({
     request: {
       headers: request.headers,
@@ -56,27 +57,34 @@ export async function middleware(request: NextRequest) {
     }
   )
 
+  const { data: { session } } = await supabase.auth.getSession()
+
+  response.cookies.set({
+    name: 'sb-xtapuuiutmkpsjijkgfw-auth-token',
+    value: JSON.stringify(session),
+    path: '/',
+  })
+
   //  KITCHEN //
   if (path.includes(RouteKitchenDashboard)) {
-    const {
-      data: { session },
-    } = await supabase.auth.getSession()
+    const { data: { session } } = await supabase.auth.getSession()
 
     if (path === RouteLogin && session) {
       url.pathname = RouteKitchenDashboard
       return NextResponse.redirect(url)
     }
+
     if (path === RouteKitchenDashboard && !session) {
       url.pathname = RouteLogin
       return NextResponse.redirect(url)
-    } else return response
+    }
+
+    return response
   }
 
   // ADMIN //
   if (path.includes(RouteAdminDashboard)) {
-    const {
-      data: { session },
-    } = await supabase.auth.getSession()
+    const { data: { session } } = await supabase.auth.getSession()
 
     const role = session?.user.role ?? 'notAdmin'
     const allowedRoles = ['app_admin', 'app_superadmin']
@@ -84,7 +92,9 @@ export async function middleware(request: NextRequest) {
     if (!session || !allowedRoles.includes(role)) {
       url.pathname = RouteLogin
       return NextResponse.redirect(url)
-    } else return response
+    }
+
+    return response
   }
 
   return response

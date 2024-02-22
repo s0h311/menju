@@ -43,7 +43,7 @@ export default function FoodItem({ dish, priority, onClick }: FoodItemProps) {
           </div>
           <p className='leading-none'>{dish.price.toFixed(2)}€</p>
         </div>
-        <p className='overflow-hidden text-ellipsis text-sm text-slate-600'>{getIngredientsList()}</p>
+        <p className='overflow-hidden text-ellipsis text-sm text-slate-600 line-clamp-4'>{getIngredientsList()}</p>
       </CardContent>
     </Card>
   )

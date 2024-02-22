@@ -18,10 +18,12 @@ import { useCustomTheme } from '@/ui/theme'
 
 export default function Login() {
   const theme = useCustomTheme()
+
   const supabase = createBrowserClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   )
+  
   const router = useRouter()
 
   const restaurantStore = useStore(useRestaurantStore, (state) => state)

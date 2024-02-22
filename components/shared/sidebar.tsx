@@ -10,12 +10,15 @@ type SidebarProps = {
 
 export default function Sidebar({ menus }: SidebarProps) {
   const [showSidebar, setShowSidebar] = useState<boolean>(true)
+
   const path = usePathname()
+  const router = useRouter()
+
   const supabase = createBrowserClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   )
-  const router = useRouter()
+
   const signOut = async () => {
     await supabase.auth.signOut()
     router.push('/')
