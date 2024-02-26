@@ -16,13 +16,17 @@ import { useSearchParams } from 'next/navigation'
 import { QUERY_PARAM } from '@/types/queryParams.type'
 import useRestaurant from '@/hooks/useRestaurant'
 import Navbar from '@/components/guest/navbar'
+import { trpc } from '@/trpc/trpcObject'
 
 export default function Menu() {
   const queryParams = useSearchParams()
   const restaurantId: number = parseInt(queryParams.get(QUERY_PARAM.restaurandId) ?? '')
   const tableId: string = queryParams.get(QUERY_PARAM.tableId) ?? 'unknown'
 
-  const { dishesByCategory, visibleDishes } = useDish({ restaurantId, language: 'de', tableId })
+  const { visibleDishes } = useDish({ restaurantId, language: 'de', tableId })
+
+  const { data: dishesByCategory } = trpc.dishesByCategory.useQuery({restaurantId, language: 'de'})
+
   const { isFilterBarEnabled, logoUrl, colors } = useRestaurant()
   const [activeDish, setActiveDish] = useState<Dish | null>(null)
 
@@ -42,13 +46,13 @@ export default function Menu() {
     return filterChips
   })()
 
-  return colors ? (
-    visibleDishes && (
+  return colors && visibleDishes ? (
       <section>
         {logoUrl && <Navbar logoUrl={logoUrl} />}
+
         {filterChips.length > 0 && isFilterBarEnabled && <FilterBar chipData={filterChips} />}
+
         <Stack className='pt-4'>
-          <>
             {visibleDishes.map((dishesByCategory, index) => (
               <FoodCategory
                 key={dishesByCategory.category.id}
@@ -58,25 +62,22 @@ export default function Menu() {
                 hasPriority={index <= 1}
               />
             ))}
-          </>
-          )
+          
           {activeDish && (
             <DishDialog
               dish={activeDish}
               setOpenDialog={setActiveDish}
             />
           )}
+
           <CartDialog />
         </Stack>
       </section>
-    )
   ) : (
     <Stack className='pt-4'>
-      <>
-        <FilterBarSkeleton />
-        <FoodCategorySkeleton />
-        <FoodCategorySkeleton />
-      </>
+      <FilterBarSkeleton />
+      <FoodCategorySkeleton />
+      <FoodCategorySkeleton />
     </Stack>
   )
 }

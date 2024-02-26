@@ -3,15 +3,15 @@
 import { useMenuStore } from '@/store/menuStore'
 import useStore from '@/hooks/useStore'
 import type { Dish, DishCategory, DishIntersection, DishesByCategory } from '@/types/dish.type'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import CardGrid from '@/components/kitchen/cardGrid'
 import Card from '@/components/kitchen/card'
 import AddDishCategory from '@/components/kitchen/addDishCategory'
 import Dialog from '@/ui/dialog'
 import { trpc } from '@/trpc/trpcObject'
 import AddDish from '@/components/kitchen/addDish'
-import useDish from '@/hooks/useDish'
 import ReorderDialog from '@/components/kitchen/reorderDialog'
+import { useRestaurantStore } from '@/store/restaurantStore'
 
 export default function ManageDishes() {
   const [activeDishesCategory, setActiveDishesCategory] = useState<DishesByCategory | null>(null)
@@ -23,10 +23,19 @@ export default function ManageDishes() {
   const [open, setOpen] = useState<boolean>(false)
 
   const menuStore = useStore(useMenuStore, (state) => state)
-  const { dishesByCategory } = useDish()
+  const restaurantStore = useStore(useRestaurantStore, (state) => state)
+  const { data: dishesByCategoryData } = trpc.dishesByCategory.useQuery({restaurantId: restaurantStore?.restaurantId ?? 1, language: 'de'})
+
+  const [dishesByCategory, setDishesByCategory] = useState<DishesByCategory[]>([])
+
+  useEffect(() => {
+    if (dishesByCategoryData) {
+      setDishesByCategory(dishesByCategoryData)
+    }
+  }, [dishesByCategoryData])
 
   const allDishes: Dish[] =
-    dishesByCategory
+    (dishesByCategory ?? [])
       .filter((dishesByCategory: DishesByCategory) => dishesByCategory.dishes.length)
       .map((dishesByCategory: DishesByCategory) => dishesByCategory.dishes)
       .flat() || []
