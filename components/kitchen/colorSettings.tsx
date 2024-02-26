@@ -1,7 +1,7 @@
 'use client'
 import { Button } from '@mui/material'
 import ThemeProvider from '@mui/material/styles/ThemeProvider'
-//import { type Colors } from '@/types/restaurant.type'
+import { type Colors } from '@/types/restaurant.type'
 import toast from '@/utils/toast'
 import React, { useState } from 'react'
 import { GithubPlacement } from '@uiw/react-color-github'
@@ -9,16 +9,17 @@ import Chrome from '@uiw/react-color-chrome'
 import useStore from '@/hooks/useStore'
 import { useRestaurantStore } from '@/store/restaurantStore'
 import { useCustomTheme } from '@/ui/theme'
+import { trpc } from '@/trpc/trpcObject'
 
 export default function ColorSettings() {
   const theme = useCustomTheme()
   const restaurantStore = useStore(useRestaurantStore, (state) => state)
-  //const { mutateAsync: updateColorsMutation } = trpc.updateColors.useMutation()
+  const { mutateAsync: updateColorsMutation } = trpc.updateColors.useMutation()
   const [valueName, setValueName] = useState<string>('')
   const [colorValue, setColorValue] = useState<string>('')
 
   const save = async (newColor: string): Promise<void> => {
-    /* try {
+    try {
       if (!restaurantStore) {
         throw new Error()
       }
@@ -41,7 +42,7 @@ export default function ColorSettings() {
       setValueName('')
     } catch (error) {
       toast.error('Fehler beim Speichern der Farben ')
-    } */
+    }
   }
 
   const displayErrorOrSuccess = (): void => {

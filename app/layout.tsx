@@ -1,10 +1,10 @@
 import './globals.css'
 import type { Metadata } from 'next'
 import { Roboto_Serif } from 'next/font/google'
+import { TrpcProvider } from '@/trpc/trpcProvider'
 import { Analytics } from '@vercel/analytics/react'
 import { Toaster } from 'sonner'
 import type { ReactNode } from 'react'
-import { ReactQueryProvider } from '@/trpc/ReactQueryProvider'
 
 const robotoSerif = Roboto_Serif({
   subsets: ['latin'],
@@ -21,7 +21,7 @@ type RootLayoutProps = {
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <ReactQueryProvider>
+    <TrpcProvider>
       <html lang='en'>
         <body className={`${robotoSerif.className}`}>
           {children}
@@ -29,6 +29,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
           <Analytics />
         </body>
       </html>
-    </ReactQueryProvider>
+    </TrpcProvider>
   )
 }

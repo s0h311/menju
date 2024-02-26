@@ -1,31 +1,26 @@
 import { Accordion, AccordionDetails, AccordionSummary, Chip } from '@mui/material'
 import ThemeProvider from '@mui/material/styles/ThemeProvider'
 import type { FilterChipModel } from '@/types/filterChip.type'
+import { useMenuStore } from '@/store/menuStore'
+import useStore from '@/hooks/useStore'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { useCustomTheme } from '@/ui/theme'
-import { useState } from 'react'
 
 type FilterBarProps = {
   chipData: FilterChipModel[]
-  onFilter: (filters: FilterChipModel[]) => void
 }
 
-export default function FilterBar({ chipData, onFilter }: FilterBarProps) {
+export default function FilterBar({ chipData }: FilterBarProps) {
   const theme = useCustomTheme()
-
-  const [activeFilters, setActiveFilters] = useState<FilterChipModel[]>(chipData)
-
-  function handleFilter(filter: FilterChipModel): void {
-    let filters = [...activeFilters]
-
-    if (!!activeFilters.find((f) => f.label === filter.label)) {
-      filters = filters.filter((f) => f.label !== filter.label)
-    } else {
-      filters.push(filter)
-    }
-
-    setActiveFilters(filters)
-    onFilter(filters)
+  const menuStore = useStore(useMenuStore, (state) => state)
+  const isFilterActive = (filterLabel: string): boolean => {
+    let isFilterActive = false
+    menuStore?.activeFilter.map((filter) => {
+      if (filter.label === filterLabel) {
+        isFilterActive = true
+      }
+    })
+    return isFilterActive
   }
 
   return (
@@ -41,9 +36,10 @@ export default function FilterBar({ chipData, onFilter }: FilterBarProps) {
               variant='outlined'
               key={filter.label}
               label={filter.label}
-              color={!!activeFilters.find((f) => f.label === filter.label) ? 'success' : 'error'}
+              color={isFilterActive(filter.label) ? 'success' : 'error'}
               onClick={() => {
-                handleFilter(filter)
+                menuStore?.updateFilter(filter)
+                menuStore?.filter()
               }}
             />
           ))}

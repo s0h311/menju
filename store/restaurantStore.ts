@@ -1,7 +1,7 @@
 import type { Language } from '@/types/order.type'
 import type { Colors, Features } from '@/types/restaurant.type'
 import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
+import { createJSONStorage, persist } from 'zustand/middleware'
 
 type RestaurantState = {
   restaurantId: number
@@ -47,7 +47,7 @@ export const useRestaurantStore = create(
     }),
     {
       name: 'restaurant',
-      //storage: createJSONStorage(() => sessionStorage),
+      storage: createJSONStorage(() => sessionStorage),
     }
   )
 )

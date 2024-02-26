@@ -1,6 +1,6 @@
 import createTheme from '@mui/material/styles/createTheme'
 import type { PaletteColorOptions } from '@mui/material/styles/createPalette'
-import { useRestaurant } from '@/hooks/useRestaurant'
+import useRestaurant from '@/hooks/useRestaurant'
 
 declare module '@mui/material/styles' {
   interface Palette {

@@ -1,5 +1,5 @@
 import { fetchRequestHandler } from '@trpc/server/adapters/fetch'
-import { appRouter } from '@/ReactQueryProvider.tsx/trpcServer'
+import { appRouter } from '@/trpc/trpcServer'
 
 const handler = (request: Request) =>
   fetchRequestHandler({

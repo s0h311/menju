@@ -1,6 +1,6 @@
 'use client'
 
-import { trpc } from '@/ReactQueryProvider.tsx/trpcObject'
+import { trpc } from '@/trpc/trpcObject'
 import { zRegisterCredentialsAdminUser } from '@/types/adminUser.type'
 import type { RegisterCredentialsAdminUser } from '@/types/adminUser.type'
 import type { UserResponse } from '@supabase/supabase-js'
