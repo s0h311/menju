@@ -7,9 +7,7 @@ import { useForm } from 'react-hook-form'
 import type { DishCategory } from '@/types/dish.type'
 import type { DBDishCategory } from '@/types/db/dish.db.type'
 import { zDBDishCategory } from '@/types/db/dish.db.type'
-import { trpc } from '@/trpc/trpcObject'
 import useStore from '@/hooks/useStore'
-import { useMenuStore } from '@/store/menuStore'
 import ImagePicker from './imagePicker'
 import { useEffect, useRef, useState } from 'react'
 import useStorageUploader from '@/hooks/useStorageUploader'
@@ -17,6 +15,8 @@ import { useRestaurantStore } from '@/store/restaurantStore'
 import useTypeTransformer from '@/hooks/useTypeTranformer'
 import Image from 'next/image'
 import { useCustomTheme } from '@/ui/theme'
+import { addDishCategory, updateDishCategory } from '@/app/api/menu'
+import { addDishCategoryToStore, updateDishCategoryOnStore } from '@/hooks/useDishStore'
 
 type AddDishCategoryProps = {
   editingDishCategory?: DishCategory
@@ -25,9 +25,7 @@ type AddDishCategoryProps = {
 
 export default function AddDishCategory({ editingDishCategory, onClose }: AddDishCategoryProps) {
   const theme = useCustomTheme()
-  const addDishCategoryMutation = trpc.addDishCategory.useMutation()
-  const updateDishCategoryMutation = trpc.updateDishCategory.useMutation()
-  const menuStore = useStore(useMenuStore, (state) => state)
+
   const restaurantStore = useStore(useRestaurantStore, (state) => state)
   const storageUploader = useStorageUploader()
   const [preview, setPreview] = useState<string | null>(null)
@@ -72,22 +70,23 @@ export default function AddDishCategory({ editingDishCategory, onClose }: AddDis
     }
 
     if (editingDishCategory) {
-      await updateDishCategoryMutation.mutateAsync(dishCategory, {
-        onSuccess: async (category: DishCategory) => {
-          if (editingDishCategory.picture && editingDishCategory.picture !== getValues().picture) {
-            await storageUploader.removeImage([editingDishCategory.picture])
-          }
-          menuStore?.updateDishCategory(category)
-          onClose()
-        },
-      })
+      const { data, error } = await updateDishCategory(dishCategory)
+
+      if (error) return
+
+      if (editingDishCategory.picture && editingDishCategory.picture !== getValues().picture) {
+        await storageUploader.removeImage([editingDishCategory.picture])
+      }
+
+      updateDishCategoryOnStore({ ...data } as unknown as DishCategory)
+      onClose()
     } else {
-      await addDishCategoryMutation.mutateAsync(dishCategory, {
-        onSuccess: async (category: DishCategory) => {
-          menuStore?.addDishCategory(category)
-          onClose()
-        },
-      })
+      const { error } = await addDishCategory(dishCategory)
+
+      if (error) return
+
+      addDishCategoryToStore(dishCategory)
+      onClose()
     }
   }
 
