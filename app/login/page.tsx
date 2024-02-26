@@ -15,6 +15,7 @@ import { useRouter } from 'next/navigation'
 import useStore from '@/hooks/useStore'
 import { useRestaurantStore } from '@/store/restaurantStore'
 import { useCustomTheme } from '@/ui/theme'
+import { initRestaurant } from '@/hooks/useRestaurant'
 
 export default function Login() {
   const theme = useCustomTheme()
@@ -23,7 +24,7 @@ export default function Login() {
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   )
-  
+
   const router = useRouter()
 
   const restaurantStore = useStore(useRestaurantStore, (state) => state)
@@ -60,7 +61,9 @@ export default function Login() {
     }
 
     if (data.user) {
-      restaurantStore?.setRestaurantId(data.user.user_metadata['restaurantId'])
+      const restaurantId = data.user.user_metadata['restaurantId']
+      initRestaurant({ restaurantId, language: 'de' })
+
       router.push('/kitchen')
     }
   }

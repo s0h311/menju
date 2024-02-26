@@ -1,17 +1,15 @@
 'use client'
 
-import { useMenuStore } from '@/store/menuStore'
-import useStore from '@/hooks/useStore'
 import type { Dish, DishCategory, DishIntersection, DishesByCategory } from '@/types/dish.type'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import CardGrid from '@/components/kitchen/cardGrid'
 import Card from '@/components/kitchen/card'
 import AddDishCategory from '@/components/kitchen/addDishCategory'
 import Dialog from '@/ui/dialog'
-import { trpc } from '@/trpc/trpcObject'
 import AddDish from '@/components/kitchen/addDish'
-import useDish from '@/hooks/useDish'
 import ReorderDialog from '@/components/kitchen/reorderDialog'
+import type { UseQueryResult } from '@tanstack/react-query'
+import { useDishes } from '@/hooks/useDish'
 
 export default function ManageDishes() {
   const [activeDishesCategory, setActiveDishesCategory] = useState<DishesByCategory | null>(null)
@@ -22,8 +20,15 @@ export default function ManageDishes() {
   const [deletingDish, setDeletingDish] = useState<Dish | null>(null)
   const [open, setOpen] = useState<boolean>(false)
 
-  const menuStore = useStore(useMenuStore, (state) => state)
-  const { dishesByCategory } = useDish()
+  const [dishesByCategory, setDishesByCategory] = useState<DishesByCategory[]>([])
+
+  const { data, isLoading, isError, isSuccess }: UseQueryResult<DishesByCategory[]> = useDishes()
+
+  useEffect(() => {
+    if (isSuccess && data) {
+      setDishesByCategory(data)
+    }
+  }, [data, isSuccess])
 
   const allDishes: Dish[] =
     dishesByCategory
@@ -31,6 +36,8 @@ export default function ManageDishes() {
       .map((dishesByCategory: DishesByCategory) => dishesByCategory.dishes)
       .flat() || []
 
+  /**
+   * 
   const deleteDishCategoryMutation = trpc.deleteDishCategory.useMutation()
   const deleteDishMutation = trpc.deleteDish.useMutation()
 
@@ -55,6 +62,8 @@ export default function ManageDishes() {
       })
     }
   }
+  *
+  */
 
   return (
     <section className='grid grid-cols-2 gap-5 xl:gap-10 w-full h-full'>
@@ -99,7 +108,7 @@ export default function ManageDishes() {
         }}
         onReset={() => setActiveDishesCategory(null)}
       >
-        {(activeDishesCategory?.dishes || allDishes)
+        {(activeDishesCategory?.dishes ?? allDishes)
           .sort((dish0, dish1) => dish0.priority - dish1.priority)
           .map((card: Dish) => (
             <Card
@@ -137,7 +146,9 @@ export default function ManageDishes() {
         proceedText='Löschen'
         maxWidth='xs'
         onClose={() => setDeletingDishCategory(null)}
-        onProceed={deleteDishCategory}
+        onProceed={() => {
+          //deleteDishCategory()
+        }}
         revertSuccessError
       >
         Möchtest du wirklich diese Kategorie löschen?
@@ -150,7 +161,9 @@ export default function ManageDishes() {
         proceedText='Löschen'
         maxWidth='xs'
         onClose={() => setDeletingDish(null)}
-        onProceed={deleteDish}
+        onProceed={() => {
+          //deleteDish()
+        }}
         revertSuccessError
       >
         Möchtest du wirklich dieses Gericht löschen?

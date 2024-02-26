@@ -13,10 +13,9 @@ import Image from 'next/image'
 import { useCallback, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import FormMultiSelectionChips from '@/ui/form/formMultiSelectionChips'
-import { trpc } from '@/trpc/trpcObject'
 import { useRestaurantStore } from '@/store/restaurantStore'
 import useTypeTransformer from '@/hooks/useTypeTranformer'
-import useRestaurant from '@/hooks/useRestaurant'
+import { useRestaurant } from '@/hooks/useRestaurant'
 import toast from '@/utils/toast'
 import { useCustomTheme } from '@/ui/theme'
 
@@ -25,7 +24,6 @@ export default function CartDialog() {
   const [showDialog, setShowDialog] = useState<boolean>(false)
   const cartStore = useStore(useCartStore, (state) => state)
   const [cart, setCart] = useState<Omit<Cart, 'restaurantId'> | null>(null)
-  const createOrderMutation = trpc.createOrder.useMutation()
   const restaurantStore = useStore(useRestaurantStore, (state) => state)
   const { orderToDBOrder } = useTypeTransformer()
   const { cartType, enabledPaymentMethods } = useRestaurant()
@@ -60,7 +58,7 @@ export default function CartDialog() {
 
     toast.successMinimal('Bestellung eingegangen')
 
-    createOrderMutation.mutateAsync(
+    /* createOrderMutation.mutateAsync(
       orderToDBOrder({
         ...cartStore?.cart,
         paymentMethod: cart.paymentMethod,
@@ -69,7 +67,7 @@ export default function CartDialog() {
         tableId: restaurantStore?.tableId ?? '',
       }),
       { onSuccess: () => reset() }
-    )
+    ) */
     setShowDialog(false)
     cartStore.reset()
   }

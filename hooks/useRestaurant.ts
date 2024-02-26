@@ -1,6 +1,6 @@
 import { useRestaurantStore } from '@/store/restaurantStore'
 import useStore from './useStore'
-import type { PaymentMethod } from '@/types/order.type'
+import type { LanguageAndRestaurantId, PaymentMethod } from '@/types/order.type'
 import type { CartType, Colors } from '@/types/restaurant.type'
 import { defaultFeatures } from '@/types/restaurant.type'
 
@@ -24,4 +24,22 @@ const useRestaurant = () => {
   }
 }
 
-export default useRestaurant
+type RestaurantConfig = LanguageAndRestaurantId & { tableId?: string }
+
+function initRestaurant(configs: RestaurantConfig): void {
+  if (!sessionStorage.getItem('restaurant')) {
+    sessionStorage.setItem('restaurant', JSON.stringify(configs))
+  }
+}
+
+function useRestaurantInfo(): RestaurantConfig {
+  const restaurant = sessionStorage.getItem('restaurant')
+
+  if (!restaurant) {
+    throw new Error('Restaurant not found in session storage')
+  }
+
+  return JSON.parse(restaurant)
+}
+
+export { useRestaurant, initRestaurant, useRestaurantInfo }

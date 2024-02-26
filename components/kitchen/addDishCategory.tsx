@@ -7,7 +7,6 @@ import { useForm } from 'react-hook-form'
 import type { DishCategory } from '@/types/dish.type'
 import type { DBDishCategory } from '@/types/db/dish.db.type'
 import { zDBDishCategory } from '@/types/db/dish.db.type'
-import { trpc } from '@/trpc/trpcObject'
 import useStore from '@/hooks/useStore'
 import { useMenuStore } from '@/store/menuStore'
 import ImagePicker from './imagePicker'
@@ -25,8 +24,8 @@ type AddDishCategoryProps = {
 
 export default function AddDishCategory({ editingDishCategory, onClose }: AddDishCategoryProps) {
   const theme = useCustomTheme()
-  const addDishCategoryMutation = trpc.addDishCategory.useMutation()
-  const updateDishCategoryMutation = trpc.updateDishCategory.useMutation()
+  //const addDishCategoryMutation = trpc.addDishCategory.useMutation()
+  //const updateDishCategoryMutation = trpc.updateDishCategory.useMutation()
   const menuStore = useStore(useMenuStore, (state) => state)
   const restaurantStore = useStore(useRestaurantStore, (state) => state)
   const storageUploader = useStorageUploader()
@@ -71,7 +70,7 @@ export default function AddDishCategory({ editingDishCategory, onClose }: AddDis
       }
     }
 
-    if (editingDishCategory) {
+    /* if (editingDishCategory) {
       await updateDishCategoryMutation.mutateAsync(dishCategory, {
         onSuccess: async (category: DishCategory) => {
           if (editingDishCategory.picture && editingDishCategory.picture !== getValues().picture) {
@@ -88,7 +87,7 @@ export default function AddDishCategory({ editingDishCategory, onClose }: AddDis
           onClose()
         },
       })
-    }
+    } */
   }
 
   const uploadImage = async (imageFile: File): Promise<void> => {

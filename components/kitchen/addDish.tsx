@@ -12,7 +12,6 @@ import FormDropdown from '@/ui/form/formDropdown'
 import FormListWithChips from '../../ui/form/formListWithChips'
 import FormMultiSelectionChips from '../../ui/form/formMultiSelectionChips'
 import useStorageUploader from '@/hooks/useStorageUploader'
-import { trpc } from '@/trpc/trpcObject'
 import { initialDBDish } from '@/types/db/dish.initial.db'
 import useTypeTransformer from '@/hooks/useTypeTranformer'
 import ImagePicker from './imagePicker'
@@ -31,8 +30,6 @@ export default function AddDish({ open, editingDish, onClose }: AddDishProps) {
   const menuStore = useStore(useMenuStore, (state) => state)
   const [dishCategories, setDishCategories] = useState<DishCategory[]>([])
   const imageStoragePath = useRef<string | null>(null)
-  const { mutateAsync: addDishMutation } = trpc.addDish.useMutation()
-  const { mutateAsync: updateDishMutation } = trpc.updateDish.useMutation()
   const { dishToDBDish } = useTypeTransformer()
 
   useEffect(() => {
@@ -110,7 +107,7 @@ export default function AddDish({ open, editingDish, onClose }: AddDishProps) {
       }
     }
 
-    if (editingDish) {
+    /* if (editingDish) {
       updateDishMutation(dish, {
         onSuccess: async (dish: Dish) => {
           if (editingDish.picture && editingDish.picture !== getValues().picture) {
@@ -127,7 +124,7 @@ export default function AddDish({ open, editingDish, onClose }: AddDishProps) {
           onClose()
         },
       })
-    }
+    } */
   }
 
   const uploadImage = async (imageFile: File): Promise<void> => {
