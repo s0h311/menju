@@ -2,8 +2,7 @@
 
 const nextConfig = {
   experimental: {
-    // swcPlugins: [['next-superjson-plugin', {}]],
-    // TODO uncomment when this: https://github.com/vercel/next.js/issues/62081 is fixed
+    swcPlugins: [['next-superjson-plugin', {}]],
   },
   async headers() {
     return [
