@@ -20,11 +20,9 @@ export default function OrderList({ initialOrders, restaurantId }: OrderListProp
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   )
-
   const { dbOrderToOrder } = useTypeTransformer()
 
   const [orders, setOrders] = useState<Order[]>([])
-  
   const restaurantStore = useStore(useRestaurantStore, (state) => state, true)
 
   useEffect(() => {
