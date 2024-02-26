@@ -7,7 +7,6 @@ import { useForm } from 'react-hook-form'
 import ToggleButton from '../../ui/form/toggleButton'
 import type { PaymentMethod } from '@/types/order.type'
 import { LoadingButton } from '@mui/lab'
-import { trpc } from '@/trpc/trpcObject'
 import toast from '@/utils/toast'
 import { useEffect } from 'react'
 import ColorSettings from '@/components/kitchen/colorSettings'
@@ -19,7 +18,7 @@ type SettingsListProps = {
 export default function KitchenSettingsList({
   restaurant: { id: restaurantId, name, abbreviation, features, colors },
 }: SettingsListProps) {
-  const { mutateAsync: updateFeaturesMutation } = trpc.updateFeatures.useMutation()
+  //const { mutateAsync: updateFeaturesMutation } = trpc.updateFeatures.useMutation()
 
   const {
     handleSubmit,
@@ -47,7 +46,7 @@ export default function KitchenSettingsList({
   }
 
   const save = async (newFeatures: Features): Promise<void> => {
-    updateFeaturesMutation(
+    /* updateFeaturesMutation(
       {
         restaurantId,
         features: newFeatures,
@@ -55,7 +54,7 @@ export default function KitchenSettingsList({
       {
         onSuccess: displayErrorOrSuccess,
       }
-    )
+    ) */
   }
 
   const displayErrorOrSuccess = (): void => {

@@ -8,7 +8,6 @@ import { closestCenter, DndContext } from '@dnd-kit/core'
 import type { DragEndEvent } from '@dnd-kit/core'
 import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import ThemeProvider from '@mui/material/styles/ThemeProvider'
-import { trpc } from '@/trpc/trpcObject'
 import useStore from '@/hooks/useStore'
 import { useMenuStore } from '@/store/menuStore'
 import useTypeTransformer from '@/hooks/useTypeTranformer'
@@ -40,8 +39,8 @@ export default function ReorderDialog<T extends DishIntersection>({ items, setOp
   const theme = useCustomTheme()
   const [draggableItems, setItems] = useState<T[]>(items)
   const menuStore = useStore(useMenuStore, (state) => state)
-  const updateDishCategoryMutation = trpc.updateDishCategory.useMutation()
-  const { mutateAsync: updateDishMutation } = trpc.updateDish.useMutation()
+  //const updateDishCategoryMutation = trpc.updateDishCategory.useMutation()
+  //const { mutateAsync: updateDishMutation } = trpc.updateDish.useMutation()
   const { dishToDBDish, dishCategoryToDBDishCategory } = useTypeTransformer()
 
   const onDragEnd = (event: DragEndEvent) => {
@@ -80,12 +79,12 @@ export default function ReorderDialog<T extends DishIntersection>({ items, setOp
     draggableItems.forEach((dish, index) => {
       dish.priority = index
       const dBDish: DBDish = dishToDBDish(dish as unknown as Dish)
-      updateDishMutation(dBDish, {
+      /* updateDishMutation(dBDish, {
         onSuccess: async (dish: Dish) => {
           menuStore?.updateDish(dish)
           setOpenDialog(null)
         },
-      })
+      }) */
     })
   }
 
@@ -93,12 +92,12 @@ export default function ReorderDialog<T extends DishIntersection>({ items, setOp
     draggableItems.forEach((dishCategory, index) => {
       dishCategory.priority = index
       const dBDishCategory: DBDishCategory = dishCategoryToDBDishCategory(dishCategory as unknown as DishCategory)
-      updateDishCategoryMutation.mutateAsync(dBDishCategory, {
+      /* updateDishCategoryMutation.mutateAsync(dBDishCategory, {
         onSuccess: async (dishCategory: DishCategory) => {
           menuStore?.updateDishCategory(dishCategory)
           setOpenDialog(null)
         },
-      })
+      }) */
     })
   }
 
